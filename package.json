@@ -8,8 +8,8 @@
 	"license": "UNLICENSED",
 
 	"main": "dist/angular2-sentio.umd.js",
-	"module": "dist/index.js",
-	"typings": "esm/index.d.ts",
+	"module": "dist/esm/index.js",
+	"typings": "dist/esm/index.d.ts",
 
 	"repository": {
 		"type": "git",
