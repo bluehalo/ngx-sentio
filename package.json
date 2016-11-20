@@ -1,0 +1,78 @@
+{
+	"name": "@asymmetrik/angular2-sentio",
+	"artifactName": "angular2-sentio",
+	"description": "Angular 2 components for Sentio",
+	"version": "2.0.0",
+	"author": "Asymmetrik, Ltd.",
+	"copyright": "Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.",
+	"license": "UNLICENSED",
+
+	"main": "dist/angular2-sentio.umd.js",
+	"module": "dist/index.js",
+	"typings": "esm/index.d.ts",
+
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/Asymmetrik/angular2-sentio.git"
+	},
+
+	"peerDependencies": {
+		"@angular/common": "2.2",
+		"@angular/core": "2.2",
+
+		"@asymmetrik/sentio": "2",
+
+		"d3": "3.5"
+	},
+
+	"dependencies": {
+		"@angular/common": "2.2",
+		"@angular/core": "2.2",
+
+		"@asymmetrik/sentio": "2",
+
+		"d3": "3.5",
+		"@types/d3": "3",
+
+		"core-js": "2.4",
+		"reflect-metadata": "0.1",
+		"rxjs": "5.0.0-rc.3",
+		"zone.js": "0.6"
+	},
+
+	"devDependencies": {
+		"merge2": "1.0",
+		"q": "1.4",
+		"rollup-stream": "1.14",
+		"rollup-plugin-typescript": "",
+		"vinyl-buffer": "1.0",
+		"vinyl-source-stream": "1.1",
+
+		"typescript": "2.0",
+		"tslint": "3.15",
+		"tslint-stylish": "2.1.0-beta",
+
+		"gulp": "3.9",
+		"del": "2.2",
+		"gulp-concat": "2.6",
+		"gulp-coverage": "0.3",
+		"gulp-filter": "4.0",
+		"gulp-insert": "0.5",
+		"gulp-istanbul": "1.1",
+		"gulp-load-plugins": "1.4",
+		"gulp-mocha": "3.0",
+		"gulp-mocha-phantomjs": "0.12",
+		"gulp-node-inspector": "0.1",
+		"gulp-nodemon": "2.2",
+		"gulp-rename": "1.2",
+		"gulp-sort": "2.0",
+		"gulp-sourcemaps": "2.2",
+		"gulp-typescript": "3.1",
+		"gulp-tslint": "6.1",
+		"gulp-uglify": "2.0",
+		"gulp-util": "3.0",
+		"gulp-watch": "4.3",
+		"run-sequence": "1.2",
+		"yargs": "6.4"
+	}
+}
