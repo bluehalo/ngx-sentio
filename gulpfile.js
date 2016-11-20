@@ -88,7 +88,12 @@ gulp.task('build-js-umd', [ 'build-js' ], () => {
 			format: 'umd',
 			moduleName: 'angular2Sentio',
 			sourceMap: true,
-			banner: bannerString
+			banner: bannerString,
+			globals: {
+				'@angular/core': 'ng.core',
+				'@asymmetrik/sentio': 'sentio',
+				'd3': 'd3'
+			}
 		},
 		pkg.artifactName + '.umd'
 	);

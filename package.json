@@ -2,7 +2,7 @@
 	"name": "@asymmetrik/angular2-sentio",
 	"artifactName": "angular2-sentio",
 	"description": "Angular 2 components for Sentio",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"author": "Asymmetrik, Ltd.",
 	"copyright": "Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.",
 	"license": "UNLICENSED",
@@ -17,7 +17,6 @@
 	},
 
 	"peerDependencies": {
-		"@angular/common": "2.2",
 		"@angular/core": "2.2",
 
 		"@asymmetrik/sentio": "2",
@@ -26,7 +25,6 @@
 	},
 
 	"dependencies": {
-		"@angular/common": "2.2",
 		"@angular/core": "2.2",
 
 		"@asymmetrik/sentio": "2",
