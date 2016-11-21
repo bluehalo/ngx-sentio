@@ -8,7 +8,13 @@ import { VerticalBarChartDirective } from './components/vertical-bar-chart.direc
 
 @NgModule({
 	imports: [],
-	exports: [],
+	exports: [
+		DonutChartDirective,
+		MatrixChartDirective,
+		RealtimeTimelineDirective,
+		TimelineLineDirective,
+		VerticalBarChartDirective
+	],
 	declarations: [
 		DonutChartDirective,
 		MatrixChartDirective,

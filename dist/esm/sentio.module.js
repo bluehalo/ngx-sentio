@@ -20,7 +20,13 @@ var SentioModule = (function () {
     SentioModule = __decorate([
         core_1.NgModule({
             imports: [],
-            exports: [],
+            exports: [
+                donut_chart_directive_1.DonutChartDirective,
+                matrix_chart_directive_1.MatrixChartDirective,
+                realtime_timeline_directive_1.RealtimeTimelineDirective,
+                timeline_line_directive_1.TimelineLineDirective,
+                vertical_bar_chart_directive_1.VerticalBarChartDirective
+            ],
             declarations: [
                 donut_chart_directive_1.DonutChartDirective,
                 matrix_chart_directive_1.MatrixChartDirective,
