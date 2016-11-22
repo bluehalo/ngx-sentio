@@ -15,8 +15,8 @@ var BaseChartDirective = (function () {
     }
     /**
      * Determines the numerical dimension given a string representation
-     * Assumes the string is in the form "NNNNN"px"", more specifically
-     * an arbitrarily long sequence of digits terminated by "px"
+     * Assumes the string is in the form 'NNNNNpx', more specifically
+     * an arbitrarily long sequence of digits terminated by 'px'
      *
      * @param dimStr A string representation of the pixel size
      * @returns {number} the numerical representation of the pixel size

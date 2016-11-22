@@ -31,10 +31,8 @@ var TimelineLineDirective = (function (_super) {
             // Deep compare the filter
             if (current === previous ||
                 (null != current && null != previous
-                    && current.length === previous.length
                     && current[0] === previous[0]
-                    && current[1] === previous[1]
-                    && current[2] === previous[2])) {
+                    && current[1] === previous[1])) {
                 return false;
             }
             // We know it changed
@@ -76,26 +74,15 @@ var TimelineLineDirective = (function (_super) {
         }
         // register for the filter end event
         this.chart.dispatch().on('filterend', function (fs) {
-            // We are externally representing the filter as undefined or a two element array
-            // So, convert the filter state to the two value format
-            if (null == fs || (fs.length > 0 && fs[0])) {
-                fs = undefined;
-            }
-            else if (fs.length > 2) {
-                fs = fs.slice(1, 3);
-            }
-            else if (fs.length !== 2) {
-                fs = undefined;
-            }
             // If the filter actually changed, emit the event
             if (_this.didFilterChange(fs, _this.filterState)) {
                 setTimeout(function () { _this.filterChange.emit(fs); });
             }
         });
         // register for the marker events
-        this.chart.dispatch().on('markerMouseover', function (p) { _this.markerClick.emit(p); });
-        this.chart.dispatch().on('markerMouseout', function (p) { _this.markerOver.emit(p); });
-        this.chart.dispatch().on('markerClick', function (p) { _this.markerOut.emit(p); });
+        this.chart.dispatch().on('markerMouseover', function (p) { _this.markerOver.emit(p); });
+        this.chart.dispatch().on('markerMouseout', function (p) { _this.markerOut.emit(p); });
+        this.chart.dispatch().on('markerClick', function (p) { _this.markerClick.emit(p); });
     };
     TimelineLineDirective.prototype.ngOnChanges = function (changes) {
         var redraw = false;

@@ -67,10 +67,8 @@ export class TimelineLineDirective
 		// Deep compare the filter
 		if (current === previous ||
 			(null != current && null != previous
-			&& current.length === previous.length
 			&& current[0] === previous[0]
-			&& current[1] === previous[1]
-			&& current[2] === previous[2])) {
+			&& current[1] === previous[1])) {
 			return false;
 		}
 
@@ -95,18 +93,6 @@ export class TimelineLineDirective
 		// register for the filter end event
 		this.chart.dispatch().on('filterend', (fs) => {
 
-			// We are externally representing the filter as undefined or a two element array
-			// So, convert the filter state to the two value format
-			if (null == fs || (fs.length > 0 && fs[0])) {
-				fs = undefined;
-			}
-			else if (fs.length > 2) {
-				fs = fs.slice(1, 3);
-			}
-			else if (fs.length !== 2) {
-				fs = undefined;
-			}
-
 			// If the filter actually changed, emit the event
 			if (this.didFilterChange(fs, this.filterState)) {
 				setTimeout(() => { this.filterChange.emit(fs); });
@@ -114,9 +100,9 @@ export class TimelineLineDirective
 		});
 
 		// register for the marker events
-		this.chart.dispatch().on('markerMouseover', (p) => { this.markerClick.emit(p); });
-		this.chart.dispatch().on('markerMouseout', (p) => { this.markerOver.emit(p); });
-		this.chart.dispatch().on('markerClick', (p) => { this.markerOut.emit(p); });
+		this.chart.dispatch().on('markerMouseover', (p) => { this.markerOver.emit(p); });
+		this.chart.dispatch().on('markerMouseout', (p) => { this.markerOut.emit(p); });
+		this.chart.dispatch().on('markerClick', (p) => { this.markerClick.emit(p); });
 
 	}
 
