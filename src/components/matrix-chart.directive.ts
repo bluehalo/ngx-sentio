@@ -49,7 +49,7 @@ export class MatrixChartDirective
 	}
 
 	@HostListener('window:resize', ['$event'])
-	onResize(event) {
+	onResize(event: any) {
 		if (this.resizeHeight || this.resizeWidth) {
 			this.delayResize();
 		}

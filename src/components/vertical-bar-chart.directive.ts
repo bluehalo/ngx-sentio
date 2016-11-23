@@ -35,7 +35,7 @@ export class VerticalBarChartDirective
 	}
 
 	@HostListener('window:resize', ['$event'])
-	onResize(event) {
+	onResize(event: any) {
 		if (this.resizeChart) {
 			this.delayResize();
 		}

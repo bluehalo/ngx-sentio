@@ -54,18 +54,18 @@ function doRollup(config, artifactName) {
 		.pipe(plugins.sourcemaps.init({ loadMaps: true }))
 		.pipe(plugins.rename(artifactName + '.js'))
 		.pipe(plugins.sourcemaps.write('.'))
-		.pipe(gulp.dest('dist'))
+		.pipe(gulp.dest(assets.dist.bundleDir))
 
 		// Uglify
 		.pipe(plugins.filter('**/' + artifactName + '.js'))
 		.pipe(plugins.uglify({ preserveComments: 'license' }))
 		.pipe(plugins.rename(artifactName + '.min.js'))
-		.pipe(gulp.dest('dist'));
+		.pipe(gulp.dest(assets.dist.bundleDir));
 }
 
 var tsProject = plugins.typescript.createProject('tsconfig.json');
 
-// Build UMD JS from the TS source
+// Build JS from the TS source
 gulp.task('build-js', [ 'lint-client-code' ], () => {
 
 	let tsResult = gulp.src(assets.src.ts, { base: './src' })
@@ -75,8 +75,8 @@ gulp.task('build-js', [ 'lint-client-code' ], () => {
 	return merge([
 			tsResult.js
 				.pipe(plugins.sourcemaps.write('.'))
-				.pipe(gulp.dest('dist/esm')),
-			tsResult.dts.pipe(gulp.dest('dist/esm'))
+				.pipe(gulp.dest(assets.dist.dir)),
+			tsResult.dts.pipe(gulp.dest(assets.dist.dir))
 		]).on('error', plugins.util.log);
 
 });
@@ -84,7 +84,7 @@ gulp.task('build-js', [ 'lint-client-code' ], () => {
 // Build the JS into a umd bundle
 gulp.task('build-js-umd', [ 'build-js' ], () => {
 	return doRollup({
-			entry: './dist/esm/index.js',
+			entry: assets.dist.dir + '/index.js',
 			format: 'umd',
 			moduleName: 'angular2Sentio',
 			sourceMap: true,
