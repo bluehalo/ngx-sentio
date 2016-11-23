@@ -59,7 +59,7 @@ export class RealtimeTimelineDirective
 	}
 
 	@HostListener('window:resize', ['$event'])
-	onResize(event) {
+	onResize(event: any) {
 		if (this.resizeHeight || this.resizeWidth) {
 			this.delayResize();
 		}
@@ -72,9 +72,9 @@ export class RealtimeTimelineDirective
 		}
 
 		// register for the marker events
-		this.chart.markers().on('mouseover', (p) => { this.markerClick.emit(p); });
-		this.chart.markers().on('mouseout', (p) => { this.markerOver.emit(p); });
-		this.chart.markers().on('click', (p) => { this.markerOut.emit(p); });
+		this.chart.markers().on('mouseover', (p: any) => { this.markerClick.emit(p); });
+		this.chart.markers().on('mouseout', (p: any) => { this.markerOver.emit(p); });
+		this.chart.markers().on('click', (p: any) => { this.markerOut.emit(p); });
 
 	}
 

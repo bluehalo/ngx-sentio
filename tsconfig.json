@@ -6,17 +6,15 @@
 
 		"emitDecoratorMetadata": true,
 		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports": true,
-		"sourceMap": true,
 		"noEmitHelpers": false,
-		"noImplicitAny": false,
-		"removeComments": false,
-		"skipDefaultLibCheck": true,
-		"skipLibCheck": true,
+		"noImplicitAny": true,
 		"declaration": true,
-		"inlineSources": true,
+		"skipLibCheck": true,
+		"stripInternal": true,
+		"removeComments": false,
 
-		"outDir": "dist/esm"
+		"sourceMap": true,
+		"inlineSources": true
 	},
 	
 	"include": [
@@ -28,5 +26,4 @@
 		"config",
 		"examples"
 	]
-	
 }

@@ -77,7 +77,7 @@ export class TimelineLineDirective
 	}
 
 	@HostListener('window:resize', ['$event'])
-	onResize(event) {
+	onResize(event: any) {
 		if (this.resizeHeight || this.resizeWidth) {
 			this.delayResize();
 		}
@@ -91,8 +91,7 @@ export class TimelineLineDirective
 		}
 
 		// register for the filter end event
-		this.chart.dispatch().on('filterend', (fs) => {
-
+		this.chart.dispatch().on('filterend', (fs: any) => {
 			// If the filter actually changed, emit the event
 			if (this.didFilterChange(fs, this.filterState)) {
 				setTimeout(() => { this.filterChange.emit(fs); });
@@ -100,9 +99,9 @@ export class TimelineLineDirective
 		});
 
 		// register for the marker events
-		this.chart.dispatch().on('markerMouseover', (p) => { this.markerOver.emit(p); });
-		this.chart.dispatch().on('markerMouseout', (p) => { this.markerOut.emit(p); });
-		this.chart.dispatch().on('markerClick', (p) => { this.markerClick.emit(p); });
+		this.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
+		this.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
+		this.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
 
 	}
 

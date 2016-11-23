@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.ts"],"names":[],"mappings":";AAAA,8BAA6B,iBAAiB,CAAC;AAAtC,oDAAsC","file":"index.js","sourcesContent":["export { SentioModule } from './sentio.module';\n"]}

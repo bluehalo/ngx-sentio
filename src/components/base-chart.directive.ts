@@ -9,7 +9,7 @@ export abstract class BaseChartDirective {
 	chartElement: any;
 	resizeTimer: number;
 
-	constructor(el: ElementRef, chart) {
+	constructor(el: ElementRef, chart: any) {
 		this.chartElement = d3.select(el.nativeElement);
 		this.chart = chart;
 
