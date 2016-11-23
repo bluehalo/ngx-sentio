@@ -80,9 +80,9 @@ var TimelineLineDirective = (function (_super) {
             }
         });
         // register for the marker events
+        this.chart.dispatch().on('markerClick', function (p) { _this.markerClick.emit(p); });
         this.chart.dispatch().on('markerMouseover', function (p) { _this.markerOver.emit(p); });
         this.chart.dispatch().on('markerMouseout', function (p) { _this.markerOut.emit(p); });
-        this.chart.dispatch().on('markerClick', function (p) { _this.markerClick.emit(p); });
     };
     TimelineLineDirective.prototype.ngOnChanges = function (changes) {
         var redraw = false;

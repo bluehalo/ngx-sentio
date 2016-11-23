@@ -72,9 +72,9 @@ export class RealtimeTimelineDirective
 		}
 
 		// register for the marker events
-		this.chart.markers().on('mouseover', (p: any) => { this.markerClick.emit(p); });
-		this.chart.markers().on('mouseout', (p: any) => { this.markerOver.emit(p); });
-		this.chart.markers().on('click', (p: any) => { this.markerOut.emit(p); });
+		this.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
+		this.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
+		this.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
 
 	}
 

@@ -99,9 +99,9 @@ export class TimelineLineDirective
 		});
 
 		// register for the marker events
+		this.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
 		this.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
 		this.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
-		this.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
 
 	}
 
