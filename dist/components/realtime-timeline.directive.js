@@ -58,9 +58,9 @@ var RealtimeTimelineDirective = (function (_super) {
             this.resize();
         }
         // register for the marker events
-        this.chart.markers().on('mouseover', function (p) { _this.markerClick.emit(p); });
-        this.chart.markers().on('mouseout', function (p) { _this.markerOver.emit(p); });
-        this.chart.markers().on('click', function (p) { _this.markerOut.emit(p); });
+        this.chart.dispatch().on('markerClick', function (p) { _this.markerClick.emit(p); });
+        this.chart.dispatch().on('markerMouseover', function (p) { _this.markerOver.emit(p); });
+        this.chart.dispatch().on('markerMouseout', function (p) { _this.markerOut.emit(p); });
     };
     RealtimeTimelineDirective.prototype.ngOnChanges = function (changes) {
         var redraw = false;
