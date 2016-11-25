@@ -2,13 +2,11 @@
 
 let
 	chalk = require('chalk'),
-	del = require('del'),
 	glob = require('glob'),
 	gulp = require('gulp'),
 	gulpLoadPlugins = require('gulp-load-plugins'),
 	merge = require('merge2'),
 	path = require('path'),
-	q = require('q'),
 	rollup = require('rollup-stream'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
@@ -42,6 +40,7 @@ gulp.task('lint-client-code', () => {
 
 });
 
+
 /**
  * Build
  */
@@ -49,11 +48,9 @@ gulp.task('lint-client-code', () => {
 function doRollup(config, artifactName) {
 
 	return rollup(config)
-		.pipe(source('main.js', './src'))
+		.pipe(source('index.js', assets.dist.dir))
 		.pipe(buffer())
-		.pipe(plugins.sourcemaps.init({ loadMaps: true }))
 		.pipe(plugins.rename(artifactName + '.js'))
-		.pipe(plugins.sourcemaps.write('.'))
 		.pipe(gulp.dest(assets.dist.bundleDir))
 
 		// Uglify
@@ -61,6 +58,7 @@ function doRollup(config, artifactName) {
 		.pipe(plugins.uglify({ preserveComments: 'license' }))
 		.pipe(plugins.rename(artifactName + '.min.js'))
 		.pipe(gulp.dest(assets.dist.bundleDir));
+
 }
 
 var tsProject = plugins.typescript.createProject('tsconfig.json');
@@ -83,6 +81,7 @@ gulp.task('build-js', [ 'lint-client-code' ], () => {
 
 // Build the JS into a umd bundle
 gulp.task('build-js-umd', [ 'build-js' ], () => {
+
 	return doRollup({
 			entry: assets.dist.dir + '/index.js',
 			format: 'umd',
@@ -97,6 +96,7 @@ gulp.task('build-js-umd', [ 'build-js' ], () => {
 		},
 		pkg.artifactName + '.umd'
 	);
+
 });
 
 

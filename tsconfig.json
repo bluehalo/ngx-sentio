@@ -13,8 +13,7 @@
 		"stripInternal": true,
 		"removeComments": false,
 
-		"sourceMap": true,
-		"inlineSources": true
+		"sourceMap": true
 	},
 	
 	"include": [
