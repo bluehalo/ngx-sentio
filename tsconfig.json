@@ -11,9 +11,8 @@
 		"declaration": true,
 		"skipLibCheck": true,
 		"stripInternal": true,
-		"removeComments": false,
+		"removeComments": false
 
-		"sourceMap": true
 	},
 	
 	"include": [
@@ -23,6 +22,7 @@
 	"exclude": [
 		"node_modules",
 		"config",
-		"examples"
+		"examples",
+		"dist"
 	]
 }
