@@ -92,17 +92,6 @@ gulp.task('build-js-umd', [ 'build-js' ], () => {
 				'@angular/core': 'ng.core',
 				'@asymmetrik/sentio': 'sentio',
 				'd3': 'd3'
-			},
-			onwarn: (message) => {
-				/*
-				 * We are suppressing this specific error because typescript emits code that triggers this condition
-				 * even though the generated code is checking to make sure 'this' is not undefined before doing anything
-				 * with it.
-				 */
-				if (/The 'this' keyword is equivalent to 'undefined' at the top level of an ES module, and has been rewritten./.test(message)) {
-					return;
-				}
-				plugins.util.log(message);
 			}
 		},
 		pkg.artifactName + '.umd'
