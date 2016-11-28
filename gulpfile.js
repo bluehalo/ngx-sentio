@@ -7,9 +7,8 @@ let
 	gulpLoadPlugins = require('gulp-load-plugins'),
 	merge = require('merge2'),
 	path = require('path'),
-	rollup = require('rollup-stream'),
-	source = require('vinyl-source-stream'),
-	buffer = require('vinyl-buffer'),
+	rollup = require('rollup'),
+	runSequence = require('run-sequence'),
 
 	plugins = gulpLoadPlugins(),
 	pkg = require('./package.json'),
@@ -24,7 +23,7 @@ let bannerString = '/*! ' + pkg.name + '-' + pkg.version + ' - ' + pkg.copyright
  * Validation Tasks
  */
 
-gulp.task('lint-client-code', () => {
+gulp.task('validate-ts', () => {
 
 	// Grab the tslint config
 	var config = require(path.resolve('./config/tslint.conf.js'));
@@ -45,26 +44,9 @@ gulp.task('lint-client-code', () => {
  * Build
  */
 
-function doRollup(config, artifactName) {
-
-	return rollup(config)
-		.pipe(source('index.js', assets.dist.dir))
-		.pipe(buffer())
-		.pipe(plugins.rename(artifactName + '.js'))
-		.pipe(gulp.dest(assets.dist.bundleDir))
-
-		// Uglify
-		.pipe(plugins.filter('**/' + artifactName + '.js'))
-		.pipe(plugins.uglify({ preserveComments: 'license' }))
-		.pipe(plugins.rename(artifactName + '.min.js'))
-		.pipe(gulp.dest(assets.dist.bundleDir));
-
-}
-
-var tsProject = plugins.typescript.createProject('tsconfig.json');
-
 // Build JS from the TS source
-gulp.task('build-js', [ 'lint-client-code' ], () => {
+var tsProject = plugins.typescript.createProject('tsconfig.json');
+gulp.task('build-ts', () => {
 
 	let tsResult = gulp.src(assets.src.ts, { base: './src' })
 		.pipe(plugins.sourcemaps.init())
@@ -72,32 +54,47 @@ gulp.task('build-js', [ 'lint-client-code' ], () => {
 
 	return merge([
 			tsResult.js
-				.pipe(plugins.sourcemaps.write())
+				.pipe(plugins.sourcemaps.write('./'))
 				.pipe(gulp.dest(assets.dist.dir)),
 			tsResult.dts.pipe(gulp.dest(assets.dist.dir))
 		]).on('error', plugins.util.log);
 
 });
 
-// Build the JS into a umd bundle
-gulp.task('build-js-umd', [ 'build-js' ], () => {
+// Bundle the generated JS (rollup and then uglify)
+gulp.task('build-js', ['rollup-js'], () => {
 
-	return doRollup({
-			entry: assets.dist.dir + '/index.js',
-			format: 'umd',
-			moduleName: 'angular2Sentio',
-			sourceMap: true,
-			banner: bannerString,
-			globals: {
-				'@angular/core': 'ng.core',
-				'@asymmetrik/sentio': 'sentio',
-				'd3': 'd3'
-			}
-		},
-		pkg.artifactName + '.umd'
-	);
+	// Uglify
+	return gulp.src(path.join(assets.dist.bundleDir, (pkg.artifactName + '.js')))
+		.pipe(plugins.uglify({ preserveComments: 'license' }))
+		.pipe(plugins.rename(pkg.artifactName + '.min.js'))
+		.pipe(gulp.dest(assets.dist.bundleDir));
 
 });
+
+// Rollup the generated JS
+gulp.task('rollup-js', () => {
+
+	return rollup.rollup({
+			entry: path.join(assets.dist.dir, '/index.js')
+		})
+		.then((bundle) => {
+			return bundle.write({
+				dest: path.join(assets.dist.bundleDir, (pkg.artifactName + '.js')),
+				format: 'umd',
+				moduleName: 'angular2Sentio',
+				sourceMap: true,
+				banner: bannerString,
+				globals: {
+					'@angular/core': 'ng.core',
+					'@asymmetrik/sentio': 'sentio',
+					'd3': 'd3'
+				}
+			});
+		});
+
+});
+
 
 
 /**
@@ -105,5 +102,8 @@ gulp.task('build-js-umd', [ 'build-js' ], () => {
  * Main Tasks
  * --------------------------
  */
-gulp.task('build', [ 'build-js-umd' ] );
-gulp.task('default', [ 'build' ]);
+
+gulp.task('build', (done) => { runSequence('validate-ts', 'build-ts', 'build-js', done); } );
+
+// Default task builds and tests
+gulp.task('default', [ 'test' ]);
