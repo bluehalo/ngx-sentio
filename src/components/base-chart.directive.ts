@@ -16,8 +16,8 @@ export abstract class BaseChartDirective {
 		this.chart.init(this.chartElement);
 
 		// Extract the dimensions of the chart
-		let width: number = this.getPixelDimension(this.chartElement[0][0].style.width);
-		let height: number = this.getPixelDimension(this.chartElement[0][0].style.height);
+		let width: number = this.getPixelDimension(this.chartElement.node().style.width);
+		let height: number = this.getPixelDimension(this.chartElement.node().style.height);
 		this.setChartDimensions(width, height, true);
 	}
 
@@ -64,7 +64,7 @@ export abstract class BaseChartDirective {
 		body.style.overflow = 'hidden';
 
 		// The first element child of our selector should be the <div> we injected
-		let rawElement = this.chartElement[0][0].firstElementChild;
+		let rawElement = this.chartElement.node().firstElementChild;
 
 		// Derive size of the parent (there are several ways to do this depending on the parent)
 		let width: number = rawElement.attributes.width || rawElement.style.width || rawElement.clientWidth;

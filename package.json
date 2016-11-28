@@ -2,13 +2,13 @@
 	"name": "@asymmetrik/angular2-sentio",
 	"artifactName": "angular2-sentio",
 	"description": "Angular 2 components for Sentio",
-	"version": "2.0.5",
+	"version": "2.0.6",
 	"author": "Asymmetrik, Ltd.",
 	"copyright": "Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.",
 	"license": "UNLICENSED",
 
-	"main": "dist/bundles/angular2-sentio.umd.js",
-	"module": "dist/index.js",
+	"main": "dist/bundles/angular2-sentio.js",
+	"module": "src/index.ts",
 	"typings": "dist/index.d.ts",
 
 	"repository": {
@@ -22,8 +22,8 @@
 
 		"@asymmetrik/sentio": "2",
 
-		"d3": "3",
-		"@types/d3": "3"
+		"d3": "4",
+		"@types/d3": "4"
 	},
 
 	"devDependencies": {
@@ -32,8 +32,8 @@
 
 		"@asymmetrik/sentio": "2",
 
-		"d3": "3.5",
-		"@types/d3": "3",
+		"d3": "4.4",
+		"@types/d3": "4.3",
 
 		"core-js": "2.4",
 		"reflect-metadata": "0.1",
@@ -41,10 +41,7 @@
 		"zone.js": "0.6",
 
 		"merge2": "1.0",
-		"q": "1.4",
-		"rollup-stream": "1.14",
-		"vinyl-buffer": "1.0",
-		"vinyl-source-stream": "1.1",
+		"rollup": "0.36",
 
 		"typescript": "2.0",
 		"tslint": "3.15",
@@ -59,6 +56,7 @@
 		"gulp-typescript": "3.1",
 		"gulp-tslint": "6.1",
 		"gulp-uglify": "2.0",
-		"gulp-util": "3.0"
+		"gulp-util": "3.0",
+		"run-sequence": "1.2"
 	}
 }
