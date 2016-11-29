@@ -38,7 +38,7 @@
 		"core-js": "2.4",
 		"reflect-metadata": "0.1",
 		"rxjs": "5.0.0-rc.3",
-		"zone.js": "0.6",
+		"zone.js": "0.7",
 
 		"merge2": "1.0",
 		"rollup": "0.36",
