@@ -1,1 +1,1 @@
-{"version":3,"sources":["index.ts"],"names":[],"mappings":";AAAA,8BAA6B,iBAAiB,CAAC;AAAtC,oDAAsC","file":"index.js","sourcesContent":["export { SentioModule } from './sentio.module';\n"]}
+{"version":3,"sources":["index.ts"],"names":[],"mappings":";AAAA,8BAA6B,iCAAiC,CAAC;AAAtD,oDAAsD","file":"index.js","sourcesContent":["export { SentioModule } from './angular2-sentio/sentio.module';\n"]}

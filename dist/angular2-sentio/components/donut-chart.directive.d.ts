@@ -1,3 +1,4 @@
+/// <reference types="core-js" />
 import { ElementRef, OnChanges, SimpleChange } from '@angular/core';
 import { BaseChartDirective } from './base-chart.directive';
 export declare class DonutChartDirective extends BaseChartDirective implements OnChanges {

@@ -7,7 +7,7 @@ import * as d3 from 'd3';
 export abstract class BaseChartDirective {
 	chart: any;
 	chartElement: any;
-	resizeTimer: number;
+	resizeTimer: any;
 
 	constructor(el: ElementRef, chart: any) {
 		this.chartElement = d3.select(el.nativeElement);

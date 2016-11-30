@@ -5,7 +5,7 @@ import { ElementRef } from '@angular/core';
 export declare abstract class BaseChartDirective {
     chart: any;
     chartElement: any;
-    resizeTimer: number;
+    resizeTimer: any;
     constructor(el: ElementRef, chart: any);
     /**
      * Set the chart dimensions according to the implementation
