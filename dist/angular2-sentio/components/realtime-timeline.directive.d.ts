@@ -1,3 +1,4 @@
+/// <reference types="core-js" />
 import { ElementRef, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
 import { BaseChartDirective } from './base-chart.directive';
 export declare class RealtimeTimelineDirective extends BaseChartDirective implements OnChanges {
