@@ -32,9 +32,15 @@ import '@angular/platform-browser-dynamic';
 import '@angular/core';
 import '@angular/common';
 
+// Angular2 Third-Party
+
 // Other Dependencies
 import 'd3';
 import 'rxjs';
 
 import '@asymmetrik/sentio/dist/sentio.css';
 import '@asymmetrik/sentio';
+
+
+// Other Dependencies
+import 'rxjs';

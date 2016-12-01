@@ -1,1 +1,1 @@
-export { SentioModule } from './angular2-sentio/sentio.module';
+export { SentioModule } from './sentio/sentio.module';

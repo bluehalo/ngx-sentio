@@ -47,7 +47,7 @@ gulp.task('validate-ts', () => {
  */
 
 // Build JS from the TS source
-var tsProject = plugins.typescript.createProject('./config/tsconfig.json');
+var tsProject = plugins.typescript.createProject(path.resolve('./config/tsconfig.json'));
 gulp.task('build-ts', () => {
 
 	let tsResult = gulp.src(assets.src.ts, { base: './src' })
@@ -116,13 +116,14 @@ gulp.task('webpack-dev-server', (done) => {
 	});
 });
 
+
 /**
  * --------------------------
  * Main Tasks
  * --------------------------
  */
 
-gulp.task('develop', [ 'webpack-dev-server' ]);
+gulp.task('dev', [ 'webpack-dev-server' ]);
 
 gulp.task('build', (done) => { runSequence('validate-ts', 'build-ts', 'build-js', done); } );
 
