@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"version":3,"sources":["index.ts"],"names":[],"mappings":";AAAA,8BAA6B,iCAAiC,CAAC;AAAtD,oDAAsD","file":"index.js","sourcesContent":["export { SentioModule } from './angular2-sentio/sentio.module';\n"]}
-=======
-{"version":3,"sources":["index.ts"],"names":[],"mappings":";AAAA,+BAA8B,0BAA0B,CAAC;AAAhD,uDAAgD","file":"index.js","sourcesContent":["export { ExampleModule } from './example/example.module';\n\n\n"]}
->>>>>>> template/master
+{"version":3,"sources":["index.ts"],"names":[],"mappings":";AAAA,8BAA6B,wBAAwB,CAAC;AAA7C,oDAA6C","file":"index.js","sourcesContent":["export { SentioModule } from './sentio/sentio.module';\n"]}

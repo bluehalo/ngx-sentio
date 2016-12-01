@@ -5,7 +5,7 @@
 	(factory());
 }(this, (function () { 'use strict';
 
-var sentio_module_1 = require('./angular2-sentio/sentio.module');
+var sentio_module_1 = require('./sentio/sentio.module');
 exports.SentioModule = sentio_module_1.SentioModule;
 
 })));
