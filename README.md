@@ -15,3 +15,4 @@ This project contains several Angular 2 components that expose Sentio data visua
 
 [travis-url]: https://travis-ci.org/Asymmetrik/angular2-sentio/
 [travis-image]: https://travis-ci.org/Asymmetrik/angular2-sentio.svg
+
