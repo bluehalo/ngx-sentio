@@ -1,18 +1,40 @@
-# Angular2 Sentio #
+# @asymmetrik/angular2-sentio
 
 [![Build Status][travis-image]][travis-url]
 
-## What is it? ##
-Angular 2 Sentio is a package containing components for integrating Sentio with Angular 2
+> Angular2 Components for Sentio
+> Provides directives for all Sentio visualization components. Supports D3 v4
 
-## Getting Started ##
-To install this package, use npm:
+## Table of Contents
+- [Install](#install)
+- [Usage](#usage)
+- [API](#api)
+- [Contribute](#contribute)
+- [License](#license)
 
-```npm install @asymmetrik/angular2-sentio```
 
-This project contains several Angular 2 components that expose Sentio data visualizations. 
+## Install
+Install the package via npm:
+```
+npm install @asymmetrik/angular2-sentio
+```
 
 
-[travis-url]: https://travis-ci.org/Asymmetrik/angular2-sentio/
-[travis-image]: https://travis-ci.org/Asymmetrik/angular2-sentio.svg
+## Usage
+TODO: Add usage examples 
 
+
+## API
+TODO: Add full details of directives
+
+
+## Contribute
+PRs accepted. If you are part of Asymmetrik, please make contributions on feature branches off of the ```develop``` branch. If you are outside of Asymmetrik, please fork our repo to make contributions.
+
+
+## License
+See LICENSE in repository for details.
+
+
+[travis-url]: https://travis-ci.org/Asymmetrik/angular2-template/
+[travis-image]: https://travis-ci.org/Asymmetrik/angular2-template.svg
