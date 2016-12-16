@@ -14,10 +14,14 @@
 
 
 ## Install
-Install the package via npm:
+Install the package and its peer dependencies via npm:
 ```
+npm install d3
+npm install @asymmetrik/sentio
 npm install @asymmetrik/angular2-sentio
 ```
+
+If you want to run the demo, clone the repository, perform an ```npm install```, ```gulp dev``` and then go to http://localhost:9000/src/demo/index.html
 
 
 ## Usage
