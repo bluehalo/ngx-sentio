@@ -31,6 +31,7 @@
 		"@angular/core": "2.2",
 		"@angular/platform-browser": "2.2",
 		"@angular/platform-browser-dynamic": "2.2",
+		"@angular/router": "3.2",
 
 		"@asymmetrik/sentio": "2",
 		"bootstrap": "3",

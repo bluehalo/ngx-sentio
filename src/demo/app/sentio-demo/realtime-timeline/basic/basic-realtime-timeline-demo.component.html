@@ -1,0 +1,17 @@
+<section class="row">
+	<div class="col-md-12">
+
+		<button class="btn btn-default" (click)="play()">Play</button>
+		<button class="btn btn-default" (click)="pause()">Pause</button>
+		<br/>
+		<realtime-timeline
+			style="height:100px;"
+			[model]="model"
+			[markers]="markers"
+			[configure]="configure"
+			resizeWidth="true">
+		</realtime-timeline>
+
+	</div>
+</section>
+

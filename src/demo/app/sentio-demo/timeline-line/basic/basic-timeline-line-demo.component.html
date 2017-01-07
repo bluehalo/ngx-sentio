@@ -1,0 +1,17 @@
+<section class="row">
+	<div class="col-md-12">
+
+		<button class="btn btn-default" (click)="update()">Update</button>
+		<br/>
+		<timeline-line
+			style="height:100px;"
+			[model]="model"
+			[configure]="configure"
+			resizeWidth="true"
+			[filterEnabled]="filterEnabled"
+			[(filter)]="filter"
+			(filterChange)="eventHandler('filterChanged', $event)">
+		</timeline-line>
+
+	</div>
+</section>

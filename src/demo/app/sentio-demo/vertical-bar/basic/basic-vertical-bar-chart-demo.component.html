@@ -1,0 +1,14 @@
+<section class="row">
+	<div class="col-md-12">
+
+		<button class="btn btn-default" (click)="update()">Update</button>
+		<br/>
+		<vertical-bar-chart
+			[model]="model"
+			[widthExtent]="widthExtent"
+			resize="true"
+			[configure]="configure">
+		</vertical-bar-chart>
+
+	</div>
+</section>
