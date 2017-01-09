@@ -4,10 +4,10 @@ import * as sentio from '@asymmetrik/sentio';
 import * as d3 from 'd3';
 
 @Component({
-	selector: 'basic-realtime-timeline-demo',
-	templateUrl: './basic-realtime-timeline-demo.component.html'
+	selector: 'basic-realtime-timeline-line-demo',
+	templateUrl: './basic-realtime-timeline-line-demo.component.html'
 })
-export class BasicRealtimeTimelineDemoComponent
+export class BasicRealtimeTimelineLineDemoComponent
 implements OnInit {
 
 	chart: any;
@@ -17,9 +17,8 @@ implements OnInit {
 	hwm: number = Date.now();
 
 	configure(chart: any): void {
-		chart.margin({ top: 16, right: 10, bottom: 20, left: 40 }).resize();
+		chart.margin({ top: 16, right: 10, bottom: 20, left: 40 });
 		this.chart = chart;
-		this.play();
 	};
 
 	eventHandler(msg: string, event: any): void {
@@ -62,5 +61,7 @@ implements OnInit {
 		this.model = [
 			{ key: 'series1', data: this.bins.bins() }
 		];
+
+		this.play();
 	}
 }

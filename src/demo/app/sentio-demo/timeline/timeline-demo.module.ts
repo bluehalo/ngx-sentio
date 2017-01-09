@@ -16,4 +16,4 @@ import { BasicTimelineLineDemoComponent } from './basic/basic-timeline-line-demo
 		BasicTimelineLineDemoComponent
 	]
 })
-export class TimelineLineDemoModule { }
+export class TimelineDemoModule { }

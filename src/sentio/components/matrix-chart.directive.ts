@@ -1,88 +1,57 @@
-import { Directive, ElementRef, HostListener, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 
-import { BaseChartDirective } from './base-chart.directive';
+import { ChartWrapper } from '../util/chart-wrapper.util';
 
 
 @Directive({
-	selector: 'matrix-chart'
+	selector: 'sentioMatrixChart'
 })
 export class MatrixChartDirective
-	extends BaseChartDirective
-	implements OnChanges {
+	implements OnChanges, OnInit {
 
 	@Input() model: Object[];
-
-	@Input() resizeHeight: boolean;
-	@Input() resizeWidth: boolean;
 	@Input() duration: number;
 
+	// Configure callback function for the chart
 	@Input('configure') configureFn: (chart: any) => void;
 
+	chartWrapper: ChartWrapper;
+
 	constructor(el: ElementRef) {
-		super(el, sentio.chart.matrix());
-	}
 
-	/**
-	 * For the matrix chart, we scale height and width independently
-	 */
-	setChartDimensions(width: number, height: number, force: boolean = false): void {
-		let redraw: boolean = false;
+		// Create the chart
+		this.chartWrapper = new ChartWrapper(el, sentio.chart.matrix());
 
-		if ((force || this.resizeWidth) && null != this.chart.width) {
-			if (null != width && this.chart.width() !== width) {
-				this.chart.width(width);
-				redraw = true;
-			}
-		}
-
-		if ((force || this.resizeHeight) && null != this.chart.height) {
-			if (null != height && this.chart.height() !== height) {
-				this.chart.height(height);
-				redraw = true;
-			}
-		}
-
-		if (redraw) {
-			this.chart.resize().redraw();
-		}
-	}
-
-	@HostListener('window:resize', ['$event'])
-	onResize(event: any) {
-		if (this.resizeHeight || this.resizeWidth) {
-			this.delayResize();
-		}
 	}
 
 	ngOnInit() {
-		// Do the initial resize if either dimension is supposed to resize
-		if (this.resizeHeight || this.resizeWidth) {
-			this.resize();
-		}
+
+		// Initialize the chart
+		this.chartWrapper.initialize();
+		this.chartWrapper.chart.redraw();
+
 	}
 
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {
 		let redraw: boolean = false;
 
-		// Call the configure function
-		if (changes['configureFn'] && changes['configureFn'].isFirstChange()
-				&& null != changes['configureFn'].currentValue) {
-			this.configureFn(this.chart);
-			redraw = true;
+		// Configure the chart
+		if (changes['configureFn'] && changes['configureFn'].isFirstChange()) {
+			this.chartWrapper.configure(this.configureFn);
 		}
 
 		if (changes['model']) {
-			this.chart.data(changes['model'].currentValue);
-			redraw = true;
+			this.chartWrapper.chart.data(this.model);
+			redraw = redraw || !changes['model'].isFirstChange();
 		}
 		if (changes['duration']) {
-			this.chart.duration(changes['duration'].currentValue);
+			this.chartWrapper.chart.duration(this.duration);
 		}
 
 		// Only redraw once if possible
 		if (redraw) {
-			this.chart.redraw();
+			this.chartWrapper.chart.redraw();
 		}
 	}
 }

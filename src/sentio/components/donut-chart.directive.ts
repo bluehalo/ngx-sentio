@@ -1,81 +1,120 @@
-import { Directive, ElementRef, HostListener, Input, OnChanges, SimpleChange } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 
-import { BaseChartDirective } from './base-chart.directive';
+import { ChartWrapper } from '../util/chart-wrapper.util';
+import { ResizeDimension, ResizeUtil } from '../util/resize.util';
 
 
 @Directive({
-	selector: 'donut-chart'
+	selector: 'sentioDonutChart'
 })
 export class DonutChartDirective
-	extends BaseChartDirective
-	implements OnChanges {
+	implements OnChanges, OnDestroy, OnInit {
 
 	@Input() model: Object[];
 	@Input() colorScale: any;
 
-	@Input('resize') resizeChart: boolean;
+	@Input('resize') resizeEnabled: boolean;
 	@Input() duration: number;
 
+	// Configure callback function for the chart
 	@Input('configure') configureFn: (chart: any) => void;
 
+	chartWrapper: ChartWrapper;
+	resizeUtil: ResizeUtil;
+
 	constructor(el: ElementRef) {
-		super(el, sentio.chart.donut());
+
+		// Create the chart
+		this.chartWrapper = new ChartWrapper(el, sentio.chart.donut());
+
+		// Set up the resizer
+		this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
+
 	}
+
 
 	/**
 	 * For the donut chart, we pin the height to the width
 	 * to keep the aspect ratio correct
 	 */
-	setChartDimensions(width: number, height: number, force: boolean = false): void {
-		if ((force || this.resizeChart) && null != this.chart.width) {
-			if (null != width && this.chart.width() !== width) {
-				// pin the height to the width
-				this.chart
-					.width(width)
-					.height(width)
-					.resize().redraw();
-			}
+	setChartDimensions(dim: ResizeDimension): void {
+
+		if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+
+			// pin the height to the width
+			this.chartWrapper.chart
+				.width(dim.width)
+				.height(dim.width)
+				.resize();
 		}
+
 	}
 
 	@HostListener('window:resize', ['$event'])
 	onResize(event: any) {
-		if (this.resizeChart) {
-			this.delayResize();
-		}
+		this.resizeUtil.resizeObserver.next(event);
 	}
 
 	ngOnInit() {
-		if (this.resizeChart) {
-			this.resize();
-		}
+
+		// Initialize the chart
+		this.chartWrapper.initialize();
+
+		// Set up the resize callback
+		this.resizeUtil.resizeSource
+			.subscribe(() => {
+
+				// Do the resize operation
+				this.setChartDimensions(this.resizeUtil.getSize());
+				this.chartWrapper.chart.redraw();
+
+			});
+
+		// Set the initial size of the chart
+		this.setChartDimensions(this.resizeUtil.getSize());
+		this.chartWrapper.chart.redraw();
+
+	}
+
+	ngOnDestroy() {
+		this.resizeUtil.destroy();
 	}
 
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {
+		let resize: boolean = false;
 		let redraw: boolean = false;
 
-		// Call the configure function
-		if (changes['configureFn'] && changes['configureFn'].isFirstChange()
-				&& null != changes['configureFn'].currentValue) {
-			this.configureFn(this.chart);
+		// Configure the chart
+		if (changes['configureFn'] && changes['configureFn'].isFirstChange()) {
+			this.chartWrapper.configure(this.configureFn);
 		}
 
 		if (changes['model']) {
-			this.chart.data(changes['model'].currentValue);
-			redraw = true;
-		}
-		if (changes['duration']) {
-			this.chart.duration(changes['duration'].currentValue);
-		}
-		if (changes['colorScale']) {
-			this.chart.color(changes['colorScale'].currentValue);
-			redraw = true;
+			this.chartWrapper.chart.data(this.model);
+			redraw = redraw || !changes['model'].isFirstChange();
 		}
 
-		// Only redraw once if possible
+		if (changes['duration']) {
+			this.chartWrapper.chart.duration(this.duration);
+		}
+		if (changes['colorScale']) {
+			this.chartWrapper.chart.color(this.colorScale);
+			redraw = redraw || !changes['colorScale'].isFirstChange();
+		}
+		if (changes['resize']) {
+			this.resizeUtil.enabled = this.resizeEnabled;
+
+			resize = resize || (this.resizeEnabled && !changes['resize'].isFirstChange());
+			redraw = redraw || resize;
+		}
+
+		// Only redraw once if necessary
+		if (resize) {
+			this.chartWrapper.chart.resize();
+		}
 		if (redraw) {
-			this.chart.redraw();
+			this.chartWrapper.chart.redraw();
 		}
 	}
 

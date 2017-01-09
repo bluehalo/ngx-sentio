@@ -8,14 +8,14 @@ import { SentioDemoComponent } from './sentio-demo/sentio-demo.component';
 		RouterModule.forRoot([
 			{
 				path: '',
-				redirectTo: '/demo',
+				redirectTo: '/app',
 				pathMatch: 'full'
 			},
 			{
-				path: 'src/demo',
+				path: 'app',
 				component: SentioDemoComponent
 			}
-		])
+		], { useHash: true })
 	],
 	exports: [
 		RouterModule

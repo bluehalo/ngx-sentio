@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import * as sentio from '@asymmetrik/sentio';
 import * as d3 from 'd3';
@@ -7,6 +7,15 @@ import * as d3 from 'd3';
 	selector: 'sentio-demo',
 	templateUrl: './sentio-demo.component.html'
 })
-export class SentioDemoComponent {
+export class SentioDemoComponent
+implements OnInit {
+
+	show: boolean = false;
+
+	ngOnInit() {
+		setTimeout(() => {
+			this.show = true;
+		}, 1000);
+	}
 
 }

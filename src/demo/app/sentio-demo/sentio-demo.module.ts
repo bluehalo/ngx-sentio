@@ -6,7 +6,7 @@ import { SentioDemoComponent } from './sentio-demo.component';
 import { DonutChartDemoModule } from './donut-chart/donut-chart-demo.module';
 import { MatrixChartDemoModule } from './matrix-chart/matrix-chart-demo.module';
 import { RealtimeTimelineDemoModule } from './realtime-timeline/realtime-timeline-demo.module';
-import { TimelineLineDemoModule } from './timeline-line/timeline-line-demo.module';
+import { TimelineDemoModule } from './timeline/timeline-demo.module';
 import { VerticalBarChartDemoModule } from './vertical-bar/vertical-bars-demo.module';
 
 
@@ -16,7 +16,7 @@ import { VerticalBarChartDemoModule } from './vertical-bar/vertical-bars-demo.mo
 		DonutChartDemoModule,
 		MatrixChartDemoModule,
 		RealtimeTimelineDemoModule,
-		TimelineLineDemoModule,
+		TimelineDemoModule,
 		VerticalBarChartDemoModule
 	],
 	declarations: [

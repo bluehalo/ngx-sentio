@@ -3,15 +3,14 @@
 
 		<button class="btn btn-default" (click)="update()">Update</button>
 		<br/>
-		<timeline-line
+		<sentioTimeline
 			style="height:100px;"
 			[model]="model"
-			[configure]="configure"
 			resizeWidth="true"
-			[filterEnabled]="filterEnabled"
+			filterEnabled="true"
 			[(filter)]="filter"
 			(filterChange)="eventHandler('filterChanged', $event)">
-		</timeline-line>
+		</sentioTimeline>
 
 	</div>
 </section>

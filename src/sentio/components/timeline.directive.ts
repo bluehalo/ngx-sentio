@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange} from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChange, Output } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../util/chart-wrapper.util';
@@ -6,18 +6,15 @@ import { ResizeDimension, ResizeUtil } from '../util/resize.util';
 
 
 @Directive({
-	selector: 'sentioRealtimeTimeline'
+	selector: 'sentioTimeline'
 })
-export class RealtimeTimelineDirective
+export class TimelineDirective
 	implements OnChanges, OnDestroy, OnInit {
 
 	@Input() model: Object[];
 	@Input() markers: Object[];
 	@Input() yExtent: Object[];
 	@Input() xExtent: Object[];
-	@Input() delay: number;
-	@Input() fps: number;
-	@Input() interval: number;
 
 	@Input() resizeWidth: boolean;
 	@Input() resizeHeight: boolean;
@@ -26,10 +23,15 @@ export class RealtimeTimelineDirective
 	// Configure callback function for chart
 	@Input('configure') configureFn: (chart: any) => void;
 
+	// Timeline filter/brush support
+	@Input() filterEnabled: boolean;
+	@Input('filter') filterState: Object[];
+	@Output() filterChange: EventEmitter<Object[]> = new EventEmitter<Object[]>();
+
 	// Interaction events
-	@Output() markerOver: EventEmitter<Object> = new EventEmitter();
-	@Output() markerOut: EventEmitter<Object> = new EventEmitter();
-	@Output() markerClick: EventEmitter<Object> = new EventEmitter();
+	@Output() markerOver: EventEmitter<Object> = new EventEmitter<Object>();
+	@Output() markerOut: EventEmitter<Object> = new EventEmitter<Object>();
+	@Output() markerClick: EventEmitter<Object> = new EventEmitter<Object>();
 
 	chartWrapper: ChartWrapper;
 	resizeUtil: ResizeUtil;
@@ -74,6 +76,23 @@ export class RealtimeTimelineDirective
 		}
 	}
 
+	/**
+	 * Did the state of the filter change?
+	 */
+	didFilterChange = (current: Object[], previous: Object[]) => {
+
+		// Deep compare the filter
+		if (current === previous ||
+			(null != current && null != previous
+			&& current[0] === previous[0]
+			&& current[1] === previous[1])) {
+			return false;
+		}
+
+		// We know it changed
+		return true;
+	}
+
 	@HostListener('window:resize', ['$event'])
 	onResize(event: any) {
 		this.resizeUtil.resizeObserver.next(event);
@@ -84,10 +103,23 @@ export class RealtimeTimelineDirective
 		// Initialize the chart
 		this.chartWrapper.initialize();
 
+		// Set the filter (if it exists)
+		if (null != this.filterState) {
+			this.chartWrapper.chart.setFilter(this.filterState);
+		}
+
 		// register for the marker events
 		this.chartWrapper.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
 		this.chartWrapper.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
 		this.chartWrapper.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
+
+		// register for the filter end event
+		this.chartWrapper.chart.dispatch().on('filterend', (fs: any) => {
+			// If the filter actually changed, emit the event
+			if (this.didFilterChange(fs, this.filterState)) {
+				setTimeout(() => { this.filterChange.emit(fs); });
+			}
+		});
 
 		// Set up the resize callback
 		this.resizeUtil.resizeSource
@@ -140,16 +172,20 @@ export class RealtimeTimelineDirective
 			this.chartWrapper.chart.duration(this.duration);
 		}
 
-		if (changes['fps']) {
-			this.chartWrapper.chart.fps(this.fps);
+		if (changes['filterEnabled']) {
+			this.chartWrapper.chart.filter(this.filterEnabled);
+			redraw = redraw || !changes['filterEnabled'].isFirstChange();
 		}
-		if (changes['delay']) {
-			this.chartWrapper.chart.delay(this.delay);
-			redraw = redraw || !changes['delay'].isFirstChange();
-		}
-		if (changes['interval']) {
-			this.chartWrapper.chart.interval(this.interval);
-			redraw = redraw || !changes['interval'].isFirstChange();
+		if (changes['filterState'] && !changes['filterState'].isFirstChange()) {
+
+			// Only apply it if it actually changed
+			if (this.didFilterChange(changes['filterState'].currentValue, changes['filterState'].previousValue)) {
+
+				this.chartWrapper.chart.setFilter(this.filterState);
+				redraw = true;
+
+			}
+
 		}
 
 		// Only redraw once if necessary

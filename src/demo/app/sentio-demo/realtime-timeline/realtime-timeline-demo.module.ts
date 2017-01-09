@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { SentioModule } from '../../../../sentio/sentio.module';
-import { BasicRealtimeTimelineDemoComponent } from './basic/basic-realtime-timeline-demo.component';
+import { BasicRealtimeTimelineLineDemoComponent } from './basic/basic-realtime-timeline-line-demo.component';
 
 @NgModule({
 	imports: [
@@ -10,10 +10,10 @@ import { BasicRealtimeTimelineDemoComponent } from './basic/basic-realtime-timel
 		SentioModule
 	],
 	declarations: [
-		BasicRealtimeTimelineDemoComponent
+		BasicRealtimeTimelineLineDemoComponent
 	],
 	exports: [
-		BasicRealtimeTimelineDemoComponent
+		BasicRealtimeTimelineLineDemoComponent
 	]
 })
 export class RealtimeTimelineDemoModule { }
