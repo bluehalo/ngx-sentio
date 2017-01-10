@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../util/chart-wrapper.util';
@@ -17,8 +17,8 @@ export class VerticalBarChartDirective
 	@Input('resize') resizeEnabled: boolean;
 	@Input() duration: number;
 
-	// Configure callback function for the chart
-	@Input('configure') configureFn: (chart: any) => void;
+	// Chart Ready event
+	@Output() chartReady = new EventEmitter<any>();
 
 	chartWrapper: ChartWrapper;
 	resizeUtil: ResizeUtil;
@@ -26,7 +26,7 @@ export class VerticalBarChartDirective
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper(el, sentio.chart.verticalBars());
+		this.chartWrapper = new ChartWrapper(el, sentio.chart.verticalBars(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
@@ -79,11 +79,6 @@ export class VerticalBarChartDirective
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {
 		let resize: boolean = false;
 		let redraw: boolean = false;
-
-		// Configure the chart
-		if (changes['configureFn'] && changes['configureFn'].isFirstChange()) {
-			this.chartWrapper.configure(this.configureFn);
-		}
 
 		if (changes['model']) {
 			this.chartWrapper.chart.data(this.model);

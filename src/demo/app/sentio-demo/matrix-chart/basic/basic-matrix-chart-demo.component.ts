@@ -12,7 +12,7 @@ implements OnInit {
 
 	model: any[] = [];
 
-	configure(chart: any): void {
+	chartReady(chart: any): void {
 		chart.key((d: any, i: number) => {
 			return i;
 		})

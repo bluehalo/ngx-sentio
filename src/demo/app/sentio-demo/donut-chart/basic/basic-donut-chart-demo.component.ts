@@ -12,7 +12,7 @@ implements OnInit {
 
 	model: any[] = [];
 
-	configure(chart: any): void {
+	chartReady(chart: any): void {
 		chart.color(d3.scaleOrdinal().range(['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c']));
 		chart.label(function(d: any) { return d.key + ' (' + d.value + ')'; });
 	};

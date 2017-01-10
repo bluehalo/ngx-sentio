@@ -7,7 +7,7 @@ import * as d3 from 'd3';
 export class ChartWrapper {
 	chart: any;
 	chartElement: any;
-	configureFn: (chart: any) => void;
+	chartReady: EventEmitter<any>;
 
 	/**
 	 * Creates the chart, binds it to the dom element.
@@ -15,21 +15,10 @@ export class ChartWrapper {
 	 * @param el
 	 * @param chart
 	 */
-	constructor(el: ElementRef, chart: any) {
+	constructor(el: ElementRef, chart: any, chartReady: EventEmitter<any>) {
 		this.chartElement = d3.select(el.nativeElement);
 		this.chart = chart;
-	}
-
-	/**
-	 * Sets up the configure function (should happen before initialize if it's going to happen).
-	 * Still doesn't do any DOM manipulation.
-	 * @param configureFn
-	 */
-	configure(configureFn: (chart: any) => void) {
-		this.configureFn = configureFn;
-		if (null != this.configureFn) {
-			this.configureFn(this.chart);
-		}
+		this.chartReady = chartReady;
 	}
 
 	/**
@@ -37,5 +26,6 @@ export class ChartWrapper {
 	 */
 	initialize() {
 		this.chart.init(this.chartElement);
+		this.chartReady.emit(this.chart);
 	}
 }

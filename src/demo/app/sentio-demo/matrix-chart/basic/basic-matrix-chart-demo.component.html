@@ -5,7 +5,7 @@
 		<br/>
 		<sentioMatrixChart
 			[model]="model"
-			[configure]="configure">
+			(chartReady)="chartReady($event)">
 		</sentioMatrixChart>
 
 	</div>

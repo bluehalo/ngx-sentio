@@ -20,18 +20,18 @@ export class TimelineDirective
 	@Input() resizeHeight: boolean;
 	@Input() duration: number;
 
-	// Configure callback function for chart
-	@Input('configure') configureFn: (chart: any) => void;
+	// Chart Ready event
+	@Output() chartReady = new EventEmitter<any>();
 
 	// Timeline filter/brush support
 	@Input() filterEnabled: boolean;
-	@Input('filter') filterState: Object[];
-	@Output() filterChange: EventEmitter<Object[]> = new EventEmitter<Object[]>();
+	@Input('filter') filterState: any[];
+	@Output() filterChange = new EventEmitter<any[]>();
 
 	// Interaction events
-	@Output() markerOver: EventEmitter<Object> = new EventEmitter<Object>();
-	@Output() markerOut: EventEmitter<Object> = new EventEmitter<Object>();
-	@Output() markerClick: EventEmitter<Object> = new EventEmitter<Object>();
+	@Output() markerOver: EventEmitter<any> = new EventEmitter<any>();
+	@Output() markerOut: EventEmitter<any> = new EventEmitter<any>();
+	@Output() markerClick: EventEmitter<any> = new EventEmitter<any>();
 
 	chartWrapper: ChartWrapper;
 	resizeUtil: ResizeUtil;
@@ -39,7 +39,7 @@ export class TimelineDirective
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper(el, sentio.timeline.line());
+		this.chartWrapper = new ChartWrapper(el, sentio.timeline.line(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
@@ -134,7 +134,6 @@ export class TimelineDirective
 		// Set the initial size of the chart
 		this.setChartDimensions(this.resizeUtil.getSize());
 		this.chartWrapper.chart.redraw();
-
 	}
 
 	ngOnDestroy() {
@@ -145,11 +144,6 @@ export class TimelineDirective
 
 		let resize: boolean = false;
 		let redraw: boolean = false;
-
-		// Configure the chart
-		if (changes['configureFn'] && changes['configureFn'].isFirstChange()) {
-			this.chartWrapper.configure(this.configureFn);
-		}
 
 		if (changes['model']) {
 			this.chartWrapper.chart.data(this.model);

@@ -6,7 +6,7 @@
 		<sentioDonutChart
 			[model]="model"
 			resize="true"
-			[configure]="configure">
+			(chartReady)="chartReady($event)">
 		</sentioDonutChart>
 
 	</div>

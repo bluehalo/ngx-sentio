@@ -16,9 +16,11 @@ implements OnInit {
 	markers: any[] = [];
 	hwm: number = Date.now();
 
-	configure(chart: any): void {
+	chartReady(chart: any): void {
 		chart.margin({ top: 16, right: 10, bottom: 20, left: 40 });
 		this.chart = chart;
+
+		this.play();
 	};
 
 	eventHandler(msg: string, event: any): void {
@@ -62,6 +64,5 @@ implements OnInit {
 			{ key: 'series1', data: this.bins.bins() }
 		];
 
-		this.play();
 	}
 }

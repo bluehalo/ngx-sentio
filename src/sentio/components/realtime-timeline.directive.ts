@@ -1,4 +1,5 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange} from '@angular/core';
+
 import * as sentio from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../util/chart-wrapper.util';
@@ -11,10 +12,10 @@ import { ResizeDimension, ResizeUtil } from '../util/resize.util';
 export class RealtimeTimelineDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: Object[];
-	@Input() markers: Object[];
-	@Input() yExtent: Object[];
-	@Input() xExtent: Object[];
+	@Input() model: any[];
+	@Input() markers: any[];
+	@Input() yExtent: any[];
+	@Input() xExtent: any[];
 	@Input() delay: number;
 	@Input() fps: number;
 	@Input() interval: number;
@@ -23,13 +24,13 @@ export class RealtimeTimelineDirective
 	@Input() resizeHeight: boolean;
 	@Input() duration: number;
 
-	// Configure callback function for chart
-	@Input('configure') configureFn: (chart: any) => void;
+	// Chart Ready event
+	@Output() chartReady = new EventEmitter<any>();
 
 	// Interaction events
-	@Output() markerOver: EventEmitter<Object> = new EventEmitter();
-	@Output() markerOut: EventEmitter<Object> = new EventEmitter();
-	@Output() markerClick: EventEmitter<Object> = new EventEmitter();
+	@Output() markerOver = new EventEmitter<any>();
+	@Output() markerOut = new EventEmitter<any>();
+	@Output() markerClick = new EventEmitter<any>();
 
 	chartWrapper: ChartWrapper;
 	resizeUtil: ResizeUtil;
@@ -37,7 +38,7 @@ export class RealtimeTimelineDirective
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper(el, sentio.timeline.line());
+		this.chartWrapper = new ChartWrapper(el, sentio.realtime.timeline(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
@@ -113,11 +114,6 @@ export class RealtimeTimelineDirective
 
 		let resize: boolean = false;
 		let redraw: boolean = false;
-
-		// Configure the chart
-		if (changes['configureFn'] && changes['configureFn'].isFirstChange()) {
-			this.chartWrapper.configure(this.configureFn);
-		}
 
 		if (changes['model']) {
 			this.chartWrapper.chart.data(this.model);

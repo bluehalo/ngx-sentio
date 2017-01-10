@@ -11,7 +11,7 @@ export class BasicVerticalBarChartDemoComponent {
 
 		model: any[] = [];
 
-		configure(chart: any): void {
+		chartReady(chart: any): void {
 			chart.label(function(d: any) { return d.key + '&lrm; (' + d.value + ')'; });
 		};
 

@@ -7,7 +7,7 @@
 			[model]="model"
 			[widthExtent]="widthExtent"
 			resize="true"
-			[configure]="configure">
+			(chartReady)="chartReady($event)">
 		</sentioVerticalBarChart>
 
 	</div>
