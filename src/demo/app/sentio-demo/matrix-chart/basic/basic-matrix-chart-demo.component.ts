@@ -12,12 +12,12 @@ implements OnInit {
 
 	model: any[] = [];
 
-	chartReady(chart: any): void {
+	chartReady(chart: sentio.chart.MatrixChart): void {
 		chart.key((d: any, i: number) => {
-			return i;
+			return '' + i;
 		})
 		.value((d: any) => {
-			return d;
+			return +d;
 		})
 		.margin({ top: 20, right: 2, bottom: 2, left: 80 });
 	};

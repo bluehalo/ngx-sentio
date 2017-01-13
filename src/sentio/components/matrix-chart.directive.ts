@@ -10,18 +10,18 @@ import { ChartWrapper } from '../util/chart-wrapper.util';
 export class MatrixChartDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: Object[];
+	@Input() model: any[];
 	@Input() duration: number;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<any>();
+	@Output() chartReady = new EventEmitter<sentio.chart.MatrixChart>();
 
-	chartWrapper: ChartWrapper;
+	chartWrapper: ChartWrapper<sentio.chart.MatrixChart>;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper(el, sentio.chart.matrix(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<sentio.chart.MatrixChart>(el, sentio.chart.matrix(), this.chartReady);
 
 	}
 

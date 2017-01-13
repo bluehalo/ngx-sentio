@@ -12,7 +12,7 @@ implements OnInit {
 
 	chart: any;
 	model: any[] = [];
-	bins: any = sentio.controller.rtBins({ binCount: 60, binSize: 1000 });
+	bins: any = sentio.controller.realtimeBins({ binCount: 60, binSize: 1000 });
 	markers: any[] = [];
 	hwm: number = Date.now();
 

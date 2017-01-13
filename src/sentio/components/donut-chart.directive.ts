@@ -11,22 +11,22 @@ import { ResizeDimension, ResizeUtil } from '../util/resize.util';
 export class DonutChartDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: Object[];
+	@Input() model: any[];
 	@Input() colorScale: any;
 
 	@Input('resize') resizeEnabled: boolean;
 	@Input() duration: number;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<any>();
+	@Output() chartReady = new EventEmitter<sentio.chart.DonutChart>();
 
-	chartWrapper: ChartWrapper;
+	chartWrapper: ChartWrapper<sentio.chart.DonutChart>;
 	resizeUtil: ResizeUtil;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper(el, sentio.chart.donut(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<sentio.chart.DonutChart>(el, sentio.chart.donut(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
@@ -94,7 +94,7 @@ export class DonutChartDirective
 			this.chartWrapper.chart.duration(this.duration);
 		}
 		if (changes['colorScale']) {
-			this.chartWrapper.chart.color(this.colorScale);
+			this.chartWrapper.chart.colorScale(this.colorScale);
 			redraw = redraw || !changes['colorScale'].isFirstChange();
 		}
 		if (changes['resize']) {

@@ -11,35 +11,35 @@ import { ResizeDimension, ResizeUtil } from '../util/resize.util';
 export class TimelineDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: Object[];
-	@Input() markers: Object[];
-	@Input() yExtent: Object[];
-	@Input() xExtent: Object[];
+	@Input() model: any[];
+	@Input() markers: any[];
+
+	@Input() yExtent: [ number, number ];
+	@Input() xExtent: [ number, number ];
 
 	@Input() resizeWidth: boolean;
 	@Input() resizeHeight: boolean;
-	@Input() duration: number;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<any>();
+	@Output() chartReady = new EventEmitter<sentio.chart.TimelineChart>();
 
 	// Timeline filter/brush support
 	@Input() filterEnabled: boolean;
-	@Input('filter') filterState: any[];
-	@Output() filterChange = new EventEmitter<any[]>();
+	@Input('filter') filterState: [number, number] | null;
+	@Output() filterChange = new EventEmitter<[number, number] | null>();
 
 	// Interaction events
 	@Output() markerOver: EventEmitter<any> = new EventEmitter<any>();
 	@Output() markerOut: EventEmitter<any> = new EventEmitter<any>();
 	@Output() markerClick: EventEmitter<any> = new EventEmitter<any>();
 
-	chartWrapper: ChartWrapper;
+	chartWrapper: ChartWrapper<sentio.chart.TimelineChart>;
 	resizeUtil: ResizeUtil;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper(el, sentio.timeline.line(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<sentio.chart.TimelineChart>(el, sentio.chart.timeline(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
@@ -79,7 +79,7 @@ export class TimelineDirective
 	/**
 	 * Did the state of the filter change?
 	 */
-	didFilterChange = (current: Object[], previous: Object[]) => {
+	didFilterChange = (current: [ number, number ] | null, previous: [ number, number ] | null) => {
 
 		// Deep compare the filter
 		if (current === previous ||
@@ -114,7 +114,7 @@ export class TimelineDirective
 		this.chartWrapper.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
 
 		// register for the filter end event
-		this.chartWrapper.chart.dispatch().on('filterend', (fs: any) => {
+		this.chartWrapper.chart.dispatch().on('filterend', (fs: [ number, number ] | null) => {
 			// If the filter actually changed, emit the event
 			if (this.didFilterChange(fs, this.filterState)) {
 				setTimeout(() => { this.filterChange.emit(fs); });
@@ -161,9 +161,6 @@ export class TimelineDirective
 		if (changes['xExtent']) {
 			this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
 			redraw = redraw || !changes['xExtent'].isFirstChange();
-		}
-		if (changes['duration']) {
-			this.chartWrapper.chart.duration(this.duration);
 		}
 
 		if (changes['filterEnabled']) {

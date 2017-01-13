@@ -1,20 +1,24 @@
-/// <reference types="core-js" />
-import { ElementRef, OnChanges, SimpleChange } from '@angular/core';
-import { BaseChartDirective } from './base-chart.directive';
-export declare class DonutChartDirective extends BaseChartDirective implements OnChanges {
-    model: Object[];
+import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
+import * as sentio from '@asymmetrik/sentio';
+import { ChartWrapper } from '../util/chart-wrapper.util';
+import { ResizeDimension, ResizeUtil } from '../util/resize.util';
+export declare class DonutChartDirective implements OnChanges, OnDestroy, OnInit {
+    model: any[];
     colorScale: any;
-    resizeChart: boolean;
+    resizeEnabled: boolean;
     duration: number;
-    configureFn: (chart: any) => void;
+    chartReady: EventEmitter<sentio.chart.DonutChart>;
+    chartWrapper: ChartWrapper<sentio.chart.DonutChart>;
+    resizeUtil: ResizeUtil;
     constructor(el: ElementRef);
     /**
      * For the donut chart, we pin the height to the width
      * to keep the aspect ratio correct
      */
-    setChartDimensions(width: number, height: number, force?: boolean): void;
+    setChartDimensions(dim: ResizeDimension): void;
     onResize(event: any): void;
     ngOnInit(): void;
+    ngOnDestroy(): void;
     ngOnChanges(changes: {
         [key: string]: SimpleChange;
     }): void;

@@ -14,31 +14,32 @@ export class RealtimeTimelineDirective
 
 	@Input() model: any[];
 	@Input() markers: any[];
-	@Input() yExtent: any[];
-	@Input() xExtent: any[];
+
+	@Input() yExtent: [number, number];
+	@Input() xExtent: [number, number];
+
 	@Input() delay: number;
 	@Input() fps: number;
 	@Input() interval: number;
 
 	@Input() resizeWidth: boolean;
 	@Input() resizeHeight: boolean;
-	@Input() duration: number;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<any>();
+	@Output() chartReady = new EventEmitter<sentio.chart.RealtimeTimelineChart>();
 
 	// Interaction events
 	@Output() markerOver = new EventEmitter<any>();
 	@Output() markerOut = new EventEmitter<any>();
 	@Output() markerClick = new EventEmitter<any>();
 
-	chartWrapper: ChartWrapper;
+	chartWrapper: ChartWrapper<sentio.chart.RealtimeTimelineChart>;
 	resizeUtil: ResizeUtil;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper(el, sentio.realtime.timeline(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<sentio.chart.RealtimeTimelineChart>(el, sentio.chart.realtimeTimeline(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
@@ -131,9 +132,6 @@ export class RealtimeTimelineDirective
 		if (changes['xExtent']) {
 			this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
 			redraw = redraw || !changes['xExtent'].isFirstChange();
-		}
-		if (changes['duration']) {
-			this.chartWrapper.chart.duration(this.duration);
 		}
 
 		if (changes['fps']) {

@@ -3,23 +3,38 @@ var core_1 = require('@angular/core');
 var sentio = require('@asymmetrik/sentio');
 var chart_wrapper_util_1 = require('../util/chart-wrapper.util');
 var resize_util_1 = require('../util/resize.util');
-var RealtimeTimelineDirective = (function () {
-    function RealtimeTimelineDirective(el) {
+var TimelineDirective = (function () {
+    function TimelineDirective(el) {
         // Chart Ready event
         this.chartReady = new core_1.EventEmitter();
+        this.filterChange = new core_1.EventEmitter();
         // Interaction events
         this.markerOver = new core_1.EventEmitter();
         this.markerOut = new core_1.EventEmitter();
         this.markerClick = new core_1.EventEmitter();
+        /**
+         * Did the state of the filter change?
+         */
+        this.didFilterChange = function (current, previous) {
+            // Deep compare the filter
+            if (current === previous ||
+                (null != current && null != previous
+                    && current[0] === previous[0]
+                    && current[1] === previous[1])) {
+                return false;
+            }
+            // We know it changed
+            return true;
+        };
         // Create the chart
-        this.chartWrapper = new chart_wrapper_util_1.ChartWrapper(el, sentio.chart.realtimeTimeline(), this.chartReady);
+        this.chartWrapper = new chart_wrapper_util_1.ChartWrapper(el, sentio.chart.timeline(), this.chartReady);
         // Set up the resizer
         this.resizeUtil = new resize_util_1.ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
     }
     /**
      * For the timeline, both dimensions scale independently
      */
-    RealtimeTimelineDirective.prototype.setChartDimensions = function (dim) {
+    TimelineDirective.prototype.setChartDimensions = function (dim) {
         var resize = false;
         if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
             // pin the height to the width
@@ -37,17 +52,28 @@ var RealtimeTimelineDirective = (function () {
             this.chartWrapper.chart.resize();
         }
     };
-    RealtimeTimelineDirective.prototype.onResize = function (event) {
+    TimelineDirective.prototype.onResize = function (event) {
         this.resizeUtil.resizeObserver.next(event);
     };
-    RealtimeTimelineDirective.prototype.ngOnInit = function () {
+    TimelineDirective.prototype.ngOnInit = function () {
         var _this = this;
         // Initialize the chart
         this.chartWrapper.initialize();
+        // Set the filter (if it exists)
+        if (null != this.filterState) {
+            this.chartWrapper.chart.setFilter(this.filterState);
+        }
         // register for the marker events
         this.chartWrapper.chart.dispatch().on('markerClick', function (p) { _this.markerClick.emit(p); });
         this.chartWrapper.chart.dispatch().on('markerMouseover', function (p) { _this.markerOver.emit(p); });
         this.chartWrapper.chart.dispatch().on('markerMouseout', function (p) { _this.markerOut.emit(p); });
+        // register for the filter end event
+        this.chartWrapper.chart.dispatch().on('filterend', function (fs) {
+            // If the filter actually changed, emit the event
+            if (_this.didFilterChange(fs, _this.filterState)) {
+                setTimeout(function () { _this.filterChange.emit(fs); });
+            }
+        });
         // Set up the resize callback
         this.resizeUtil.resizeSource
             .subscribe(function () {
@@ -59,10 +85,10 @@ var RealtimeTimelineDirective = (function () {
         this.setChartDimensions(this.resizeUtil.getSize());
         this.chartWrapper.chart.redraw();
     };
-    RealtimeTimelineDirective.prototype.ngOnDestroy = function () {
+    TimelineDirective.prototype.ngOnDestroy = function () {
         this.resizeUtil.destroy();
     };
-    RealtimeTimelineDirective.prototype.ngOnChanges = function (changes) {
+    TimelineDirective.prototype.ngOnChanges = function (changes) {
         var resize = false;
         var redraw = false;
         if (changes['model']) {
@@ -81,16 +107,16 @@ var RealtimeTimelineDirective = (function () {
             this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
             redraw = redraw || !changes['xExtent'].isFirstChange();
         }
-        if (changes['fps']) {
-            this.chartWrapper.chart.fps(this.fps);
+        if (changes['filterEnabled']) {
+            this.chartWrapper.chart.filter(this.filterEnabled);
+            redraw = redraw || !changes['filterEnabled'].isFirstChange();
         }
-        if (changes['delay']) {
-            this.chartWrapper.chart.delay(this.delay);
-            redraw = redraw || !changes['delay'].isFirstChange();
-        }
-        if (changes['interval']) {
-            this.chartWrapper.chart.interval(this.interval);
-            redraw = redraw || !changes['interval'].isFirstChange();
+        if (changes['filterState'] && !changes['filterState'].isFirstChange()) {
+            // Only apply it if it actually changed
+            if (this.didFilterChange(changes['filterState'].currentValue, changes['filterState'].previousValue)) {
+                this.chartWrapper.chart.setFilter(this.filterState);
+                redraw = true;
+            }
         }
         // Only redraw once if necessary
         if (resize) {
@@ -103,69 +129,69 @@ var RealtimeTimelineDirective = (function () {
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
-    ], RealtimeTimelineDirective.prototype, "model", void 0);
+    ], TimelineDirective.prototype, "model", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
-    ], RealtimeTimelineDirective.prototype, "markers", void 0);
+    ], TimelineDirective.prototype, "markers", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
-    ], RealtimeTimelineDirective.prototype, "yExtent", void 0);
+    ], TimelineDirective.prototype, "yExtent", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Array)
-    ], RealtimeTimelineDirective.prototype, "xExtent", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], RealtimeTimelineDirective.prototype, "delay", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], RealtimeTimelineDirective.prototype, "fps", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], RealtimeTimelineDirective.prototype, "interval", void 0);
+    ], TimelineDirective.prototype, "xExtent", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Boolean)
-    ], RealtimeTimelineDirective.prototype, "resizeWidth", void 0);
+    ], TimelineDirective.prototype, "resizeWidth", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Boolean)
-    ], RealtimeTimelineDirective.prototype, "resizeHeight", void 0);
+    ], TimelineDirective.prototype, "resizeHeight", void 0);
     __decorate([
         core_1.Output(), 
         __metadata('design:type', Object)
-    ], RealtimeTimelineDirective.prototype, "chartReady", void 0);
+    ], TimelineDirective.prototype, "chartReady", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Boolean)
+    ], TimelineDirective.prototype, "filterEnabled", void 0);
+    __decorate([
+        core_1.Input('filter'), 
+        __metadata('design:type', Object)
+    ], TimelineDirective.prototype, "filterState", void 0);
     __decorate([
         core_1.Output(), 
         __metadata('design:type', Object)
-    ], RealtimeTimelineDirective.prototype, "markerOver", void 0);
+    ], TimelineDirective.prototype, "filterChange", void 0);
     __decorate([
         core_1.Output(), 
-        __metadata('design:type', Object)
-    ], RealtimeTimelineDirective.prototype, "markerOut", void 0);
+        __metadata('design:type', core_1.EventEmitter)
+    ], TimelineDirective.prototype, "markerOver", void 0);
     __decorate([
         core_1.Output(), 
-        __metadata('design:type', Object)
-    ], RealtimeTimelineDirective.prototype, "markerClick", void 0);
+        __metadata('design:type', core_1.EventEmitter)
+    ], TimelineDirective.prototype, "markerOut", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], TimelineDirective.prototype, "markerClick", void 0);
     __decorate([
         core_1.HostListener('window:resize', ['$event']), 
         __metadata('design:type', Function), 
         __metadata('design:paramtypes', [Object]), 
         __metadata('design:returntype', void 0)
-    ], RealtimeTimelineDirective.prototype, "onResize", null);
-    RealtimeTimelineDirective = __decorate([
+    ], TimelineDirective.prototype, "onResize", null);
+    TimelineDirective = __decorate([
         core_1.Directive({
-            selector: 'sentioRealtimeTimeline'
+            selector: 'sentioTimeline'
         }), 
         __metadata('design:paramtypes', [core_1.ElementRef])
-    ], RealtimeTimelineDirective);
-    return RealtimeTimelineDirective;
+    ], TimelineDirective);
+    return TimelineDirective;
 }());
-exports.RealtimeTimelineDirective = RealtimeTimelineDirective;
+exports.TimelineDirective = TimelineDirective;
 
-//# sourceMappingURL=realtime-timeline.directive.js.map
+//# sourceMappingURL=timeline.directive.js.map

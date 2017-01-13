@@ -11,22 +11,22 @@ import { ResizeDimension, ResizeUtil } from '../util/resize.util';
 export class VerticalBarChartDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: Object[];
-	@Input() widthExtent: Object[];
+	@Input() model: any[];
+	@Input() widthExtent: [number, number];
 
 	@Input('resize') resizeEnabled: boolean;
 	@Input() duration: number;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<any>();
+	@Output() chartReady = new EventEmitter<sentio.chart.VerticalBarsChart>();
 
-	chartWrapper: ChartWrapper;
+	chartWrapper: ChartWrapper<sentio.chart.VerticalBarsChart>;
 	resizeUtil: ResizeUtil;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper(el, sentio.chart.verticalBars(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<sentio.chart.VerticalBarsChart>(el, sentio.chart.verticalBars(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
