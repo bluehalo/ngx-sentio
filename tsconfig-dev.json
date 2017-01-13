@@ -13,11 +13,5 @@
 		"suppressImplicitAnyIndexErrors": true,
 
 		"sourceMap": true
-	},
-
-	"exclude": [
-		"node_modules",
-		"dist"
-	]
-
+	}
 }

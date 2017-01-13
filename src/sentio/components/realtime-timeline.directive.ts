@@ -1,127 +1,157 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, SimpleChange, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange} from '@angular/core';
+
 import * as sentio from '@asymmetrik/sentio';
 
-import { BaseChartDirective } from './base-chart.directive';
+import { ChartWrapper } from '../util/chart-wrapper.util';
+import { ResizeDimension, ResizeUtil } from '../util/resize.util';
 
 
 @Directive({
-	selector: 'realtime-timeline'
+	selector: 'sentioRealtimeTimeline'
 })
 export class RealtimeTimelineDirective
-	extends BaseChartDirective
-	implements OnChanges {
+	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: Object[];
-	@Input() markers: Object[];
-	@Input() yExtent: Object[];
-	@Input() xExtent: Object[];
+	@Input() model: any[];
+	@Input() markers: any[];
+
+	@Input() yExtent: [number, number];
+	@Input() xExtent: [number, number];
+
 	@Input() delay: number;
 	@Input() fps: number;
 	@Input() interval: number;
 
 	@Input() resizeWidth: boolean;
 	@Input() resizeHeight: boolean;
-	@Input() duration: number;
 
-	@Input('configure') configureFn: (chart: any) => void;
+	// Chart Ready event
+	@Output() chartReady = new EventEmitter<sentio.chart.RealtimeTimelineChart>();
 
-	@Output() markerOver: EventEmitter<Object> = new EventEmitter();
-	@Output() markerOut: EventEmitter<Object> = new EventEmitter();
-	@Output() markerClick: EventEmitter<Object> = new EventEmitter();
+	// Interaction events
+	@Output() markerOver = new EventEmitter<any>();
+	@Output() markerOut = new EventEmitter<any>();
+	@Output() markerClick = new EventEmitter<any>();
+
+	chartWrapper: ChartWrapper<sentio.chart.RealtimeTimelineChart>;
+	resizeUtil: ResizeUtil;
 
 	constructor(el: ElementRef) {
-		super(el, sentio.realtime.timeline());
+
+		// Create the chart
+		this.chartWrapper = new ChartWrapper<sentio.chart.RealtimeTimelineChart>(el, sentio.chart.realtimeTimeline(), this.chartReady);
+
+		// Set up the resizer
+		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
+
 	}
 
 	/**
 	 * For the timeline, both dimensions scale independently
 	 */
-	setChartDimensions(width: number, height: number, force: boolean = false): void {
-		let redraw: boolean = false;
+	setChartDimensions(dim: ResizeDimension): void {
 
-		if ((force || this.resizeWidth) && null != this.chart.width) {
-			if (null != width && this.chart.width() !== width) {
-				this.chart.width(width);
-				redraw = true;
-			}
+		let resize = false;
+
+		if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+
+			// pin the height to the width
+			this.chartWrapper.chart
+				.width(dim.width);
+			resize = true;
+
 		}
 
-		if ((force || this.resizeHeight) && null != this.chart.height) {
-			if (null != height && this.chart.height() !== height) {
-				this.chart.height(height);
-				redraw = true;
-			}
+		if (null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
+
+			// pin the height to the width
+			this.chartWrapper.chart
+				.height(dim.height);
+			resize = true;
+
 		}
 
-		if (redraw) {
-			this.chart.resize().redraw();
+		if (resize) {
+			this.chartWrapper.chart.resize();
 		}
 	}
 
 	@HostListener('window:resize', ['$event'])
 	onResize(event: any) {
-		if (this.resizeHeight || this.resizeWidth) {
-			this.delayResize();
-		}
+		this.resizeUtil.resizeObserver.next(event);
 	}
 
 	ngOnInit() {
-		// Do the initial resize if either dimension is supposed to resize
-		if (this.resizeHeight || this.resizeWidth) {
-			this.resize();
-		}
+
+		// Initialize the chart
+		this.chartWrapper.initialize();
 
 		// register for the marker events
-		this.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
-		this.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
-		this.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
+		this.chartWrapper.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
+		this.chartWrapper.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
+		this.chartWrapper.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
 
+		// Set up the resize callback
+		this.resizeUtil.resizeSource
+			.subscribe(() => {
+
+				// Do the resize operation
+				this.setChartDimensions(this.resizeUtil.getSize());
+				this.chartWrapper.chart.redraw();
+
+			});
+
+		// Set the initial size of the chart
+		this.setChartDimensions(this.resizeUtil.getSize());
+		this.chartWrapper.chart.redraw();
+
+	}
+
+	ngOnDestroy() {
+		this.resizeUtil.destroy();
 	}
 
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {
 
+		let resize: boolean = false;
 		let redraw: boolean = false;
 
-		// Call the configure function
-		if (changes['configureFn'] && changes['configureFn'].isFirstChange()
-				&& null != changes['configureFn'].currentValue) {
-			this.configureFn(this.chart);
-		}
-
 		if (changes['model']) {
-			this.chart.data(changes['model'].currentValue);
-			redraw = true;
+			this.chartWrapper.chart.data(this.model);
+			redraw = redraw || !changes['model'].isFirstChange();
 		}
 		if (changes['markers']) {
-			this.chart.markers(changes['markers'].currentValue);
-			redraw = true;
+			this.chartWrapper.chart.markers(this.markers);
+			redraw = redraw || !changes['markers'].isFirstChange();
 		}
+
 		if (changes['yExtent']) {
-			this.chart.yExtent().overrideValue(changes['yExtent'].currentValue);
-			redraw = true;
+			this.chartWrapper.chart.yExtent().overrideValue(this.yExtent);
+			redraw = redraw || !changes['yExtent'].isFirstChange();
 		}
 		if (changes['xExtent']) {
-			this.chart.xExtent().overrideValue(changes['xExtent'].currentValue);
-			redraw = true;
-		}
-		if (changes['duration']) {
-			this.chart.duration(changes['duration'].currentValue);
+			this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
+			redraw = redraw || !changes['xExtent'].isFirstChange();
 		}
 
 		if (changes['fps']) {
-			this.chart.fps(changes['fps'].currentValue);
+			this.chartWrapper.chart.fps(this.fps);
 		}
 		if (changes['delay']) {
-			this.chart.delay(changes['delay'].currentValue);
-			redraw = true;
+			this.chartWrapper.chart.delay(this.delay);
+			redraw = redraw || !changes['delay'].isFirstChange();
 		}
 		if (changes['interval']) {
-			this.chart.interval(changes['interval'].currentValue);
-			redraw = true;
+			this.chartWrapper.chart.interval(this.interval);
+			redraw = redraw || !changes['interval'].isFirstChange();
 		}
 
+		// Only redraw once if necessary
+		if (resize) {
+			this.chartWrapper.chart.resize();
+		}
 		if (redraw) {
-			this.chart.redraw();
+			this.chartWrapper.chart.redraw();
 		}
 	}
 

@@ -1,0 +1,17 @@
+<section class="row">
+	<div class="col-md-12">
+
+		<button class="btn btn-default" (click)="play()">Play</button>
+		<button class="btn btn-default" (click)="pause()">Pause</button>
+		<br/>
+		<sentioRealtimeTimeline
+			style="height:100px;"
+			[model]="model"
+			[markers]="markers"
+			(chartReady)="chartReady($event)"
+			resizeWidth="true">
+		</sentioRealtimeTimeline>
+
+	</div>
+</section>
+

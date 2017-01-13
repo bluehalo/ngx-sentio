@@ -1,50 +1,71 @@
 "use strict";
 var core_1 = require('@angular/core');
 var sentio = require('@asymmetrik/sentio');
-var base_chart_directive_1 = require('./base-chart.directive');
-var VerticalBarChartDirective = (function (_super) {
-    __extends(VerticalBarChartDirective, _super);
+var chart_wrapper_util_1 = require('../util/chart-wrapper.util');
+var resize_util_1 = require('../util/resize.util');
+var VerticalBarChartDirective = (function () {
     function VerticalBarChartDirective(el) {
-        _super.call(this, el, sentio.chart.verticalBars());
+        // Chart Ready event
+        this.chartReady = new core_1.EventEmitter();
+        // Create the chart
+        this.chartWrapper = new chart_wrapper_util_1.ChartWrapper(el, sentio.chart.verticalBars(), this.chartReady);
+        // Set up the resizer
+        this.resizeUtil = new resize_util_1.ResizeUtil(el, this.resizeEnabled);
     }
     /**
      * For The vertical bar chart, we just resize width
      */
-    VerticalBarChartDirective.prototype.setChartDimensions = function (width, height, force) {
-        if (force === void 0) { force = false; }
-        if ((force || this.resizeChart) && null != this.chart.width) {
-            if (null != width && this.chart.width() !== width) {
-                this.chart.width(width).resize().redraw();
-            }
+    VerticalBarChartDirective.prototype.setChartDimensions = function (dim) {
+        if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+            // pin the height to the width
+            this.chartWrapper.chart
+                .width(dim.width)
+                .resize();
         }
     };
     VerticalBarChartDirective.prototype.onResize = function (event) {
-        if (this.resizeChart) {
-            this.delayResize();
-        }
+        this.resizeUtil.resizeObserver.next(event);
     };
     VerticalBarChartDirective.prototype.ngOnInit = function () {
-        if (this.resizeChart) {
-            this.resize();
-        }
+        var _this = this;
+        // Initialize the chart
+        this.chartWrapper.initialize();
+        // Set up the resize callback
+        this.resizeUtil.resizeSource
+            .subscribe(function () {
+            // Do the resize operation
+            _this.setChartDimensions(_this.resizeUtil.getSize());
+            _this.chartWrapper.chart.redraw();
+        });
+        // Set the initial size of the chart
+        this.setChartDimensions(this.resizeUtil.getSize());
+        this.chartWrapper.chart.redraw();
+    };
+    VerticalBarChartDirective.prototype.ngOnDestroy = function () {
+        this.resizeUtil.destroy();
     };
     VerticalBarChartDirective.prototype.ngOnChanges = function (changes) {
+        var resize = false;
         var redraw = false;
-        // Call the configure function
-        if (changes['configureFn'] && changes['configureFn'].isFirstChange()
-            && null != changes['configureFn'].currentValue) {
-            this.configureFn(this.chart);
-        }
         if (changes['model']) {
-            this.chart.data(changes['model'].currentValue);
-            redraw = true;
+            this.chartWrapper.chart.data(this.model);
+            redraw = redraw || !changes['model'].isFirstChange();
         }
         if (changes['widthExtent']) {
-            this.chart.widthExtent().overrideValue(changes['widthExtent'].currentValue);
-            redraw = true;
+            this.chartWrapper.chart.widthExtent().overrideValue(this.widthExtent);
+            redraw = redraw || !changes['widthExtent'].isFirstChange();
+        }
+        if (changes['resize']) {
+            this.resizeUtil.enabled = this.resizeEnabled;
+            resize = resize || (this.resizeEnabled && !changes['resize'].isFirstChange());
+            redraw = redraw || resize;
+        }
+        // Only redraw once if necessary
+        if (resize) {
+            this.chartWrapper.chart.resize();
         }
         if (redraw) {
-            this.chart.redraw();
+            this.chartWrapper.chart.redraw();
         }
     };
     __decorate([
@@ -58,15 +79,15 @@ var VerticalBarChartDirective = (function (_super) {
     __decorate([
         core_1.Input('resize'), 
         __metadata('design:type', Boolean)
-    ], VerticalBarChartDirective.prototype, "resizeChart", void 0);
+    ], VerticalBarChartDirective.prototype, "resizeEnabled", void 0);
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Number)
     ], VerticalBarChartDirective.prototype, "duration", void 0);
     __decorate([
-        core_1.Input('configure'), 
-        __metadata('design:type', Function)
-    ], VerticalBarChartDirective.prototype, "configureFn", void 0);
+        core_1.Output(), 
+        __metadata('design:type', Object)
+    ], VerticalBarChartDirective.prototype, "chartReady", void 0);
     __decorate([
         core_1.HostListener('window:resize', ['$event']), 
         __metadata('design:type', Function), 
@@ -75,12 +96,12 @@ var VerticalBarChartDirective = (function (_super) {
     ], VerticalBarChartDirective.prototype, "onResize", null);
     VerticalBarChartDirective = __decorate([
         core_1.Directive({
-            selector: 'vertical-bar-chart'
+            selector: 'sentioVerticalBarChart'
         }), 
         __metadata('design:paramtypes', [core_1.ElementRef])
     ], VerticalBarChartDirective);
     return VerticalBarChartDirective;
-}(base_chart_directive_1.BaseChartDirective));
+}());
 exports.VerticalBarChartDirective = VerticalBarChartDirective;
 ;
 
