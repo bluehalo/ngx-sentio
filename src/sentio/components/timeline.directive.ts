@@ -103,11 +103,6 @@ export class TimelineDirective
 		// Initialize the chart
 		this.chartWrapper.initialize();
 
-		// Set the filter (if it exists)
-		if (null != this.filterState) {
-			this.chartWrapper.chart.setFilter(this.filterState);
-		}
-
 		// register for the marker events
 		this.chartWrapper.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
 		this.chartWrapper.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
@@ -134,6 +129,11 @@ export class TimelineDirective
 		// Set the initial size of the chart
 		this.setChartDimensions(this.resizeUtil.getSize());
 		this.chartWrapper.chart.redraw();
+
+		// Set the filter (if it exists)
+		if (null != this.filterState) {
+			this.chartWrapper.chart.setFilter(this.filterState);
+		}
 	}
 
 	ngOnDestroy() {

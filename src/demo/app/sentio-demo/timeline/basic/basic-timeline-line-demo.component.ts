@@ -33,7 +33,7 @@ implements OnInit {
 				d.push([ this.hwm + (i * this.binSize), Math.random() * 10 ]);
 			}
 
-			newModel.push({ key: k, data: d });
+			newModel.push({ key: k, values: d });
 		});
 
 		this.model = newModel;

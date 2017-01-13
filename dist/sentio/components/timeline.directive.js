@@ -59,10 +59,6 @@ var TimelineDirective = (function () {
         var _this = this;
         // Initialize the chart
         this.chartWrapper.initialize();
-        // Set the filter (if it exists)
-        if (null != this.filterState) {
-            this.chartWrapper.chart.setFilter(this.filterState);
-        }
         // register for the marker events
         this.chartWrapper.chart.dispatch().on('markerClick', function (p) { _this.markerClick.emit(p); });
         this.chartWrapper.chart.dispatch().on('markerMouseover', function (p) { _this.markerOver.emit(p); });
@@ -84,6 +80,10 @@ var TimelineDirective = (function () {
         // Set the initial size of the chart
         this.setChartDimensions(this.resizeUtil.getSize());
         this.chartWrapper.chart.redraw();
+        // Set the filter (if it exists)
+        if (null != this.filterState) {
+            this.chartWrapper.chart.setFilter(this.filterState);
+        }
     };
     TimelineDirective.prototype.ngOnDestroy = function () {
         this.resizeUtil.destroy();

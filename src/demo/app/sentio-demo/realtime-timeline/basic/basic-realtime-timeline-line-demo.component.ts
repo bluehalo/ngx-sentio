@@ -37,7 +37,7 @@ implements OnInit {
 
 	@HostListener('mouseup', ['$event'])
 	onMouseUp(event: MouseEvent): void {
-		this.markers.push([Date.now(), 'Click']);
+		this.markers.push([ Date.now(), 'Click' ]);
 
 		// Remove old markers
 		let markers = this.markers;
@@ -61,7 +61,7 @@ implements OnInit {
 			.createSeed(() => { return 0; });
 
 		this.model = [
-			{ key: 'series1', data: this.bins.bins() }
+			{ key: 'series1', values: this.bins.bins() }
 		];
 
 	}
