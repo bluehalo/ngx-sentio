@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
 import { SentioModule } from '../../../../sentio/sentio.module';
 import { BasicDonutChartDemoComponent } from './basic/basic-donut-chart-demo.component';
 
 @NgModule({
 	imports: [
-		BrowserModule,
+		CommonModule,
 		SentioModule
 	],
 	declarations: [

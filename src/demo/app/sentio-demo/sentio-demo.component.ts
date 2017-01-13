@@ -10,12 +10,7 @@ import * as d3 from 'd3';
 export class SentioDemoComponent
 implements OnInit {
 
-	show: boolean = false;
-
 	ngOnInit() {
-		setTimeout(() => {
-			this.show = true;
-		}, 1000);
 	}
 
 }

@@ -12,7 +12,7 @@ implements OnInit {
 
 	model: any[] = [];
 	filterEnabled = true;
-	filter: [ number, number ] = [ Date.now() - 5000, Date.now() - 10000 ];
+	filter: [ number, number ] = [ Date.now() - 10000, Date.now() - 5000 ];
 	interval = 60000;
 	binSize = 1000;
 	hwm: number = Date.now();
@@ -30,7 +30,7 @@ implements OnInit {
 			let d: any[] = [];
 
 			for (let i = 0; i < this.interval / this.binSize; i++) {
-				d.push([ this.hwm + (i * this.binSize), Math.random() * 10 ]);
+				d.unshift([ this.hwm - (i * this.binSize), Math.random() * 10 ]);
 			}
 
 			newModel.push({ key: k, values: d });

@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 import { SentioDemoComponent } from './sentio-demo.component';
+import { SentioDemoRoutingModule } from './sentio-demo-routing.module';
 
 import { DonutChartDemoModule } from './donut-chart/donut-chart-demo.module';
 import { MatrixChartDemoModule } from './matrix-chart/matrix-chart-demo.module';
@@ -12,7 +14,11 @@ import { VerticalBarChartDemoModule } from './vertical-bar/vertical-bars-demo.mo
 
 @NgModule({
 	imports: [
-		BrowserModule,
+		CommonModule,
+		RouterModule,
+
+		SentioDemoRoutingModule,
+
 		DonutChartDemoModule,
 		MatrixChartDemoModule,
 		RealtimeTimelineDemoModule,
