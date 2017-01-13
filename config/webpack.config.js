@@ -40,7 +40,7 @@ module.exports = () => {
 
 	// Set up for dev middleware
 	wpConfig.output.path = path.resolve('./public');
-	wpConfig.output.publicPath = 'http://localhost:9000/';
+	wpConfig.output.publicPath = '/';
 	wpConfig.output.filename = '[name].js';
 	wpConfig.output.chunkFilename = '[name].js';
 

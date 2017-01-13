@@ -2,7 +2,7 @@
 	"name": "@asymmetrik/angular2-sentio",
 	"artifactName": "angular2-sentio",
 	"description": "Angular 2 components for Sentio",
-	"version": "2.0.11",
+	"version": "3.0.0",
 	"author": "Asymmetrik, Ltd.",
 	"copyright": "Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.",
 	"license": "UNLICENSED",
@@ -20,7 +20,7 @@
 		"@angular/core": "2",
 		"@angular/common": "2",
 
-		"@asymmetrik/sentio": "2",
+		"@asymmetrik/sentio": "3",
 
 		"d3": "4"
 	},
@@ -31,8 +31,9 @@
 		"@angular/core": "2.2",
 		"@angular/platform-browser": "2.2",
 		"@angular/platform-browser-dynamic": "2.2",
+		"@angular/router": "3.2",
 
-		"@asymmetrik/sentio": "2",
+		"@asymmetrik/sentio": "3",
 		"bootstrap": "3",
 
 		"d3": "4.4",

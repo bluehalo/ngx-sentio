@@ -3,7 +3,7 @@ var core_1 = require('@angular/core');
 var donut_chart_directive_1 = require('./components/donut-chart.directive');
 var matrix_chart_directive_1 = require('./components/matrix-chart.directive');
 var realtime_timeline_directive_1 = require('./components/realtime-timeline.directive');
-var timeline_line_directive_1 = require('./components/timeline-line.directive');
+var timeline_directive_1 = require('./components/timeline.directive');
 var vertical_bar_chart_directive_1 = require('./components/vertical-bar-chart.directive');
 var SentioModule = (function () {
     function SentioModule() {
@@ -15,17 +15,16 @@ var SentioModule = (function () {
                 donut_chart_directive_1.DonutChartDirective,
                 matrix_chart_directive_1.MatrixChartDirective,
                 realtime_timeline_directive_1.RealtimeTimelineDirective,
-                timeline_line_directive_1.TimelineLineDirective,
+                timeline_directive_1.TimelineDirective,
                 vertical_bar_chart_directive_1.VerticalBarChartDirective
             ],
             declarations: [
                 donut_chart_directive_1.DonutChartDirective,
                 matrix_chart_directive_1.MatrixChartDirective,
                 realtime_timeline_directive_1.RealtimeTimelineDirective,
-                timeline_line_directive_1.TimelineLineDirective,
+                timeline_directive_1.TimelineDirective,
                 vertical_bar_chart_directive_1.VerticalBarChartDirective
-            ],
-            providers: []
+            ]
         }), 
         __metadata('design:paramtypes', [])
     ], SentioModule);
