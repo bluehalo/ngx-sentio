@@ -7,9 +7,12 @@
 	"copyright": "Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.",
 	"license": "UNLICENSED",
 
-	"main": "dist/bundles/angular2-sentio.js",
-	"module": "src/index.ts",
+	"main": "dist/angular2-sentio.js",
+	"module": "dist/index.js",
 	"typings": "dist/index.d.ts",
+	"files": [
+		"dist/*"
+	],
 
 	"repository": {
 		"type": "git",
