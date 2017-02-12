@@ -1,16 +1,15 @@
-"use strict";
-var core_1 = require('@angular/core');
-var sentio = require('@asymmetrik/sentio');
-var chart_wrapper_util_1 = require('../util/chart-wrapper.util');
-var resize_util_1 = require('../util/resize.util');
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import * as sentio from '@asymmetrik/sentio';
+import { ChartWrapper } from '../util/chart-wrapper.util';
+import { ResizeUtil } from '../util/resize.util';
 var DonutChartDirective = (function () {
     function DonutChartDirective(el) {
         // Chart Ready event
-        this.chartReady = new core_1.EventEmitter();
+        this.chartReady = new EventEmitter();
         // Create the chart
-        this.chartWrapper = new chart_wrapper_util_1.ChartWrapper(el, sentio.chart.donut(), this.chartReady);
+        this.chartWrapper = new ChartWrapper(el, sentio.chart.donut(), this.chartReady);
         // Set up the resizer
-        this.resizeUtil = new resize_util_1.ResizeUtil(el, this.resizeEnabled);
+        this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
     }
     /**
      * For the donut chart, we pin the height to the width
@@ -73,40 +72,40 @@ var DonutChartDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Array)
-    ], DonutChartDirective.prototype, "model", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Object)
-    ], DonutChartDirective.prototype, "colorScale", void 0);
-    __decorate([
-        core_1.Input('resize'), 
-        __metadata('design:type', Boolean)
-    ], DonutChartDirective.prototype, "resizeEnabled", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], DonutChartDirective.prototype, "duration", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], DonutChartDirective.prototype, "chartReady", void 0);
-    __decorate([
-        core_1.HostListener('window:resize', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object]), 
-        __metadata('design:returntype', void 0)
-    ], DonutChartDirective.prototype, "onResize", null);
-    DonutChartDirective = __decorate([
-        core_1.Directive({
-            selector: 'sentioDonutChart'
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef])
-    ], DonutChartDirective);
     return DonutChartDirective;
 }());
-exports.DonutChartDirective = DonutChartDirective;
+__decorate([
+    Input(),
+    __metadata("design:type", Array)
+], DonutChartDirective.prototype, "model", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Object)
+], DonutChartDirective.prototype, "colorScale", void 0);
+__decorate([
+    Input('resize'),
+    __metadata("design:type", Boolean)
+], DonutChartDirective.prototype, "resizeEnabled", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Number)
+], DonutChartDirective.prototype, "duration", void 0);
+__decorate([
+    Output(),
+    __metadata("design:type", Object)
+], DonutChartDirective.prototype, "chartReady", void 0);
+__decorate([
+    HostListener('window:resize', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], DonutChartDirective.prototype, "onResize", null);
+DonutChartDirective = __decorate([
+    Directive({
+        selector: 'sentioDonutChart'
+    }),
+    __metadata("design:paramtypes", [ElementRef])
+], DonutChartDirective);
+export { DonutChartDirective };
 
 //# sourceMappingURL=donut-chart.directive.js.map

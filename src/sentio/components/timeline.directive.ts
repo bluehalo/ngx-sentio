@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, SimpleChange, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../util/chart-wrapper.util';

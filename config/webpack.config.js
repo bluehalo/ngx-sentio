@@ -116,7 +116,8 @@ module.exports = () => {
 			d3: 'd3'
 		}),
 		new webpack.optimize.CommonsChunkPlugin({
-			name: [ 'vendor' ]
+			name: 'vendor',
+			minChunks: Infinity
 		}),
 		new webpack.ContextReplacementPlugin(
 			/angular(\\|\/)core(\\|\/)(esm(\\|\/)src|src)(\\|\/)linker/

@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import * as sentio from '@asymmetrik/sentio';
-import * as d3 from 'd3';
-
 @Component({
 	selector: 'basic-timeline-line-demo',
 	templateUrl: './basic-timeline-line-demo.component.html'
@@ -18,7 +15,8 @@ implements OnInit {
 	hwm: number = Date.now();
 
 	eventHandler(msg: string, event: any): void {
-		console.log({ msg: msg, event: event });
+		// tslint:disable-next-line:no-console
+		console.log({ msg, event });
 	};
 
 	update(): void {

@@ -1,1 +1,1 @@
-{"version":3,"sources":["index.ts"],"names":[],"mappings":";AAAA,8BAA6B,wBAAwB,CAAC;AAA7C,oDAA6C","file":"index.js","sourcesContent":["export { SentioModule } from './sentio/sentio.module';\n"]}
+{"version":3,"sources":["index.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,YAAY,EAAE,MAAM,wBAAwB,CAAC","file":"index.js","sourcesContent":["export { SentioModule } from './sentio/sentio.module';\n"]}

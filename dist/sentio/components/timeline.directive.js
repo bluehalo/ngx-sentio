@@ -1,17 +1,16 @@
-"use strict";
-var core_1 = require('@angular/core');
-var sentio = require('@asymmetrik/sentio');
-var chart_wrapper_util_1 = require('../util/chart-wrapper.util');
-var resize_util_1 = require('../util/resize.util');
+import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
+import * as sentio from '@asymmetrik/sentio';
+import { ChartWrapper } from '../util/chart-wrapper.util';
+import { ResizeUtil } from '../util/resize.util';
 var TimelineDirective = (function () {
     function TimelineDirective(el) {
         // Chart Ready event
-        this.chartReady = new core_1.EventEmitter();
-        this.filterChange = new core_1.EventEmitter();
+        this.chartReady = new EventEmitter();
+        this.filterChange = new EventEmitter();
         // Interaction events
-        this.markerOver = new core_1.EventEmitter();
-        this.markerOut = new core_1.EventEmitter();
-        this.markerClick = new core_1.EventEmitter();
+        this.markerOver = new EventEmitter();
+        this.markerOut = new EventEmitter();
+        this.markerClick = new EventEmitter();
         /**
          * Did the state of the filter change?
          */
@@ -27,9 +26,9 @@ var TimelineDirective = (function () {
             return true;
         };
         // Create the chart
-        this.chartWrapper = new chart_wrapper_util_1.ChartWrapper(el, sentio.chart.timeline(), this.chartReady);
+        this.chartWrapper = new ChartWrapper(el, sentio.chart.timeline(), this.chartReady);
         // Set up the resizer
-        this.resizeUtil = new resize_util_1.ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
+        this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
     }
     /**
      * For the timeline, both dimensions scale independently
@@ -126,72 +125,72 @@ var TimelineDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Array)
-    ], TimelineDirective.prototype, "model", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Array)
-    ], TimelineDirective.prototype, "markers", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Array)
-    ], TimelineDirective.prototype, "yExtent", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Array)
-    ], TimelineDirective.prototype, "xExtent", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean)
-    ], TimelineDirective.prototype, "resizeWidth", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean)
-    ], TimelineDirective.prototype, "resizeHeight", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], TimelineDirective.prototype, "chartReady", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean)
-    ], TimelineDirective.prototype, "filterEnabled", void 0);
-    __decorate([
-        core_1.Input('filter'), 
-        __metadata('design:type', Object)
-    ], TimelineDirective.prototype, "filterState", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], TimelineDirective.prototype, "filterChange", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], TimelineDirective.prototype, "markerOver", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], TimelineDirective.prototype, "markerOut", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], TimelineDirective.prototype, "markerClick", void 0);
-    __decorate([
-        core_1.HostListener('window:resize', ['$event']), 
-        __metadata('design:type', Function), 
-        __metadata('design:paramtypes', [Object]), 
-        __metadata('design:returntype', void 0)
-    ], TimelineDirective.prototype, "onResize", null);
-    TimelineDirective = __decorate([
-        core_1.Directive({
-            selector: 'sentioTimeline'
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef])
-    ], TimelineDirective);
     return TimelineDirective;
 }());
-exports.TimelineDirective = TimelineDirective;
+__decorate([
+    Input(),
+    __metadata("design:type", Array)
+], TimelineDirective.prototype, "model", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Array)
+], TimelineDirective.prototype, "markers", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Array)
+], TimelineDirective.prototype, "yExtent", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Array)
+], TimelineDirective.prototype, "xExtent", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Boolean)
+], TimelineDirective.prototype, "resizeWidth", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Boolean)
+], TimelineDirective.prototype, "resizeHeight", void 0);
+__decorate([
+    Output(),
+    __metadata("design:type", Object)
+], TimelineDirective.prototype, "chartReady", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Boolean)
+], TimelineDirective.prototype, "filterEnabled", void 0);
+__decorate([
+    Input('filter'),
+    __metadata("design:type", Array)
+], TimelineDirective.prototype, "filterState", void 0);
+__decorate([
+    Output(),
+    __metadata("design:type", Object)
+], TimelineDirective.prototype, "filterChange", void 0);
+__decorate([
+    Output(),
+    __metadata("design:type", EventEmitter)
+], TimelineDirective.prototype, "markerOver", void 0);
+__decorate([
+    Output(),
+    __metadata("design:type", EventEmitter)
+], TimelineDirective.prototype, "markerOut", void 0);
+__decorate([
+    Output(),
+    __metadata("design:type", EventEmitter)
+], TimelineDirective.prototype, "markerClick", void 0);
+__decorate([
+    HostListener('window:resize', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], TimelineDirective.prototype, "onResize", null);
+TimelineDirective = __decorate([
+    Directive({
+        selector: 'sentioTimeline'
+    }),
+    __metadata("design:paramtypes", [ElementRef])
+], TimelineDirective);
+export { TimelineDirective };
 
 //# sourceMappingURL=timeline.directive.js.map

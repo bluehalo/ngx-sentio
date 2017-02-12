@@ -1,13 +1,12 @@
-"use strict";
-var core_1 = require('@angular/core');
-var sentio = require('@asymmetrik/sentio');
-var chart_wrapper_util_1 = require('../util/chart-wrapper.util');
+import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import * as sentio from '@asymmetrik/sentio';
+import { ChartWrapper } from '../util/chart-wrapper.util';
 var MatrixChartDirective = (function () {
     function MatrixChartDirective(el) {
         // Chart Ready event
-        this.chartReady = new core_1.EventEmitter();
+        this.chartReady = new EventEmitter();
         // Create the chart
-        this.chartWrapper = new chart_wrapper_util_1.ChartWrapper(el, sentio.chart.matrix(), this.chartReady);
+        this.chartWrapper = new ChartWrapper(el, sentio.chart.matrix(), this.chartReady);
     }
     MatrixChartDirective.prototype.ngOnInit = function () {
         // Initialize the chart
@@ -15,6 +14,7 @@ var MatrixChartDirective = (function () {
         this.chartWrapper.chart.redraw();
     };
     MatrixChartDirective.prototype.ngOnDestroy = function () {
+        // Nothing for now
     };
     MatrixChartDirective.prototype.ngOnChanges = function (changes) {
         var redraw = false;
@@ -30,26 +30,26 @@ var MatrixChartDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Array)
-    ], MatrixChartDirective.prototype, "model", void 0);
-    __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], MatrixChartDirective.prototype, "duration", void 0);
-    __decorate([
-        core_1.Output(), 
-        __metadata('design:type', Object)
-    ], MatrixChartDirective.prototype, "chartReady", void 0);
-    MatrixChartDirective = __decorate([
-        core_1.Directive({
-            selector: 'sentioMatrixChart'
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef])
-    ], MatrixChartDirective);
     return MatrixChartDirective;
 }());
-exports.MatrixChartDirective = MatrixChartDirective;
+__decorate([
+    Input(),
+    __metadata("design:type", Array)
+], MatrixChartDirective.prototype, "model", void 0);
+__decorate([
+    Input(),
+    __metadata("design:type", Number)
+], MatrixChartDirective.prototype, "duration", void 0);
+__decorate([
+    Output(),
+    __metadata("design:type", Object)
+], MatrixChartDirective.prototype, "chartReady", void 0);
+MatrixChartDirective = __decorate([
+    Directive({
+        selector: 'sentioMatrixChart'
+    }),
+    __metadata("design:paramtypes", [ElementRef])
+], MatrixChartDirective);
+export { MatrixChartDirective };
 
 //# sourceMappingURL=matrix-chart.directive.js.map

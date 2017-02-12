@@ -1,5 +1,3 @@
-"use strict";
-var sentio_module_1 = require('./sentio/sentio.module');
-exports.SentioModule = sentio_module_1.SentioModule;
+export { SentioModule } from './sentio/sentio.module';
 
 //# sourceMappingURL=index.js.map
