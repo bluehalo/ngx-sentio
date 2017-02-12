@@ -34,6 +34,7 @@ export class MatrixChartDirective
 	}
 
 	ngOnDestroy() {
+		// Nothing for now
 	}
 
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {

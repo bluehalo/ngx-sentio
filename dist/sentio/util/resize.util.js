@@ -1,6 +1,6 @@
-"use strict";
-var rxjs_1 = require('rxjs');
-var d3 = require('d3');
+import { Observable } from 'rxjs';
+import * as d3 from 'd3';
+/* tslint:disable:max-classes-per-file */
 var ResizeDimension = (function () {
     function ResizeDimension(width, height) {
         this.width = width;
@@ -8,20 +8,20 @@ var ResizeDimension = (function () {
     }
     return ResizeDimension;
 }());
-exports.ResizeDimension = ResizeDimension;
+export { ResizeDimension };
 /**
  * Resize utility class
  */
 var ResizeUtil = (function () {
     function ResizeUtil(el, enabled, debounce, sample) {
-        var _this = this;
         if (enabled === void 0) { enabled = true; }
         if (debounce === void 0) { debounce = 200; }
         if (sample === void 0) { sample = 100; }
+        var _this = this;
         this.enabled = enabled;
         this.chartElement = d3.select(el.nativeElement);
         // Create a hot observable for resize events
-        this.resizeSource = rxjs_1.Observable
+        this.resizeSource = Observable
             .create(function (observer) {
             _this.resizeObserver = observer;
         })
@@ -32,7 +32,7 @@ var ResizeUtil = (function () {
             this.resizeSource = this.resizeSource.debounceTime(debounce);
         }
         if (null != sample) {
-            this.resizeSource = this.resizeSource.sample(rxjs_1.Observable.interval(sample));
+            this.resizeSource = this.resizeSource.sample(Observable.interval(sample));
         }
         this.resizeSource = this.resizeSource.map(function () { return _this.getSize(); });
     }
@@ -122,6 +122,6 @@ var ResizeUtil = (function () {
     };
     return ResizeUtil;
 }());
-exports.ResizeUtil = ResizeUtil;
+export { ResizeUtil };
 
 //# sourceMappingURL=resize.util.js.map

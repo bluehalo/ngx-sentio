@@ -1,5 +1,4 @@
-"use strict";
-var d3 = require('d3');
+import * as d3 from 'd3';
 /**
  * Wrapper for chart info
  */
@@ -24,6 +23,6 @@ var ChartWrapper = (function () {
     };
     return ChartWrapper;
 }());
-exports.ChartWrapper = ChartWrapper;
+export { ChartWrapper };
 
 //# sourceMappingURL=chart-wrapper.util.js.map

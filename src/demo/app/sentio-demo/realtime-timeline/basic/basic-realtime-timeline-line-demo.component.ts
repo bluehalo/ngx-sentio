@@ -1,7 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 
 import * as sentio from '@asymmetrik/sentio';
-import * as d3 from 'd3';
 
 @Component({
 	selector: 'basic-realtime-timeline-line-demo',
@@ -24,7 +23,8 @@ implements OnInit {
 	};
 
 	eventHandler(msg: string, event: any): void {
-		console.log({ msg: msg, event: event });
+		// tslint:disable-next-line:no-console
+		console.log({ msg, event });
 	};
 
 	play(): void {
@@ -36,7 +36,7 @@ implements OnInit {
 	};
 
 	@HostListener('mouseup', ['$event'])
-	onMouseUp(event: MouseEvent): void {
+	onMouseUp(): void {
 		this.markers.push([ Date.now(), 'Click' ]);
 
 		// Remove old markers
@@ -51,13 +51,13 @@ implements OnInit {
 	}
 
 	@HostListener('mousemove', ['$event'])
-	onMouseMove(event: MouseEvent): void {
+	onMouseMove(): void {
 		this.bins.add([Date.now()]);
 	}
 
 	ngOnInit(): void {
 		this.bins.model()
-			.updateBin((bin: any[], d: number) => { bin[1] += 1; })
+			.updateBin((bin: any[]) => { bin[1] += 1; })
 			.createSeed(() => { return 0; });
 
 		this.model = [

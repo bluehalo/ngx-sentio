@@ -14,7 +14,7 @@ implements OnInit {
 
 	chartReady(chart: sentio.chart.DonutChart): void {
 		chart.colorScale(d3.scaleOrdinal().range(['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c']));
-		chart.label(function(d: any) { return d.key + ' (' + d.value + ')'; });
+		chart.label((d: any) => { return d.key + ' (' + d.value + ')'; });
 	};
 
 	update(): void {

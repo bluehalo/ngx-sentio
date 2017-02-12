@@ -1,7 +1,4 @@
-import { Component, HostListener } from '@angular/core';
-
-import * as sentio from '@asymmetrik/sentio';
-import * as d3 from 'd3';
+import { Component } from '@angular/core';
 
 @Component({
 	selector: 'basic-vertical-bar-chart-demo',
@@ -12,7 +9,7 @@ export class BasicVerticalBarChartDemoComponent {
 		model: any[] = [];
 
 		chartReady(chart: any): void {
-			chart.label(function(d: any) { return d.key + '&lrm; (' + d.value + ')'; });
+			chart.label((d: any) => { return d.key + '&lrm; (' + d.value + ')'; });
 		};
 
 		update(): void {
