@@ -1,1 +1,0 @@
-{"version":3,"sources":["sentio/util/resize-dimension.util.ts"],"names":[],"mappings":"AAAA;IACC,yBAAmB,KAAa,EAAS,MAAc;QAApC,UAAK,GAAL,KAAK,CAAQ;QAAS,WAAM,GAAN,MAAM,CAAQ;IAAI,CAAC;IAC7D,sBAAC;AAAD,CAFA,AAEC,IAAA","file":"resize-dimension.util.js","sourcesContent":["export class ResizeDimension {\n\tconstructor(public width: number, public height: number) { }\n}\n"]}
