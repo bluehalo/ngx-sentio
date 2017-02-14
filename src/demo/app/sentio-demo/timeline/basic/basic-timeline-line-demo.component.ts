@@ -17,7 +17,7 @@ implements OnInit {
 	eventHandler(msg: string, event: any): void {
 		// tslint:disable-next-line:no-console
 		console.log({ msg, event });
-	};
+	}
 
 	update(): void {
 		this.hwm = Date.now();
@@ -35,7 +35,18 @@ implements OnInit {
 		});
 
 		this.model = newModel;
-	};
+	}
+
+	clearFilter(): void {
+		this.filter = null;
+	}
+
+	randomFilter(): void {
+		let lf: number = this.hwm - Math.random() * this.interval;
+		let hf: number = lf + Math.random() * 20000;
+		let newFilter: [ number, number ] = [lf, hf];
+		this.filter = newFilter;
+	}
 
 	ngOnInit(): void {
 		this.update();
