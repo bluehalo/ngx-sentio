@@ -20,11 +20,12 @@
 // Polyfills
 import 'core-js/es6';
 import 'core-js/es7/reflect';
-import 'ts-helpers';
+
 
 // Global Imports
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
+
 
 // Angular2 Imports
 import '@angular/common';
@@ -32,7 +33,9 @@ import '@angular/core';
 import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
 
+
 // Angular2 Third-Party
+
 
 // Other Dependencies
 import 'd3';

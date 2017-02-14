@@ -2,7 +2,8 @@
 	"name": "@asymmetrik/angular2-sentio",
 	"artifactName": "angular2-sentio",
 	"description": "Angular 2 components for Sentio",
-	"version": "3.1.0",
+	"version": "3.1.1",
+
 	"author": "Asymmetrik, Ltd.",
 	"copyright": "Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.",
 	"license": "UNLICENSED",
@@ -51,7 +52,6 @@
 		"rollup": "0.41",
 
 		"typescript": "2.1",
-		"ts-helpers": "1.1",
 		"tslint": "4.4",
 		"tslint-stylish": "2.1",
 
