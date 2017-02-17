@@ -40,6 +40,11 @@ export class ResizeUtil {
 		this.resizeSource = this.resizeSource.map(() => this.getSize());
 	}
 
+	static parseFloat(value: any, defaultValue: number): number {
+		let toReturn = parseFloat(value);
+		return ((isNaN(toReturn)) ? defaultValue : toReturn);
+	}
+
 	/**
 	 * Determines the numerical dimension given a string representation
 	 * Assumes the string is in the form 'NNNNNpx', more specifically
@@ -85,15 +90,10 @@ export class ResizeUtil {
 	static getActualSize(element: any): ResizeDimension {
 		const cs = getComputedStyle(element);
 
-		let paddingX = 0;
-		let paddingY = 0;
-		let borderX = 0;
-		let borderY = 0;
-
-		try { paddingX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight); } catch (e) { /* Do Nothing */ }
-		try { paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); } catch (e) { /* Do Nothing */ }
-		try { borderX = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth); } catch (e) { /* Do Nothing */ }
-		try { borderY = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth); } catch (e) { /* Do Nothing */ }
+		let paddingX = ResizeUtil.parseFloat(cs.paddingLeft, 0) + ResizeUtil.parseFloat(cs.paddingRight, 0);
+		let paddingY = ResizeUtil.parseFloat(cs.paddingTop, 0) + ResizeUtil.parseFloat(cs.paddingBottom, 0);
+		let borderX = ResizeUtil.parseFloat(cs.borderLeftWidth, 0) + ResizeUtil.parseFloat(cs.borderRightWidth, 0);
+		let borderY = ResizeUtil.parseFloat(cs.borderTopWidth, 0) + ResizeUtil.parseFloat(cs.borderBottomWidth, 0);
 
 		// Element width and height minus padding and border
 		let width: number = element.offsetWidth - paddingX - borderX;

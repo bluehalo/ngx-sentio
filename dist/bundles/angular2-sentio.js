@@ -65,6 +65,10 @@ var ResizeUtil = (function () {
         }
         this.resizeSource = this.resizeSource.map(function () { return _this.getSize(); });
     }
+    ResizeUtil.parseFloat = function (value, defaultValue) {
+        var toReturn = parseFloat(value);
+        return ((isNaN(toReturn)) ? defaultValue : toReturn);
+    };
     /**
      * Determines the numerical dimension given a string representation
      * Assumes the string is in the form 'NNNNNpx', more specifically
@@ -104,26 +108,10 @@ var ResizeUtil = (function () {
      */
     ResizeUtil.getActualSize = function (element) {
         var cs = getComputedStyle(element);
-        var paddingX = 0;
-        var paddingY = 0;
-        var borderX = 0;
-        var borderY = 0;
-        try {
-            paddingX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
-        }
-        catch (e) { }
-        try {
-            paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
-        }
-        catch (e) { }
-        try {
-            borderX = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
-        }
-        catch (e) { }
-        try {
-            borderY = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
-        }
-        catch (e) { }
+        var paddingX = ResizeUtil.parseFloat(cs.paddingLeft, 0) + ResizeUtil.parseFloat(cs.paddingRight, 0);
+        var paddingY = ResizeUtil.parseFloat(cs.paddingTop, 0) + ResizeUtil.parseFloat(cs.paddingBottom, 0);
+        var borderX = ResizeUtil.parseFloat(cs.borderLeftWidth, 0) + ResizeUtil.parseFloat(cs.borderRightWidth, 0);
+        var borderY = ResizeUtil.parseFloat(cs.borderTopWidth, 0) + ResizeUtil.parseFloat(cs.borderBottomWidth, 0);
         // Element width and height minus padding and border
         var width = element.offsetWidth - paddingX - borderX;
         var height = element.offsetHeight - paddingY - borderY;
