@@ -6,6 +6,7 @@ import { BasicMatrixChartDemoComponent } from './matrix-chart/basic/basic-matrix
 import { BasicVerticalBarChartDemoComponent } from './vertical-bar/basic/basic-vertical-bar-chart-demo.component';
 import { BasicRealtimeTimelineLineDemoComponent } from './realtime-timeline/basic/basic-realtime-timeline-line-demo.component';
 import { BasicTimelineLineDemoComponent } from './timeline/basic/basic-timeline-line-demo.component';
+import { ResizeTimelineLineDemoComponent } from './timeline/resize/resize-timeline-line-demo.component';
 
 @NgModule({
 	imports: [
@@ -31,8 +32,12 @@ import { BasicTimelineLineDemoComponent } from './timeline/basic/basic-timeline-
 						component: BasicVerticalBarChartDemoComponent
 					},
 					{
-						path: 'timeline',
+						path: 'timeline-basic',
 						component: BasicTimelineLineDemoComponent
+					},
+					{
+						path: 'timeline-resize',
+						component: ResizeTimelineLineDemoComponent
 					},
 					{
 						path: 'realtimeTimeline',

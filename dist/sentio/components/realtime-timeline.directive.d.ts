@@ -22,7 +22,7 @@ export declare class RealtimeTimelineDirective implements OnChanges, OnDestroy, 
     /**
      * For the timeline, both dimensions scale independently
      */
-    setChartDimensions(dim: ResizeDimension): void;
+    setChartDimensions(dim: ResizeDimension, force?: boolean): void;
     onResize(event: any): void;
     ngOnInit(): void;
     ngOnDestroy(): void;

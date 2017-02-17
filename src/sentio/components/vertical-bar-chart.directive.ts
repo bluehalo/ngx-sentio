@@ -35,9 +35,9 @@ export class VerticalBarChartDirective
 	/**
 	 * For The vertical bar chart, we just resize width
 	 */
-	setChartDimensions(dim: ResizeDimension): void {
+	setChartDimensions(dim: ResizeDimension, force: boolean = false): void {
 
-		if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+		if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
 
 			// pin the height to the width
 			this.chartWrapper.chart
@@ -68,7 +68,7 @@ export class VerticalBarChartDirective
 			});
 
 		// Set the initial size of the chart
-		this.setChartDimensions(this.resizeUtil.getSize());
+		this.setChartDimensions(this.resizeUtil.getSize(), true);
 		this.chartWrapper.chart.redraw();
 	}
 

@@ -83,8 +83,21 @@ export class ResizeUtil {
 	 * @returns {ResizeDimension}
 	 */
 	static getActualSize(element: any): ResizeDimension {
-		let width: number = element.clientWidth;
-		let height: number = element.clientHeight;
+		const cs = getComputedStyle(element);
+
+		let paddingX = 0;
+		let paddingY = 0;
+		let borderX = 0;
+		let borderY = 0;
+
+		try { paddingX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight); } catch (e) { /* Do Nothing */ }
+		try { paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom); } catch (e) { /* Do Nothing */ }
+		try { borderX = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth); } catch (e) { /* Do Nothing */ }
+		try { borderY = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth); } catch (e) { /* Do Nothing */ }
+
+		// Element width and height minus padding and border
+		let width: number = element.offsetWidth - paddingX - borderX;
+		let height: number = element.offsetHeight - paddingY - borderY;
 
 		return new ResizeDimension(width, height);
 	}
@@ -111,7 +124,7 @@ export class ResizeUtil {
 		body.style.overflow = 'hidden';
 
 		// The first element child of our selector should be the <div> we injected
-		let rawElement = this.chartElement.node().firstElementChild;
+		let rawElement = this.chartElement.node().parentElement;
 
 		let size = ResizeUtil.getActualSize(rawElement);
 
@@ -123,6 +136,8 @@ export class ResizeUtil {
 
 	/**
 	 * Gets the size of the element (this is the actual size overridden by specified size)
+	 * Actual size should be based on the size of the parent
+	 *
 	 * @returns {ResizeDimension}
 	 */
 	getSize(): ResizeDimension {

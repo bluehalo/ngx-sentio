@@ -38,9 +38,9 @@ export class DonutChartDirective
 	 * For the donut chart, we pin the height to the width
 	 * to keep the aspect ratio correct
 	 */
-	setChartDimensions(dim: ResizeDimension): void {
+	setChartDimensions(dim: ResizeDimension, force: boolean = false): void {
 
-		if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+		if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
 
 			// pin the height to the width
 			this.chartWrapper.chart
@@ -72,7 +72,7 @@ export class DonutChartDirective
 			});
 
 		// Set the initial size of the chart
-		this.setChartDimensions(this.resizeUtil.getSize());
+		this.setChartDimensions(this.resizeUtil.getSize(), true);
 		this.chartWrapper.chart.redraw();
 
 	}

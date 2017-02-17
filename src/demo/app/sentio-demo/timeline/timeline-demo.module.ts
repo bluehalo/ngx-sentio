@@ -3,6 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { SentioModule } from '../../../../sentio/sentio.module';
 import { BasicTimelineLineDemoComponent } from './basic/basic-timeline-line-demo.component';
+import { ResizeTimelineLineDemoComponent } from './resize/resize-timeline-line-demo.component';
+
 
 @NgModule({
 	imports: [
@@ -10,10 +12,12 @@ import { BasicTimelineLineDemoComponent } from './basic/basic-timeline-line-demo
 		SentioModule
 	],
 	declarations: [
-		BasicTimelineLineDemoComponent
+		BasicTimelineLineDemoComponent,
+		ResizeTimelineLineDemoComponent
 	],
 	exports: [
-		BasicTimelineLineDemoComponent
+		BasicTimelineLineDemoComponent,
+		ResizeTimelineLineDemoComponent
 	]
 })
 export class TimelineDemoModule { }

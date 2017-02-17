@@ -51,6 +51,8 @@ export declare class ResizeUtil {
     getActualSize(): ResizeDimension;
     /**
      * Gets the size of the element (this is the actual size overridden by specified size)
+     * Actual size should be based on the size of the parent
+     *
      * @returns {ResizeDimension}
      */
     getSize(): ResizeDimension;

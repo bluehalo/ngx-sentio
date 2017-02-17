@@ -22,7 +22,7 @@ export declare class TimelineDirective implements OnChanges, OnDestroy, OnInit {
     /**
      * For the timeline, both dimensions scale independently
      */
-    setChartDimensions(dim: ResizeDimension): void;
+    setChartDimensions(dim: ResizeDimension, force?: boolean): void;
     /**
      * Did the state of the filter change?
      */

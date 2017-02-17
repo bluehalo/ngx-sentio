@@ -74,8 +74,30 @@ var ResizeUtil = (function () {
      * @returns {ResizeDimension}
      */
     ResizeUtil.getActualSize = function (element) {
-        var width = element.clientWidth;
-        var height = element.clientHeight;
+        var cs = getComputedStyle(element);
+        var paddingX = 0;
+        var paddingY = 0;
+        var borderX = 0;
+        var borderY = 0;
+        try {
+            paddingX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+        }
+        catch (e) { }
+        try {
+            paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+        }
+        catch (e) { }
+        try {
+            borderX = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+        }
+        catch (e) { }
+        try {
+            borderY = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
+        }
+        catch (e) { }
+        // Element width and height minus padding and border
+        var width = element.offsetWidth - paddingX - borderX;
+        var height = element.offsetHeight - paddingY - borderY;
         return new ResizeDimension(width, height);
     };
     /**
@@ -96,7 +118,7 @@ var ResizeUtil = (function () {
         var overflow = body.style.overflow;
         body.style.overflow = 'hidden';
         // The first element child of our selector should be the <div> we injected
-        var rawElement = this.chartElement.node().firstElementChild;
+        var rawElement = this.chartElement.node().parentElement;
         var size = ResizeUtil.getActualSize(rawElement);
         // Reapply the old overflow setting
         body.style.overflow = overflow;
@@ -104,6 +126,8 @@ var ResizeUtil = (function () {
     };
     /**
      * Gets the size of the element (this is the actual size overridden by specified size)
+     * Actual size should be based on the size of the parent
+     *
      * @returns {ResizeDimension}
      */
     ResizeUtil.prototype.getSize = function () {

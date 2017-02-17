@@ -15,7 +15,7 @@ export declare class DonutChartDirective implements OnChanges, OnDestroy, OnInit
      * For the donut chart, we pin the height to the width
      * to keep the aspect ratio correct
      */
-    setChartDimensions(dim: ResizeDimension): void;
+    setChartDimensions(dim: ResizeDimension, force?: boolean): void;
     onResize(event: any): void;
     ngOnInit(): void;
     ngOnDestroy(): void;

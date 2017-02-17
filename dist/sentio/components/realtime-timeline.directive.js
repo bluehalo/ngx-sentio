@@ -27,15 +27,16 @@ var RealtimeTimelineDirective = (function () {
     /**
      * For the timeline, both dimensions scale independently
      */
-    RealtimeTimelineDirective.prototype.setChartDimensions = function (dim) {
+    RealtimeTimelineDirective.prototype.setChartDimensions = function (dim, force) {
+        if (force === void 0) { force = false; }
         var resize = false;
-        if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+        if ((force || this.resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
             // pin the height to the width
             this.chartWrapper.chart
                 .width(dim.width);
             resize = true;
         }
-        if (null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
+        if ((force || this.resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
             // pin the height to the width
             this.chartWrapper.chart
                 .height(dim.height);
@@ -64,7 +65,7 @@ var RealtimeTimelineDirective = (function () {
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize());
+        this.setChartDimensions(this.resizeUtil.getSize(), true);
         this.chartWrapper.chart.redraw();
     };
     RealtimeTimelineDirective.prototype.ngOnDestroy = function () {

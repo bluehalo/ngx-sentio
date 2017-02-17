@@ -24,8 +24,9 @@ var DonutChartDirective = (function () {
      * For the donut chart, we pin the height to the width
      * to keep the aspect ratio correct
      */
-    DonutChartDirective.prototype.setChartDimensions = function (dim) {
-        if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+    DonutChartDirective.prototype.setChartDimensions = function (dim, force) {
+        if (force === void 0) { force = false; }
+        if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
             // pin the height to the width
             this.chartWrapper.chart
                 .width(dim.width)
@@ -48,7 +49,7 @@ var DonutChartDirective = (function () {
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize());
+        this.setChartDimensions(this.resizeUtil.getSize(), true);
         this.chartWrapper.chart.redraw();
     };
     DonutChartDirective.prototype.ngOnDestroy = function () {

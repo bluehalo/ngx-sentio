@@ -42,15 +42,16 @@ var TimelineDirective = (function () {
     /**
      * For the timeline, both dimensions scale independently
      */
-    TimelineDirective.prototype.setChartDimensions = function (dim) {
+    TimelineDirective.prototype.setChartDimensions = function (dim, force) {
+        if (force === void 0) { force = false; }
         var resize = false;
-        if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+        if ((force || this.resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
             // pin the height to the width
             this.chartWrapper.chart
                 .width(dim.width);
             resize = true;
         }
-        if (null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
+        if ((force || this.resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
             // pin the height to the width
             this.chartWrapper.chart
                 .height(dim.height);
@@ -86,7 +87,7 @@ var TimelineDirective = (function () {
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize());
+        this.setChartDimensions(this.resizeUtil.getSize(), true);
         this.chartWrapper.chart.redraw();
         // Set the filter (if it exists)
         if (null != this.filterState) {

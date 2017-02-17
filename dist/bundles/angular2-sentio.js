@@ -1,4 +1,4 @@
-/*! @asymmetrik/angular2-sentio-3.1.1 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.*/
+/*! @asymmetrik/angular2-sentio-3.1.2 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.*/
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3'), require('rxjs')) :
 	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3', 'rxjs'], factory) :
@@ -103,8 +103,30 @@ var ResizeUtil = (function () {
      * @returns {ResizeDimension}
      */
     ResizeUtil.getActualSize = function (element) {
-        var width = element.clientWidth;
-        var height = element.clientHeight;
+        var cs = getComputedStyle(element);
+        var paddingX = 0;
+        var paddingY = 0;
+        var borderX = 0;
+        var borderY = 0;
+        try {
+            paddingX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+        }
+        catch (e) { }
+        try {
+            paddingY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+        }
+        catch (e) { }
+        try {
+            borderX = parseFloat(cs.borderLeftWidth) + parseFloat(cs.borderRightWidth);
+        }
+        catch (e) { }
+        try {
+            borderY = parseFloat(cs.borderTopWidth) + parseFloat(cs.borderBottomWidth);
+        }
+        catch (e) { }
+        // Element width and height minus padding and border
+        var width = element.offsetWidth - paddingX - borderX;
+        var height = element.offsetHeight - paddingY - borderY;
         return new ResizeDimension(width, height);
     };
     /**
@@ -125,7 +147,7 @@ var ResizeUtil = (function () {
         var overflow = body.style.overflow;
         body.style.overflow = 'hidden';
         // The first element child of our selector should be the <div> we injected
-        var rawElement = this.chartElement.node().firstElementChild;
+        var rawElement = this.chartElement.node().parentElement;
         var size = ResizeUtil.getActualSize(rawElement);
         // Reapply the old overflow setting
         body.style.overflow = overflow;
@@ -133,6 +155,8 @@ var ResizeUtil = (function () {
     };
     /**
      * Gets the size of the element (this is the actual size overridden by specified size)
+     * Actual size should be based on the size of the parent
+     *
      * @returns {ResizeDimension}
      */
     ResizeUtil.prototype.getSize = function () {
@@ -174,8 +198,9 @@ var DonutChartDirective = (function () {
      * For the donut chart, we pin the height to the width
      * to keep the aspect ratio correct
      */
-    DonutChartDirective.prototype.setChartDimensions = function (dim) {
-        if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+    DonutChartDirective.prototype.setChartDimensions = function (dim, force) {
+        if (force === void 0) { force = false; }
+        if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
             // pin the height to the width
             this.chartWrapper.chart
                 .width(dim.width)
@@ -198,7 +223,7 @@ var DonutChartDirective = (function () {
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize());
+        this.setChartDimensions(this.resizeUtil.getSize(), true);
         this.chartWrapper.chart.redraw();
     };
     DonutChartDirective.prototype.ngOnDestroy = function () {
@@ -350,15 +375,16 @@ var RealtimeTimelineDirective = (function () {
     /**
      * For the timeline, both dimensions scale independently
      */
-    RealtimeTimelineDirective.prototype.setChartDimensions = function (dim) {
+    RealtimeTimelineDirective.prototype.setChartDimensions = function (dim, force) {
+        if (force === void 0) { force = false; }
         var resize = false;
-        if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+        if ((force || this.resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
             // pin the height to the width
             this.chartWrapper.chart
                 .width(dim.width);
             resize = true;
         }
-        if (null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
+        if ((force || this.resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
             // pin the height to the width
             this.chartWrapper.chart
                 .height(dim.height);
@@ -387,7 +413,7 @@ var RealtimeTimelineDirective = (function () {
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize());
+        this.setChartDimensions(this.resizeUtil.getSize(), true);
         this.chartWrapper.chart.redraw();
     };
     RealtimeTimelineDirective.prototype.ngOnDestroy = function () {
@@ -538,15 +564,16 @@ var TimelineDirective = (function () {
     /**
      * For the timeline, both dimensions scale independently
      */
-    TimelineDirective.prototype.setChartDimensions = function (dim) {
+    TimelineDirective.prototype.setChartDimensions = function (dim, force) {
+        if (force === void 0) { force = false; }
         var resize = false;
-        if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+        if ((force || this.resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
             // pin the height to the width
             this.chartWrapper.chart
                 .width(dim.width);
             resize = true;
         }
-        if (null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
+        if ((force || this.resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
             // pin the height to the width
             this.chartWrapper.chart
                 .height(dim.height);
@@ -582,7 +609,7 @@ var TimelineDirective = (function () {
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize());
+        this.setChartDimensions(this.resizeUtil.getSize(), true);
         this.chartWrapper.chart.redraw();
         // Set the filter (if it exists)
         if (null != this.filterState) {
@@ -718,8 +745,9 @@ var VerticalBarChartDirective = (function () {
     /**
      * For The vertical bar chart, we just resize width
      */
-    VerticalBarChartDirective.prototype.setChartDimensions = function (dim) {
-        if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+    VerticalBarChartDirective.prototype.setChartDimensions = function (dim, force) {
+        if (force === void 0) { force = false; }
+        if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
             // pin the height to the width
             this.chartWrapper.chart
                 .width(dim.width)
@@ -741,7 +769,7 @@ var VerticalBarChartDirective = (function () {
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize());
+        this.setChartDimensions(this.resizeUtil.getSize(), true);
         this.chartWrapper.chart.redraw();
     };
     VerticalBarChartDirective.prototype.ngOnDestroy = function () {
