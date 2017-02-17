@@ -14,6 +14,7 @@ export declare class ResizeUtil {
     resizeSource: Observable<ResizeDimension>;
     resizeObserver: Observer<ResizeDimension>;
     constructor(el: ElementRef, enabled?: boolean, debounce?: number, sample?: number);
+    static parseFloat(value: any, defaultValue: number): number;
     /**
      * Determines the numerical dimension given a string representation
      * Assumes the string is in the form 'NNNNNpx', more specifically
@@ -51,6 +52,8 @@ export declare class ResizeUtil {
     getActualSize(): ResizeDimension;
     /**
      * Gets the size of the element (this is the actual size overridden by specified size)
+     * Actual size should be based on the size of the parent
+     *
      * @returns {ResizeDimension}
      */
     getSize(): ResizeDimension;

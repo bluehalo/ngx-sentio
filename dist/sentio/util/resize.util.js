@@ -36,6 +36,10 @@ var ResizeUtil = (function () {
         }
         this.resizeSource = this.resizeSource.map(function () { return _this.getSize(); });
     }
+    ResizeUtil.parseFloat = function (value, defaultValue) {
+        var toReturn = parseFloat(value);
+        return ((isNaN(toReturn)) ? defaultValue : toReturn);
+    };
     /**
      * Determines the numerical dimension given a string representation
      * Assumes the string is in the form 'NNNNNpx', more specifically
@@ -74,8 +78,14 @@ var ResizeUtil = (function () {
      * @returns {ResizeDimension}
      */
     ResizeUtil.getActualSize = function (element) {
-        var width = element.clientWidth;
-        var height = element.clientHeight;
+        var cs = getComputedStyle(element);
+        var paddingX = ResizeUtil.parseFloat(cs.paddingLeft, 0) + ResizeUtil.parseFloat(cs.paddingRight, 0);
+        var paddingY = ResizeUtil.parseFloat(cs.paddingTop, 0) + ResizeUtil.parseFloat(cs.paddingBottom, 0);
+        var borderX = ResizeUtil.parseFloat(cs.borderLeftWidth, 0) + ResizeUtil.parseFloat(cs.borderRightWidth, 0);
+        var borderY = ResizeUtil.parseFloat(cs.borderTopWidth, 0) + ResizeUtil.parseFloat(cs.borderBottomWidth, 0);
+        // Element width and height minus padding and border
+        var width = element.offsetWidth - paddingX - borderX;
+        var height = element.offsetHeight - paddingY - borderY;
         return new ResizeDimension(width, height);
     };
     /**
@@ -96,7 +106,7 @@ var ResizeUtil = (function () {
         var overflow = body.style.overflow;
         body.style.overflow = 'hidden';
         // The first element child of our selector should be the <div> we injected
-        var rawElement = this.chartElement.node().firstElementChild;
+        var rawElement = this.chartElement.node().parentElement;
         var size = ResizeUtil.getActualSize(rawElement);
         // Reapply the old overflow setting
         body.style.overflow = overflow;
@@ -104,6 +114,8 @@ var ResizeUtil = (function () {
     };
     /**
      * Gets the size of the element (this is the actual size overridden by specified size)
+     * Actual size should be based on the size of the parent
+     *
      * @returns {ResizeDimension}
      */
     ResizeUtil.prototype.getSize = function () {

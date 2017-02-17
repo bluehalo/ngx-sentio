@@ -14,7 +14,7 @@ export declare class VerticalBarChartDirective implements OnChanges, OnDestroy, 
     /**
      * For The vertical bar chart, we just resize width
      */
-    setChartDimensions(dim: ResizeDimension): void;
+    setChartDimensions(dim: ResizeDimension, force?: boolean): void;
     onResize(event: any): void;
     ngOnInit(): void;
     ngOnDestroy(): void;

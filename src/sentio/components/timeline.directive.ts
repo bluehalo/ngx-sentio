@@ -49,11 +49,11 @@ export class TimelineDirective
 	/**
 	 * For the timeline, both dimensions scale independently
 	 */
-	setChartDimensions(dim: ResizeDimension): void {
+	setChartDimensions(dim: ResizeDimension, force: boolean = false): void {
 
 		let resize = false;
 
-		if (null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+		if ((force || this.resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
 
 			// pin the height to the width
 			this.chartWrapper.chart
@@ -62,7 +62,7 @@ export class TimelineDirective
 
 		}
 
-		if (null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
+		if ((force || this.resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
 
 			// pin the height to the width
 			this.chartWrapper.chart
@@ -127,7 +127,7 @@ export class TimelineDirective
 			});
 
 		// Set the initial size of the chart
-		this.setChartDimensions(this.resizeUtil.getSize());
+		this.setChartDimensions(this.resizeUtil.getSize(), true);
 		this.chartWrapper.chart.redraw();
 
 		// Set the filter (if it exists)

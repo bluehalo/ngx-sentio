@@ -40,6 +40,11 @@ export class ResizeUtil {
 		this.resizeSource = this.resizeSource.map(() => this.getSize());
 	}
 
+	static parseFloat(value: any, defaultValue: number): number {
+		let toReturn = parseFloat(value);
+		return ((isNaN(toReturn)) ? defaultValue : toReturn);
+	}
+
 	/**
 	 * Determines the numerical dimension given a string representation
 	 * Assumes the string is in the form 'NNNNNpx', more specifically
@@ -83,8 +88,16 @@ export class ResizeUtil {
 	 * @returns {ResizeDimension}
 	 */
 	static getActualSize(element: any): ResizeDimension {
-		let width: number = element.clientWidth;
-		let height: number = element.clientHeight;
+		const cs = getComputedStyle(element);
+
+		let paddingX = ResizeUtil.parseFloat(cs.paddingLeft, 0) + ResizeUtil.parseFloat(cs.paddingRight, 0);
+		let paddingY = ResizeUtil.parseFloat(cs.paddingTop, 0) + ResizeUtil.parseFloat(cs.paddingBottom, 0);
+		let borderX = ResizeUtil.parseFloat(cs.borderLeftWidth, 0) + ResizeUtil.parseFloat(cs.borderRightWidth, 0);
+		let borderY = ResizeUtil.parseFloat(cs.borderTopWidth, 0) + ResizeUtil.parseFloat(cs.borderBottomWidth, 0);
+
+		// Element width and height minus padding and border
+		let width: number = element.offsetWidth - paddingX - borderX;
+		let height: number = element.offsetHeight - paddingY - borderY;
 
 		return new ResizeDimension(width, height);
 	}
@@ -111,7 +124,7 @@ export class ResizeUtil {
 		body.style.overflow = 'hidden';
 
 		// The first element child of our selector should be the <div> we injected
-		let rawElement = this.chartElement.node().firstElementChild;
+		let rawElement = this.chartElement.node().parentElement;
 
 		let size = ResizeUtil.getActualSize(rawElement);
 
@@ -123,6 +136,8 @@ export class ResizeUtil {
 
 	/**
 	 * Gets the size of the element (this is the actual size overridden by specified size)
+	 * Actual size should be based on the size of the parent
+	 *
 	 * @returns {ResizeDimension}
 	 */
 	getSize(): ResizeDimension {
