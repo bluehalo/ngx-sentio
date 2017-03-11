@@ -1,4 +1,4 @@
-/*! @asymmetrik/angular2-sentio-3.1.2 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.*/
+/*! @asymmetrik/angular2-sentio-3.2.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.*/
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3'), require('rxjs')) :
 	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3', 'rxjs'], factory) :
