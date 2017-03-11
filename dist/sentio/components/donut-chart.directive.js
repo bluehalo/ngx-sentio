@@ -117,5 +117,4 @@ DonutChartDirective = __decorate([
     __metadata("design:paramtypes", [ElementRef])
 ], DonutChartDirective);
 export { DonutChartDirective };
-
 //# sourceMappingURL=donut-chart.directive.js.map

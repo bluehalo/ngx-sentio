@@ -60,5 +60,4 @@ MatrixChartDirective = __decorate([
     __metadata("design:paramtypes", [ElementRef])
 ], MatrixChartDirective);
 export { MatrixChartDirective };
-
 //# sourceMappingURL=matrix-chart.directive.js.map

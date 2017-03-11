@@ -202,5 +202,4 @@ TimelineDirective = __decorate([
     __metadata("design:paramtypes", [ElementRef])
 ], TimelineDirective);
 export { TimelineDirective };
-
 //# sourceMappingURL=timeline.directive.js.map

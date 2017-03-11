@@ -176,5 +176,4 @@ RealtimeTimelineDirective = __decorate([
     __metadata("design:paramtypes", [ElementRef])
 ], RealtimeTimelineDirective);
 export { RealtimeTimelineDirective };
-
 //# sourceMappingURL=realtime-timeline.directive.js.map

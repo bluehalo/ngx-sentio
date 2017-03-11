@@ -10,14 +10,16 @@ import { MatrixChartDirective } from './components/matrix-chart.directive';
 import { RealtimeTimelineDirective } from './components/realtime-timeline.directive';
 import { TimelineDirective } from './components/timeline.directive';
 import { VerticalBarChartDirective } from './components/vertical-bar-chart.directive';
-var SentioModule = (function () {
+var SentioModule = SentioModule_1 = (function () {
     function SentioModule() {
     }
+    SentioModule.forRoot = function () {
+        return { ngModule: SentioModule_1, providers: [] };
+    };
     return SentioModule;
 }());
-SentioModule = __decorate([
+SentioModule = SentioModule_1 = __decorate([
     NgModule({
-        imports: [],
         exports: [
             DonutChartDirective,
             MatrixChartDirective,
@@ -35,5 +37,5 @@ SentioModule = __decorate([
     })
 ], SentioModule);
 export { SentioModule };
-
+var SentioModule_1;
 //# sourceMappingURL=sentio.module.js.map
