@@ -113,5 +113,4 @@ VerticalBarChartDirective = __decorate([
 ], VerticalBarChartDirective);
 export { VerticalBarChartDirective };
 ;
-
 //# sourceMappingURL=vertical-bar-chart.directive.js.map

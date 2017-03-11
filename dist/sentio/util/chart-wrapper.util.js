@@ -24,5 +24,4 @@ var ChartWrapper = (function () {
     return ChartWrapper;
 }());
 export { ChartWrapper };
-
 //# sourceMappingURL=chart-wrapper.util.js.map

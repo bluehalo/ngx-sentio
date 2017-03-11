@@ -135,5 +135,4 @@ var ResizeUtil = (function () {
     return ResizeUtil;
 }());
 export { ResizeUtil };
-
 //# sourceMappingURL=resize.util.js.map

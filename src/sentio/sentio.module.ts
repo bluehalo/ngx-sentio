@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { DonutChartDirective } from './components/donut-chart.directive';
 import { MatrixChartDirective } from './components/matrix-chart.directive';
@@ -7,7 +7,6 @@ import { TimelineDirective } from './components/timeline.directive';
 import { VerticalBarChartDirective } from './components/vertical-bar-chart.directive';
 
 @NgModule({
-	imports: [],
 	exports: [
 		DonutChartDirective,
 		MatrixChartDirective,
@@ -23,4 +22,10 @@ import { VerticalBarChartDirective } from './components/vertical-bar-chart.direc
 		VerticalBarChartDirective
 	]
 })
-export class SentioModule { }
+export class SentioModule {
+
+	static forRoot(): ModuleWithProviders {
+		return { ngModule: SentioModule, providers: [] };
+	}
+
+}

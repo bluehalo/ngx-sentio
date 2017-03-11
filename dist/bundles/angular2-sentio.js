@@ -828,14 +828,16 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-exports.SentioModule = (function () {
+exports.SentioModule = SentioModule_1 = (function () {
     function SentioModule() {
     }
+    SentioModule.forRoot = function () {
+        return { ngModule: SentioModule_1, providers: [] };
+    };
     return SentioModule;
 }());
-exports.SentioModule = __decorate([
+exports.SentioModule = SentioModule_1 = __decorate([
     _angular_core.NgModule({
-        imports: [],
         exports: [
             DonutChartDirective,
             MatrixChartDirective,
@@ -852,6 +854,7 @@ exports.SentioModule = __decorate([
         ]
     })
 ], exports.SentioModule);
+var SentioModule_1;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
