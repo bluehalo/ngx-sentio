@@ -1,12 +1,3 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
@@ -41,23 +32,19 @@ var MatrixChartDirective = (function () {
     };
     return MatrixChartDirective;
 }());
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], MatrixChartDirective.prototype, "model", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Number)
-], MatrixChartDirective.prototype, "duration", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", Object)
-], MatrixChartDirective.prototype, "chartReady", void 0);
-MatrixChartDirective = __decorate([
-    Directive({
-        selector: 'sentioMatrixChart'
-    }),
-    __metadata("design:paramtypes", [ElementRef])
-], MatrixChartDirective);
 export { MatrixChartDirective };
+MatrixChartDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'sentioMatrixChart'
+            },] },
+];
+/** @nocollapse */
+MatrixChartDirective.ctorParameters = function () { return [
+    { type: ElementRef, },
+]; };
+MatrixChartDirective.propDecorators = {
+    'model': [{ type: Input },],
+    'duration': [{ type: Input },],
+    'chartReady': [{ type: Output },],
+};
 //# sourceMappingURL=matrix-chart.directive.js.map

@@ -1,12 +1,3 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
@@ -79,38 +70,23 @@ var VerticalBarChartDirective = (function () {
     };
     return VerticalBarChartDirective;
 }());
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], VerticalBarChartDirective.prototype, "model", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], VerticalBarChartDirective.prototype, "widthExtent", void 0);
-__decorate([
-    Input('resize'),
-    __metadata("design:type", Boolean)
-], VerticalBarChartDirective.prototype, "resizeEnabled", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Number)
-], VerticalBarChartDirective.prototype, "duration", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", Object)
-], VerticalBarChartDirective.prototype, "chartReady", void 0);
-__decorate([
-    HostListener('window:resize', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], VerticalBarChartDirective.prototype, "onResize", null);
-VerticalBarChartDirective = __decorate([
-    Directive({
-        selector: 'sentioVerticalBarChart'
-    }),
-    __metadata("design:paramtypes", [ElementRef])
-], VerticalBarChartDirective);
 export { VerticalBarChartDirective };
+VerticalBarChartDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'sentioVerticalBarChart'
+            },] },
+];
+/** @nocollapse */
+VerticalBarChartDirective.ctorParameters = function () { return [
+    { type: ElementRef, },
+]; };
+VerticalBarChartDirective.propDecorators = {
+    'model': [{ type: Input },],
+    'widthExtent': [{ type: Input },],
+    'resizeEnabled': [{ type: Input, args: ['resize',] },],
+    'duration': [{ type: Input },],
+    'chartReady': [{ type: Output },],
+    'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+};
 ;
 //# sourceMappingURL=vertical-bar-chart.directive.js.map
