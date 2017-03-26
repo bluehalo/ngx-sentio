@@ -1,4 +1,4 @@
-/*! @asymmetrik/angular2-sentio-3.2.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.*/
+/*! @asymmetrik/angular2-sentio-4.0.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.*/
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3'), require('rxjs')) :
 	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3', 'rxjs'], factory) :
@@ -164,15 +164,6 @@ var ResizeUtil = (function () {
     return ResizeUtil;
 }());
 
-var __decorate$1 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var DonutChartDirective = (function () {
     function DonutChartDirective(el) {
         // Chart Ready event
@@ -246,48 +237,24 @@ var DonutChartDirective = (function () {
     };
     return DonutChartDirective;
 }());
-__decorate$1([
-    _angular_core.Input(),
-    __metadata("design:type", Array)
-], DonutChartDirective.prototype, "model", void 0);
-__decorate$1([
-    _angular_core.Input(),
-    __metadata("design:type", Object)
-], DonutChartDirective.prototype, "colorScale", void 0);
-__decorate$1([
-    _angular_core.Input('resize'),
-    __metadata("design:type", Boolean)
-], DonutChartDirective.prototype, "resizeEnabled", void 0);
-__decorate$1([
-    _angular_core.Input(),
-    __metadata("design:type", Number)
-], DonutChartDirective.prototype, "duration", void 0);
-__decorate$1([
-    _angular_core.Output(),
-    __metadata("design:type", Object)
-], DonutChartDirective.prototype, "chartReady", void 0);
-__decorate$1([
-    _angular_core.HostListener('window:resize', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], DonutChartDirective.prototype, "onResize", null);
-DonutChartDirective = __decorate$1([
-    _angular_core.Directive({
-        selector: 'sentioDonutChart'
-    }),
-    __metadata("design:paramtypes", [_angular_core.ElementRef])
-], DonutChartDirective);
+DonutChartDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                selector: 'sentioDonutChart'
+            },] },
+];
+/** @nocollapse */
+DonutChartDirective.ctorParameters = function () { return [
+    { type: _angular_core.ElementRef, },
+]; };
+DonutChartDirective.propDecorators = {
+    'model': [{ type: _angular_core.Input },],
+    'colorScale': [{ type: _angular_core.Input },],
+    'resizeEnabled': [{ type: _angular_core.Input, args: ['resize',] },],
+    'duration': [{ type: _angular_core.Input },],
+    'chartReady': [{ type: _angular_core.Output },],
+    'onResize': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
+};
 
-var __decorate$2 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata$1 = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var MatrixChartDirective = (function () {
     function MatrixChartDirective(el) {
         // Chart Ready event
@@ -319,34 +286,21 @@ var MatrixChartDirective = (function () {
     };
     return MatrixChartDirective;
 }());
-__decorate$2([
-    _angular_core.Input(),
-    __metadata$1("design:type", Array)
-], MatrixChartDirective.prototype, "model", void 0);
-__decorate$2([
-    _angular_core.Input(),
-    __metadata$1("design:type", Number)
-], MatrixChartDirective.prototype, "duration", void 0);
-__decorate$2([
-    _angular_core.Output(),
-    __metadata$1("design:type", Object)
-], MatrixChartDirective.prototype, "chartReady", void 0);
-MatrixChartDirective = __decorate$2([
-    _angular_core.Directive({
-        selector: 'sentioMatrixChart'
-    }),
-    __metadata$1("design:paramtypes", [_angular_core.ElementRef])
-], MatrixChartDirective);
+MatrixChartDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                selector: 'sentioMatrixChart'
+            },] },
+];
+/** @nocollapse */
+MatrixChartDirective.ctorParameters = function () { return [
+    { type: _angular_core.ElementRef, },
+]; };
+MatrixChartDirective.propDecorators = {
+    'model': [{ type: _angular_core.Input },],
+    'duration': [{ type: _angular_core.Input },],
+    'chartReady': [{ type: _angular_core.Output },],
+};
 
-var __decorate$3 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata$2 = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var RealtimeTimelineDirective = (function () {
     function RealtimeTimelineDirective(el) {
         // Chart Ready event
@@ -447,80 +401,32 @@ var RealtimeTimelineDirective = (function () {
     };
     return RealtimeTimelineDirective;
 }());
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Array)
-], RealtimeTimelineDirective.prototype, "model", void 0);
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Array)
-], RealtimeTimelineDirective.prototype, "markers", void 0);
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Array)
-], RealtimeTimelineDirective.prototype, "yExtent", void 0);
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Array)
-], RealtimeTimelineDirective.prototype, "xExtent", void 0);
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Number)
-], RealtimeTimelineDirective.prototype, "delay", void 0);
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Number)
-], RealtimeTimelineDirective.prototype, "fps", void 0);
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Number)
-], RealtimeTimelineDirective.prototype, "interval", void 0);
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Boolean)
-], RealtimeTimelineDirective.prototype, "resizeWidth", void 0);
-__decorate$3([
-    _angular_core.Input(),
-    __metadata$2("design:type", Boolean)
-], RealtimeTimelineDirective.prototype, "resizeHeight", void 0);
-__decorate$3([
-    _angular_core.Output(),
-    __metadata$2("design:type", Object)
-], RealtimeTimelineDirective.prototype, "chartReady", void 0);
-__decorate$3([
-    _angular_core.Output(),
-    __metadata$2("design:type", Object)
-], RealtimeTimelineDirective.prototype, "markerOver", void 0);
-__decorate$3([
-    _angular_core.Output(),
-    __metadata$2("design:type", Object)
-], RealtimeTimelineDirective.prototype, "markerOut", void 0);
-__decorate$3([
-    _angular_core.Output(),
-    __metadata$2("design:type", Object)
-], RealtimeTimelineDirective.prototype, "markerClick", void 0);
-__decorate$3([
-    _angular_core.HostListener('window:resize', ['$event']),
-    __metadata$2("design:type", Function),
-    __metadata$2("design:paramtypes", [Object]),
-    __metadata$2("design:returntype", void 0)
-], RealtimeTimelineDirective.prototype, "onResize", null);
-RealtimeTimelineDirective = __decorate$3([
-    _angular_core.Directive({
-        selector: 'sentioRealtimeTimeline'
-    }),
-    __metadata$2("design:paramtypes", [_angular_core.ElementRef])
-], RealtimeTimelineDirective);
+RealtimeTimelineDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                selector: 'sentioRealtimeTimeline'
+            },] },
+];
+/** @nocollapse */
+RealtimeTimelineDirective.ctorParameters = function () { return [
+    { type: _angular_core.ElementRef, },
+]; };
+RealtimeTimelineDirective.propDecorators = {
+    'model': [{ type: _angular_core.Input },],
+    'markers': [{ type: _angular_core.Input },],
+    'yExtent': [{ type: _angular_core.Input },],
+    'xExtent': [{ type: _angular_core.Input },],
+    'delay': [{ type: _angular_core.Input },],
+    'fps': [{ type: _angular_core.Input },],
+    'interval': [{ type: _angular_core.Input },],
+    'resizeWidth': [{ type: _angular_core.Input },],
+    'resizeHeight': [{ type: _angular_core.Input },],
+    'chartReady': [{ type: _angular_core.Output },],
+    'markerOver': [{ type: _angular_core.Output },],
+    'markerOut': [{ type: _angular_core.Output },],
+    'markerClick': [{ type: _angular_core.Output },],
+    'onResize': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
+};
 
-var __decorate$4 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata$3 = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var TimelineDirective = (function () {
     function TimelineDirective(el) {
         // Chart Ready event
@@ -647,80 +553,32 @@ var TimelineDirective = (function () {
     };
     return TimelineDirective;
 }());
-__decorate$4([
-    _angular_core.Input(),
-    __metadata$3("design:type", Array)
-], TimelineDirective.prototype, "model", void 0);
-__decorate$4([
-    _angular_core.Input(),
-    __metadata$3("design:type", Array)
-], TimelineDirective.prototype, "markers", void 0);
-__decorate$4([
-    _angular_core.Input(),
-    __metadata$3("design:type", Array)
-], TimelineDirective.prototype, "yExtent", void 0);
-__decorate$4([
-    _angular_core.Input(),
-    __metadata$3("design:type", Array)
-], TimelineDirective.prototype, "xExtent", void 0);
-__decorate$4([
-    _angular_core.Input(),
-    __metadata$3("design:type", Boolean)
-], TimelineDirective.prototype, "resizeWidth", void 0);
-__decorate$4([
-    _angular_core.Input(),
-    __metadata$3("design:type", Boolean)
-], TimelineDirective.prototype, "resizeHeight", void 0);
-__decorate$4([
-    _angular_core.Output(),
-    __metadata$3("design:type", Object)
-], TimelineDirective.prototype, "chartReady", void 0);
-__decorate$4([
-    _angular_core.Input(),
-    __metadata$3("design:type", Boolean)
-], TimelineDirective.prototype, "filterEnabled", void 0);
-__decorate$4([
-    _angular_core.Input('filter'),
-    __metadata$3("design:type", Array)
-], TimelineDirective.prototype, "filterState", void 0);
-__decorate$4([
-    _angular_core.Output(),
-    __metadata$3("design:type", Object)
-], TimelineDirective.prototype, "filterChange", void 0);
-__decorate$4([
-    _angular_core.Output(),
-    __metadata$3("design:type", _angular_core.EventEmitter)
-], TimelineDirective.prototype, "markerOver", void 0);
-__decorate$4([
-    _angular_core.Output(),
-    __metadata$3("design:type", _angular_core.EventEmitter)
-], TimelineDirective.prototype, "markerOut", void 0);
-__decorate$4([
-    _angular_core.Output(),
-    __metadata$3("design:type", _angular_core.EventEmitter)
-], TimelineDirective.prototype, "markerClick", void 0);
-__decorate$4([
-    _angular_core.HostListener('window:resize', ['$event']),
-    __metadata$3("design:type", Function),
-    __metadata$3("design:paramtypes", [Object]),
-    __metadata$3("design:returntype", void 0)
-], TimelineDirective.prototype, "onResize", null);
-TimelineDirective = __decorate$4([
-    _angular_core.Directive({
-        selector: 'sentioTimeline'
-    }),
-    __metadata$3("design:paramtypes", [_angular_core.ElementRef])
-], TimelineDirective);
+TimelineDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                selector: 'sentioTimeline'
+            },] },
+];
+/** @nocollapse */
+TimelineDirective.ctorParameters = function () { return [
+    { type: _angular_core.ElementRef, },
+]; };
+TimelineDirective.propDecorators = {
+    'model': [{ type: _angular_core.Input },],
+    'markers': [{ type: _angular_core.Input },],
+    'yExtent': [{ type: _angular_core.Input },],
+    'xExtent': [{ type: _angular_core.Input },],
+    'resizeWidth': [{ type: _angular_core.Input },],
+    'resizeHeight': [{ type: _angular_core.Input },],
+    'chartReady': [{ type: _angular_core.Output },],
+    'filterEnabled': [{ type: _angular_core.Input },],
+    'filterState': [{ type: _angular_core.Input, args: ['filter',] },],
+    'filterChange': [{ type: _angular_core.Output },],
+    'markerOver': [{ type: _angular_core.Output },],
+    'markerOut': [{ type: _angular_core.Output },],
+    'markerClick': [{ type: _angular_core.Output },],
+    'onResize': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
+};
 
-var __decorate$5 = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata$4 = (undefined && undefined.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 var VerticalBarChartDirective = (function () {
     function VerticalBarChartDirective(el) {
         // Chart Ready event
@@ -789,72 +647,54 @@ var VerticalBarChartDirective = (function () {
     };
     return VerticalBarChartDirective;
 }());
-__decorate$5([
-    _angular_core.Input(),
-    __metadata$4("design:type", Array)
-], VerticalBarChartDirective.prototype, "model", void 0);
-__decorate$5([
-    _angular_core.Input(),
-    __metadata$4("design:type", Array)
-], VerticalBarChartDirective.prototype, "widthExtent", void 0);
-__decorate$5([
-    _angular_core.Input('resize'),
-    __metadata$4("design:type", Boolean)
-], VerticalBarChartDirective.prototype, "resizeEnabled", void 0);
-__decorate$5([
-    _angular_core.Input(),
-    __metadata$4("design:type", Number)
-], VerticalBarChartDirective.prototype, "duration", void 0);
-__decorate$5([
-    _angular_core.Output(),
-    __metadata$4("design:type", Object)
-], VerticalBarChartDirective.prototype, "chartReady", void 0);
-__decorate$5([
-    _angular_core.HostListener('window:resize', ['$event']),
-    __metadata$4("design:type", Function),
-    __metadata$4("design:paramtypes", [Object]),
-    __metadata$4("design:returntype", void 0)
-], VerticalBarChartDirective.prototype, "onResize", null);
-VerticalBarChartDirective = __decorate$5([
-    _angular_core.Directive({
-        selector: 'sentioVerticalBarChart'
-    }),
-    __metadata$4("design:paramtypes", [_angular_core.ElementRef])
-], VerticalBarChartDirective);
-
-var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+VerticalBarChartDirective.decorators = [
+    { type: _angular_core.Directive, args: [{
+                selector: 'sentioVerticalBarChart'
+            },] },
+];
+/** @nocollapse */
+VerticalBarChartDirective.ctorParameters = function () { return [
+    { type: _angular_core.ElementRef, },
+]; };
+VerticalBarChartDirective.propDecorators = {
+    'model': [{ type: _angular_core.Input },],
+    'widthExtent': [{ type: _angular_core.Input },],
+    'resizeEnabled': [{ type: _angular_core.Input, args: ['resize',] },],
+    'duration': [{ type: _angular_core.Input },],
+    'chartReady': [{ type: _angular_core.Output },],
+    'onResize': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
 };
-exports.SentioModule = SentioModule_1 = (function () {
+
+var SentioModule = (function () {
     function SentioModule() {
     }
     SentioModule.forRoot = function () {
-        return { ngModule: SentioModule_1, providers: [] };
+        return { ngModule: SentioModule, providers: [] };
     };
     return SentioModule;
 }());
-exports.SentioModule = SentioModule_1 = __decorate([
-    _angular_core.NgModule({
-        exports: [
-            DonutChartDirective,
-            MatrixChartDirective,
-            RealtimeTimelineDirective,
-            TimelineDirective,
-            VerticalBarChartDirective
-        ],
-        declarations: [
-            DonutChartDirective,
-            MatrixChartDirective,
-            RealtimeTimelineDirective,
-            TimelineDirective,
-            VerticalBarChartDirective
-        ]
-    })
-], exports.SentioModule);
-var SentioModule_1;
+SentioModule.decorators = [
+    { type: _angular_core.NgModule, args: [{
+                exports: [
+                    DonutChartDirective,
+                    MatrixChartDirective,
+                    RealtimeTimelineDirective,
+                    TimelineDirective,
+                    VerticalBarChartDirective
+                ],
+                declarations: [
+                    DonutChartDirective,
+                    MatrixChartDirective,
+                    RealtimeTimelineDirective,
+                    TimelineDirective,
+                    VerticalBarChartDirective
+                ]
+            },] },
+];
+/** @nocollapse */
+SentioModule.ctorParameters = function () { return []; };
+
+exports.SentioModule = SentioModule;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

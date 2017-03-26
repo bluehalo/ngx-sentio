@@ -1,12 +1,3 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
@@ -137,69 +128,30 @@ var TimelineDirective = (function () {
     };
     return TimelineDirective;
 }());
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], TimelineDirective.prototype, "model", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], TimelineDirective.prototype, "markers", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], TimelineDirective.prototype, "yExtent", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], TimelineDirective.prototype, "xExtent", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Boolean)
-], TimelineDirective.prototype, "resizeWidth", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Boolean)
-], TimelineDirective.prototype, "resizeHeight", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", Object)
-], TimelineDirective.prototype, "chartReady", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Boolean)
-], TimelineDirective.prototype, "filterEnabled", void 0);
-__decorate([
-    Input('filter'),
-    __metadata("design:type", Array)
-], TimelineDirective.prototype, "filterState", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", Object)
-], TimelineDirective.prototype, "filterChange", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
-], TimelineDirective.prototype, "markerOver", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
-], TimelineDirective.prototype, "markerOut", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", EventEmitter)
-], TimelineDirective.prototype, "markerClick", void 0);
-__decorate([
-    HostListener('window:resize', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], TimelineDirective.prototype, "onResize", null);
-TimelineDirective = __decorate([
-    Directive({
-        selector: 'sentioTimeline'
-    }),
-    __metadata("design:paramtypes", [ElementRef])
-], TimelineDirective);
 export { TimelineDirective };
+TimelineDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'sentioTimeline'
+            },] },
+];
+/** @nocollapse */
+TimelineDirective.ctorParameters = function () { return [
+    { type: ElementRef, },
+]; };
+TimelineDirective.propDecorators = {
+    'model': [{ type: Input },],
+    'markers': [{ type: Input },],
+    'yExtent': [{ type: Input },],
+    'xExtent': [{ type: Input },],
+    'resizeWidth': [{ type: Input },],
+    'resizeHeight': [{ type: Input },],
+    'chartReady': [{ type: Output },],
+    'filterEnabled': [{ type: Input },],
+    'filterState': [{ type: Input, args: ['filter',] },],
+    'filterChange': [{ type: Output },],
+    'markerOver': [{ type: Output },],
+    'markerOut': [{ type: Output },],
+    'markerClick': [{ type: Output },],
+    'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+};
 //# sourceMappingURL=timeline.directive.js.map

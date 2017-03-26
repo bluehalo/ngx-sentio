@@ -1,12 +1,3 @@
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
@@ -111,69 +102,30 @@ var RealtimeTimelineDirective = (function () {
     };
     return RealtimeTimelineDirective;
 }());
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], RealtimeTimelineDirective.prototype, "model", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], RealtimeTimelineDirective.prototype, "markers", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], RealtimeTimelineDirective.prototype, "yExtent", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Array)
-], RealtimeTimelineDirective.prototype, "xExtent", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Number)
-], RealtimeTimelineDirective.prototype, "delay", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Number)
-], RealtimeTimelineDirective.prototype, "fps", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Number)
-], RealtimeTimelineDirective.prototype, "interval", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Boolean)
-], RealtimeTimelineDirective.prototype, "resizeWidth", void 0);
-__decorate([
-    Input(),
-    __metadata("design:type", Boolean)
-], RealtimeTimelineDirective.prototype, "resizeHeight", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", Object)
-], RealtimeTimelineDirective.prototype, "chartReady", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", Object)
-], RealtimeTimelineDirective.prototype, "markerOver", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", Object)
-], RealtimeTimelineDirective.prototype, "markerOut", void 0);
-__decorate([
-    Output(),
-    __metadata("design:type", Object)
-], RealtimeTimelineDirective.prototype, "markerClick", void 0);
-__decorate([
-    HostListener('window:resize', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", void 0)
-], RealtimeTimelineDirective.prototype, "onResize", null);
-RealtimeTimelineDirective = __decorate([
-    Directive({
-        selector: 'sentioRealtimeTimeline'
-    }),
-    __metadata("design:paramtypes", [ElementRef])
-], RealtimeTimelineDirective);
 export { RealtimeTimelineDirective };
+RealtimeTimelineDirective.decorators = [
+    { type: Directive, args: [{
+                selector: 'sentioRealtimeTimeline'
+            },] },
+];
+/** @nocollapse */
+RealtimeTimelineDirective.ctorParameters = function () { return [
+    { type: ElementRef, },
+]; };
+RealtimeTimelineDirective.propDecorators = {
+    'model': [{ type: Input },],
+    'markers': [{ type: Input },],
+    'yExtent': [{ type: Input },],
+    'xExtent': [{ type: Input },],
+    'delay': [{ type: Input },],
+    'fps': [{ type: Input },],
+    'interval': [{ type: Input },],
+    'resizeWidth': [{ type: Input },],
+    'resizeHeight': [{ type: Input },],
+    'chartReady': [{ type: Output },],
+    'markerOver': [{ type: Output },],
+    'markerOut': [{ type: Output },],
+    'markerClick': [{ type: Output },],
+    'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+};
 //# sourceMappingURL=realtime-timeline.directive.js.map
