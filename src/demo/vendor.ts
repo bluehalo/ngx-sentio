@@ -10,9 +10,9 @@
  *
  *   Global Imports - Dependencies that are not polyfills, but are not directly imported elsewhere in the app
  *
- *   Angular2 Imports - All @angular dependencies
+ *   Angular Imports - All @angular dependencies
  *
- *   Angular2 Third-Party - All angular-specific third-party dependencies
+ *   Angular Third-Party - All angular-specific third-party dependencies
  *
  *   Other Dependencies - All other third-party dependencies
  */
@@ -27,14 +27,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/css/bootstrap-theme.css';
 
 
-// Angular2 Imports
+// Angular Imports
 import '@angular/common';
 import '@angular/core';
 import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
+import '@angular/router';
 
 
-// Angular2 Third-Party
+// Angular Third-Party
 
 
 // Other Dependencies
