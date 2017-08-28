@@ -1,8 +1,8 @@
-/*! @asymmetrik/angular2-sentio - 4.3.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
+/*! @asymmetrik/ngx-sentio - 4.4.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3'), require('rxjs')) :
 	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3', 'rxjs'], factory) :
-	(factory((global.angular2Sentio = global.angular2Sentio || {}),global.ng.core,global.sentio,global.d3,global.Rx));
+	(factory((global.ngxSentio = global.ngxSentio || {}),global.ng.core,global.sentio,global.d3,global.Rx));
 }(this, (function (exports,_angular_core,sentio,d3,rxjs) { 'use strict';
 
 /**
@@ -699,4 +699,4 @@ exports.SentioModule = SentioModule;
 Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
-//# sourceMappingURL=angular2-sentio.js.map
+//# sourceMappingURL=ngx-sentio.js.map
