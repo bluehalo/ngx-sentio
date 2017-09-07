@@ -36,11 +36,11 @@
 		"@angular/platform-browser-dynamic": "4",
 		"@angular/router": "4",
 
-		"@asymmetrik/sentio": "3",
+		"@asymmetrik/sentio": "4",
 		"bootstrap": "3",
 
-		"d3": "4.6",
-		"@types/d3": "4.5",
+		"d3": "4.10",
+		"@types/d3": "4.10",
 
 		"core-js": "2.4",
 
