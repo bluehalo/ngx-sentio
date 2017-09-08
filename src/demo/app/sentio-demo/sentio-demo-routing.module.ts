@@ -1,18 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { BasicDonutChartDemoComponent } from './donut-chart/basic/basic-donut-chart-demo.component';
-import { BasicMatrixChartDemoComponent } from './matrix-chart/basic/basic-matrix-chart-demo.component';
-import { BasicVerticalBarChartDemoComponent } from './vertical-bar/basic/basic-vertical-bar-chart-demo.component';
-import { BasicRealtimeTimelineLineDemoComponent } from './realtime-timeline/basic/basic-realtime-timeline-line-demo.component';
-import { BasicTimelineLineDemoComponent } from './timeline/basic/basic-timeline-line-demo.component';
-import { ResizeTimelineLineDemoComponent } from './timeline/resize/resize-timeline-line-demo.component';
+import { BasicDonutChartDemoComponent } from './charts/donut/basic/basic-donut-chart-demo.component';
+import { BasicMatrixChartDemoComponent } from './charts/matrix/basic/basic-matrix-chart-demo.component';
+import { BasicVerticalBarChartDemoComponent } from './charts/vertical-bar/basic/basic-vertical-bar-chart-demo.component';
+import { BasicRealtimeTimelineLineDemoComponent } from './timelines/realtime/basic/basic-realtime-timeline-line-demo.component';
+import { BasicTimelineLineDemoComponent } from './timelines/basic/basic-timeline-line-demo.component';
+import { ResizeTimelineLineDemoComponent } from './timelines/resize/resize-timeline-line-demo.component';
+import { ZoomableTimelineLineDemoComponent } from './timelines/zoomable/zoomable-timeline-line-demo.component';
 
 @NgModule({
 	imports: [
 		RouterModule.forChild([
 			{
-				path: 'chart',
+				path: 'sentio',
 				children: [
 					{
 						path: '',
@@ -20,28 +21,32 @@ import { ResizeTimelineLineDemoComponent } from './timeline/resize/resize-timeli
 						redirectTo: '/'
 					},
 					{
-						path: 'donut',
+						path: 'charts/donut',
 						component: BasicDonutChartDemoComponent
 					},
 					{
-						path: 'matrix',
+						path: 'charts/matrix',
 						component: BasicMatrixChartDemoComponent
 					},
 					{
-						path: 'verticalBars',
+						path: 'charts/verticalBars',
 						component: BasicVerticalBarChartDemoComponent
 					},
 					{
-						path: 'timeline-basic',
+						path: 'timelines/basic',
 						component: BasicTimelineLineDemoComponent
 					},
 					{
-						path: 'timeline-resize',
+						path: 'timelines/resize',
 						component: ResizeTimelineLineDemoComponent
 					},
 					{
-						path: 'realtimeTimeline',
+						path: 'timelines/realtime-basic',
 						component: BasicRealtimeTimelineLineDemoComponent
+					},
+					{
+						path: 'timelines/zoomable',
+						component: ZoomableTimelineLineDemoComponent
 					}
 				]
 			},

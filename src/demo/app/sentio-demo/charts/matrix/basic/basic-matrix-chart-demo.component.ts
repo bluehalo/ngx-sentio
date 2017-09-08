@@ -4,7 +4,7 @@ import * as sentio from '@asymmetrik/sentio';
 
 @Component({
 	selector: 'basic-matrix-chart-demo',
-	templateUrl: './basic-matrix-chart-demo.component.html'
+	templateUrl: 'basic-matrix-chart-demo.component.html'
 })
 export class BasicMatrixChartDemoComponent
 implements OnInit {

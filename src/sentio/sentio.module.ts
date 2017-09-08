@@ -1,10 +1,10 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
-import { DonutChartDirective } from './components/donut-chart.directive';
-import { MatrixChartDirective } from './components/matrix-chart.directive';
-import { RealtimeTimelineDirective } from './components/realtime-timeline.directive';
-import { TimelineDirective } from './components/timeline.directive';
-import { VerticalBarChartDirective } from './components/vertical-bar-chart.directive';
+import { DonutChartDirective } from './charts/donut/donut-chart.directive';
+import { MatrixChartDirective } from './charts/matrix/matrix-chart.directive';
+import { RealtimeTimelineDirective } from './timelines/realtime/realtime-timeline.directive';
+import { TimelineDirective } from './timelines/timeline.directive';
+import { VerticalBarChartDirective } from './charts/vertical-bar/vertical-bar-chart.directive';
 
 @NgModule({
 	exports: [

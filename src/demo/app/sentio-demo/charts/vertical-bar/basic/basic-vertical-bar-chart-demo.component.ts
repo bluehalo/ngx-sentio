@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
 	selector: 'basic-vertical-bar-chart-demo',
-	templateUrl: './basic-vertical-bar-chart-demo.component.html'
+	templateUrl: 'basic-vertical-bar-chart-demo.component.html'
 })
 export class BasicVerticalBarChartDemoComponent {
 

@@ -5,11 +5,8 @@ import { RouterModule } from '@angular/router';
 import { SentioDemoComponent } from './sentio-demo.component';
 import { SentioDemoRoutingModule } from './sentio-demo-routing.module';
 
-import { DonutChartDemoModule } from './donut-chart/donut-chart-demo.module';
-import { MatrixChartDemoModule } from './matrix-chart/matrix-chart-demo.module';
-import { RealtimeTimelineDemoModule } from './realtime-timeline/realtime-timeline-demo.module';
-import { TimelineDemoModule } from './timeline/timeline-demo.module';
-import { VerticalBarChartDemoModule } from './vertical-bar/vertical-bars-demo.module';
+import { ChartsDemoModule } from './charts/charts-demo.module';
+import { TimelinesDemoModule } from './timelines/timelines-demo.module';
 
 
 @NgModule({
@@ -19,11 +16,8 @@ import { VerticalBarChartDemoModule } from './vertical-bar/vertical-bars-demo.mo
 
 		SentioDemoRoutingModule,
 
-		DonutChartDemoModule,
-		MatrixChartDemoModule,
-		RealtimeTimelineDemoModule,
-		TimelineDemoModule,
-		VerticalBarChartDemoModule
+		ChartsDemoModule,
+		TimelinesDemoModule
 	],
 	declarations: [
 		SentioDemoComponent

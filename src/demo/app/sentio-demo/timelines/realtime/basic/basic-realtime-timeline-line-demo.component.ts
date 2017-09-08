@@ -4,7 +4,7 @@ import * as sentio from '@asymmetrik/sentio';
 
 @Component({
 	selector: 'basic-realtime-timeline-line-demo',
-	templateUrl: './basic-realtime-timeline-line-demo.component.html'
+	templateUrl: 'basic-realtime-timeline-line-demo.component.html'
 })
 export class BasicRealtimeTimelineLineDemoComponent
 implements OnInit {

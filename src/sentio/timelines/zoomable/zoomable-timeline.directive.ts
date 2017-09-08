@@ -1,45 +1,35 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange} from '@angular/core';
-
+import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 
-import { ChartWrapper } from '../util/chart-wrapper.util';
-import { ResizeDimension, ResizeUtil } from '../util/resize.util';
+import { ChartWrapper } from '../../util/chart-wrapper.util';
+import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
 
 
 @Directive({
-	selector: 'sentioRealtimeTimeline'
+	selector: 'sentioZoomableTimeline'
 })
-export class RealtimeTimelineDirective
+export class ZoomableTimelineDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: any[];
-	@Input() markers: any[];
+	model: any[];
+	markers: any[];
 
-	@Input() yExtent: [number, number];
-	@Input() xExtent: [number, number];
-
-	@Input() delay: number;
-	@Input() fps: number;
-	@Input() interval: number;
+	@Input() yExtent: [ number, number ];
+	@Input() xExtent: [ number, number ];
 
 	@Input() resizeWidth: boolean;
 	@Input() resizeHeight: boolean;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<sentio.chart.RealtimeTimelineChart>();
+	@Output() chartReady = new EventEmitter<sentio.chart.TimelineChart>();
 
-	// Interaction events
-	@Output() markerOver = new EventEmitter<any>();
-	@Output() markerOut = new EventEmitter<any>();
-	@Output() markerClick = new EventEmitter<any>();
-
-	chartWrapper: ChartWrapper<sentio.chart.RealtimeTimelineChart>;
+	chartWrapper: ChartWrapper<sentio.chart.TimelineChart>;
 	resizeUtil: ResizeUtil;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper<sentio.chart.RealtimeTimelineChart>(el, sentio.chart.realtimeTimeline(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<sentio.chart.TimelineChart>(el, sentio.chart.timeline(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
@@ -86,10 +76,6 @@ export class RealtimeTimelineDirective
 		// Initialize the chart
 		this.chartWrapper.initialize();
 
-		// register for the marker events
-		this.chartWrapper.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
-		this.chartWrapper.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
-		this.chartWrapper.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
 
 		// Set up the resize callback
 		this.resizeUtil.resizeSource
@@ -134,17 +120,6 @@ export class RealtimeTimelineDirective
 			redraw = redraw || !changes['xExtent'].isFirstChange();
 		}
 
-		if (changes['fps']) {
-			this.chartWrapper.chart.fps(this.fps);
-		}
-		if (changes['delay']) {
-			this.chartWrapper.chart.delay(this.delay);
-			redraw = redraw || !changes['delay'].isFirstChange();
-		}
-		if (changes['interval']) {
-			this.chartWrapper.chart.interval(this.interval);
-			redraw = redraw || !changes['interval'].isFirstChange();
-		}
 
 		// Only redraw once if necessary
 		if (resize) {

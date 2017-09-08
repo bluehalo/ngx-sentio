@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
 	selector: 'basic-timeline-line-demo',
-	templateUrl: './basic-timeline-line-demo.component.html'
+	templateUrl: 'basic-timeline-line-demo.component.html'
 })
 export class BasicTimelineLineDemoComponent
 implements OnInit {

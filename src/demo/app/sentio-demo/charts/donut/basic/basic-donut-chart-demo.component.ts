@@ -5,7 +5,7 @@ import * as d3 from 'd3';
 
 @Component({
 	selector: 'basic-donut-chart-demo',
-	templateUrl: './basic-donut-chart-demo.component.html'
+	templateUrl: 'basic-donut-chart-demo.component.html'
 })
 export class BasicDonutChartDemoComponent
 implements OnInit {
