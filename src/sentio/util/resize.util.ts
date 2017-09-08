@@ -41,7 +41,7 @@ export class ResizeUtil {
 	}
 
 	static parseFloat(value: any, defaultValue: number): number {
-		let toReturn = parseFloat(value);
+		const toReturn = parseFloat(value);
 		return ((isNaN(toReturn)) ? defaultValue : toReturn);
 	}
 
@@ -74,8 +74,8 @@ export class ResizeUtil {
 	 * @returns {ResizeDimension}
 	 */
 	static getSpecifiedSize(element: any): ResizeDimension {
-		let width: number = element.attributes.width || ResizeUtil.getPixelDimension(element.style.width);
-		let height: number = element.attributes.height || ResizeUtil.getPixelDimension(element.style.height);
+		const width: number = element.attributes.width || ResizeUtil.getPixelDimension(element.style.width);
+		const height: number = element.attributes.height || ResizeUtil.getPixelDimension(element.style.height);
 
 		return new ResizeDimension(width, height);
 	}
@@ -90,14 +90,14 @@ export class ResizeUtil {
 	static getActualSize(element: any): ResizeDimension {
 		const cs = getComputedStyle(element);
 
-		let paddingX = ResizeUtil.parseFloat(cs.paddingLeft, 0) + ResizeUtil.parseFloat(cs.paddingRight, 0);
-		let paddingY = ResizeUtil.parseFloat(cs.paddingTop, 0) + ResizeUtil.parseFloat(cs.paddingBottom, 0);
-		let borderX = ResizeUtil.parseFloat(cs.borderLeftWidth, 0) + ResizeUtil.parseFloat(cs.borderRightWidth, 0);
-		let borderY = ResizeUtil.parseFloat(cs.borderTopWidth, 0) + ResizeUtil.parseFloat(cs.borderBottomWidth, 0);
+		const paddingX = ResizeUtil.parseFloat(cs.paddingLeft, 0) + ResizeUtil.parseFloat(cs.paddingRight, 0);
+		const paddingY = ResizeUtil.parseFloat(cs.paddingTop, 0) + ResizeUtil.parseFloat(cs.paddingBottom, 0);
+		const borderX = ResizeUtil.parseFloat(cs.borderLeftWidth, 0) + ResizeUtil.parseFloat(cs.borderRightWidth, 0);
+		const borderY = ResizeUtil.parseFloat(cs.borderTopWidth, 0) + ResizeUtil.parseFloat(cs.borderBottomWidth, 0);
 
 		// Element width and height minus padding and border
-		let width: number = element.offsetWidth - paddingX - borderX;
-		let height: number = element.offsetHeight - paddingY - borderY;
+		const width: number = element.offsetWidth - paddingX - borderX;
+		const height: number = element.offsetHeight - paddingY - borderY;
 
 		return new ResizeDimension(width, height);
 	}
@@ -117,16 +117,16 @@ export class ResizeUtil {
 	getActualSize(): ResizeDimension {
 
 		// Get the raw body element
-		let body = document.body;
+		const body = document.body;
 
 		// Cache the old overflow style
-		let overflow: string = body.style.overflow;
+		const overflow: string = body.style.overflow;
 		body.style.overflow = 'hidden';
 
 		// The first element child of our selector should be the <div> we injected
-		let rawElement = this.chartElement.node().parentElement;
+		const rawElement = this.chartElement.node().parentElement;
 
-		let size = ResizeUtil.getActualSize(rawElement);
+		const size = ResizeUtil.getActualSize(rawElement);
 
 		// Reapply the old overflow setting
 		body.style.overflow = overflow;
@@ -141,8 +141,8 @@ export class ResizeUtil {
 	 * @returns {ResizeDimension}
 	 */
 	getSize(): ResizeDimension {
-		let specifiedSize = this.getSpecifiedSize();
-		let size = this.getActualSize();
+		const specifiedSize = this.getSpecifiedSize();
+		const size = this.getActualSize();
 
 		if (null != specifiedSize.height) {
 			size.height = specifiedSize.height;

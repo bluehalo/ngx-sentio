@@ -20,30 +20,30 @@ implements OnInit {
 		this.chart = chart;
 
 		this.play();
-	};
+	}
 
 	eventHandler(msg: string, event: any): void {
 		// tslint:disable-next-line:no-console
 		console.log({ msg, event });
-	};
+	}
 
 	play(): void {
 		this.chart.start();
-	};
+	}
 
 	pause(): void {
 		this.chart.stop();
-	};
+	}
 
 	@HostListener('mouseup', ['$event'])
 	onMouseUp(): void {
 		this.markers.push([ Date.now(), 'Click' ]);
 
 		// Remove old markers
-		let markers = this.markers;
-		let hwm = this.bins.model().hwm();
-		let binCount = this.bins.model().count();
-		let binSize = this.bins.model().size();
+		const markers = this.markers;
+		const hwm = this.bins.model().hwm();
+		const binCount = this.bins.model().count();
+		const binSize = this.bins.model().size();
 
 		while (markers.length > 0 && markers[0][0] < hwm - (binCount * binSize)) {
 			this.markers.shift();
@@ -58,7 +58,7 @@ implements OnInit {
 	ngOnInit(): void {
 		this.bins.model()
 			.updateBin((bin: any[]) => { bin[1] += 1; })
-			.createSeed(() => { return 0; });
+			.createSeed(() => 0);
 
 		this.model = [
 			{ key: 'series1', values: this.bins.bins() }

@@ -1,7 +1,7 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
-var MatrixChartDirective = (function () {
+var MatrixChartDirective = /** @class */ (function () {
     function MatrixChartDirective(el) {
         // Chart Ready event
         this.chartReady = new EventEmitter();
@@ -30,21 +30,21 @@ var MatrixChartDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    MatrixChartDirective.decorators = [
+        { type: Directive, args: [{
+                    selector: 'sentioMatrixChart'
+                },] },
+    ];
+    /** @nocollapse */
+    MatrixChartDirective.ctorParameters = function () { return [
+        { type: ElementRef, },
+    ]; };
+    MatrixChartDirective.propDecorators = {
+        'model': [{ type: Input },],
+        'duration': [{ type: Input },],
+        'chartReady': [{ type: Output },],
+    };
     return MatrixChartDirective;
 }());
 export { MatrixChartDirective };
-MatrixChartDirective.decorators = [
-    { type: Directive, args: [{
-                selector: 'sentioMatrixChart'
-            },] },
-];
-/** @nocollapse */
-MatrixChartDirective.ctorParameters = function () { return [
-    { type: ElementRef, },
-]; };
-MatrixChartDirective.propDecorators = {
-    'model': [{ type: Input },],
-    'duration': [{ type: Input },],
-    'chartReady': [{ type: Output },],
-};
 //# sourceMappingURL=matrix-chart.directive.js.map

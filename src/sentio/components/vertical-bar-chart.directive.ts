@@ -106,4 +106,4 @@ export class VerticalBarChartDirective
 		}
 	}
 
-};
+}

@@ -1,14 +1,14 @@
-/*! @asymmetrik/ngx-sentio - 4.4.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
+/*! @asymmetrik/ngx-sentio - 4.5.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3'), require('rxjs')) :
 	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3', 'rxjs'], factory) :
-	(factory((global.ngxSentio = global.ngxSentio || {}),global.ng.core,global.sentio,global.d3,global.Rx));
-}(this, (function (exports,_angular_core,sentio,d3,rxjs) { 'use strict';
+	(factory((global.ngxSentio = {}),global.ng.core,global.sentio,global.d3,global.Rx));
+}(this, (function (exports,core,sentio,d3,rxjs) { 'use strict';
 
 /**
  * Wrapper for chart info
  */
-var ChartWrapper = (function () {
+var ChartWrapper = /** @class */ (function () {
     /**
      * Creates the chart, binds it to the dom element.
      * This doesn't do any DOM manipulation yet.
@@ -31,7 +31,7 @@ var ChartWrapper = (function () {
 }());
 
 /* tslint:disable:max-classes-per-file */
-var ResizeDimension = (function () {
+var ResizeDimension = /** @class */ (function () {
     function ResizeDimension(width, height) {
         this.width = width;
         this.height = height;
@@ -41,7 +41,7 @@ var ResizeDimension = (function () {
 /**
  * Resize utility class
  */
-var ResizeUtil = (function () {
+var ResizeUtil = /** @class */ (function () {
     function ResizeUtil(el, enabled, debounce, sample) {
         if (enabled === void 0) { enabled = true; }
         if (debounce === void 0) { debounce = 200; }
@@ -164,10 +164,10 @@ var ResizeUtil = (function () {
     return ResizeUtil;
 }());
 
-var DonutChartDirective = (function () {
+var DonutChartDirective = /** @class */ (function () {
     function DonutChartDirective(el) {
         // Chart Ready event
-        this.chartReady = new _angular_core.EventEmitter();
+        this.chartReady = new core.EventEmitter();
         // Create the chart
         this.chartWrapper = new ChartWrapper(el, sentio.chart.donut(), this.chartReady);
         // Set up the resizer
@@ -235,30 +235,30 @@ var DonutChartDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    DonutChartDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: 'sentioDonutChart'
+                },] },
+    ];
+    /** @nocollapse */
+    DonutChartDirective.ctorParameters = function () { return [
+        { type: core.ElementRef, },
+    ]; };
+    DonutChartDirective.propDecorators = {
+        'model': [{ type: core.Input },],
+        'colorScale': [{ type: core.Input },],
+        'resizeEnabled': [{ type: core.Input, args: ['resize',] },],
+        'duration': [{ type: core.Input },],
+        'chartReady': [{ type: core.Output },],
+        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+    };
     return DonutChartDirective;
 }());
-DonutChartDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
-                selector: 'sentioDonutChart'
-            },] },
-];
-/** @nocollapse */
-DonutChartDirective.ctorParameters = function () { return [
-    { type: _angular_core.ElementRef, },
-]; };
-DonutChartDirective.propDecorators = {
-    'model': [{ type: _angular_core.Input },],
-    'colorScale': [{ type: _angular_core.Input },],
-    'resizeEnabled': [{ type: _angular_core.Input, args: ['resize',] },],
-    'duration': [{ type: _angular_core.Input },],
-    'chartReady': [{ type: _angular_core.Output },],
-    'onResize': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
-};
 
-var MatrixChartDirective = (function () {
+var MatrixChartDirective = /** @class */ (function () {
     function MatrixChartDirective(el) {
         // Chart Ready event
-        this.chartReady = new _angular_core.EventEmitter();
+        this.chartReady = new core.EventEmitter();
         // Create the chart
         this.chartWrapper = new ChartWrapper(el, sentio.chart.matrix(), this.chartReady);
     }
@@ -284,31 +284,31 @@ var MatrixChartDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    MatrixChartDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: 'sentioMatrixChart'
+                },] },
+    ];
+    /** @nocollapse */
+    MatrixChartDirective.ctorParameters = function () { return [
+        { type: core.ElementRef, },
+    ]; };
+    MatrixChartDirective.propDecorators = {
+        'model': [{ type: core.Input },],
+        'duration': [{ type: core.Input },],
+        'chartReady': [{ type: core.Output },],
+    };
     return MatrixChartDirective;
 }());
-MatrixChartDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
-                selector: 'sentioMatrixChart'
-            },] },
-];
-/** @nocollapse */
-MatrixChartDirective.ctorParameters = function () { return [
-    { type: _angular_core.ElementRef, },
-]; };
-MatrixChartDirective.propDecorators = {
-    'model': [{ type: _angular_core.Input },],
-    'duration': [{ type: _angular_core.Input },],
-    'chartReady': [{ type: _angular_core.Output },],
-};
 
-var RealtimeTimelineDirective = (function () {
+var RealtimeTimelineDirective = /** @class */ (function () {
     function RealtimeTimelineDirective(el) {
         // Chart Ready event
-        this.chartReady = new _angular_core.EventEmitter();
+        this.chartReady = new core.EventEmitter();
         // Interaction events
-        this.markerOver = new _angular_core.EventEmitter();
-        this.markerOut = new _angular_core.EventEmitter();
-        this.markerClick = new _angular_core.EventEmitter();
+        this.markerOver = new core.EventEmitter();
+        this.markerOut = new core.EventEmitter();
+        this.markerClick = new core.EventEmitter();
         // Create the chart
         this.chartWrapper = new ChartWrapper(el, sentio.chart.realtimeTimeline(), this.chartReady);
         // Set up the resizer
@@ -399,43 +399,43 @@ var RealtimeTimelineDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    RealtimeTimelineDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: 'sentioRealtimeTimeline'
+                },] },
+    ];
+    /** @nocollapse */
+    RealtimeTimelineDirective.ctorParameters = function () { return [
+        { type: core.ElementRef, },
+    ]; };
+    RealtimeTimelineDirective.propDecorators = {
+        'model': [{ type: core.Input },],
+        'markers': [{ type: core.Input },],
+        'yExtent': [{ type: core.Input },],
+        'xExtent': [{ type: core.Input },],
+        'delay': [{ type: core.Input },],
+        'fps': [{ type: core.Input },],
+        'interval': [{ type: core.Input },],
+        'resizeWidth': [{ type: core.Input },],
+        'resizeHeight': [{ type: core.Input },],
+        'chartReady': [{ type: core.Output },],
+        'markerOver': [{ type: core.Output },],
+        'markerOut': [{ type: core.Output },],
+        'markerClick': [{ type: core.Output },],
+        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+    };
     return RealtimeTimelineDirective;
 }());
-RealtimeTimelineDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
-                selector: 'sentioRealtimeTimeline'
-            },] },
-];
-/** @nocollapse */
-RealtimeTimelineDirective.ctorParameters = function () { return [
-    { type: _angular_core.ElementRef, },
-]; };
-RealtimeTimelineDirective.propDecorators = {
-    'model': [{ type: _angular_core.Input },],
-    'markers': [{ type: _angular_core.Input },],
-    'yExtent': [{ type: _angular_core.Input },],
-    'xExtent': [{ type: _angular_core.Input },],
-    'delay': [{ type: _angular_core.Input },],
-    'fps': [{ type: _angular_core.Input },],
-    'interval': [{ type: _angular_core.Input },],
-    'resizeWidth': [{ type: _angular_core.Input },],
-    'resizeHeight': [{ type: _angular_core.Input },],
-    'chartReady': [{ type: _angular_core.Output },],
-    'markerOver': [{ type: _angular_core.Output },],
-    'markerOut': [{ type: _angular_core.Output },],
-    'markerClick': [{ type: _angular_core.Output },],
-    'onResize': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
-};
 
-var TimelineDirective = (function () {
+var TimelineDirective = /** @class */ (function () {
     function TimelineDirective(el) {
         // Chart Ready event
-        this.chartReady = new _angular_core.EventEmitter();
-        this.filterChange = new _angular_core.EventEmitter();
+        this.chartReady = new core.EventEmitter();
+        this.filterChange = new core.EventEmitter();
         // Interaction events
-        this.markerOver = new _angular_core.EventEmitter();
-        this.markerOut = new _angular_core.EventEmitter();
-        this.markerClick = new _angular_core.EventEmitter();
+        this.markerOver = new core.EventEmitter();
+        this.markerOut = new core.EventEmitter();
+        this.markerClick = new core.EventEmitter();
         /**
          * Did the state of the filter change?
          */
@@ -551,38 +551,38 @@ var TimelineDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    TimelineDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: 'sentioTimeline'
+                },] },
+    ];
+    /** @nocollapse */
+    TimelineDirective.ctorParameters = function () { return [
+        { type: core.ElementRef, },
+    ]; };
+    TimelineDirective.propDecorators = {
+        'model': [{ type: core.Input },],
+        'markers': [{ type: core.Input },],
+        'yExtent': [{ type: core.Input },],
+        'xExtent': [{ type: core.Input },],
+        'resizeWidth': [{ type: core.Input },],
+        'resizeHeight': [{ type: core.Input },],
+        'chartReady': [{ type: core.Output },],
+        'filterEnabled': [{ type: core.Input },],
+        'filterState': [{ type: core.Input, args: ['filter',] },],
+        'filterChange': [{ type: core.Output },],
+        'markerOver': [{ type: core.Output },],
+        'markerOut': [{ type: core.Output },],
+        'markerClick': [{ type: core.Output },],
+        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+    };
     return TimelineDirective;
 }());
-TimelineDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
-                selector: 'sentioTimeline'
-            },] },
-];
-/** @nocollapse */
-TimelineDirective.ctorParameters = function () { return [
-    { type: _angular_core.ElementRef, },
-]; };
-TimelineDirective.propDecorators = {
-    'model': [{ type: _angular_core.Input },],
-    'markers': [{ type: _angular_core.Input },],
-    'yExtent': [{ type: _angular_core.Input },],
-    'xExtent': [{ type: _angular_core.Input },],
-    'resizeWidth': [{ type: _angular_core.Input },],
-    'resizeHeight': [{ type: _angular_core.Input },],
-    'chartReady': [{ type: _angular_core.Output },],
-    'filterEnabled': [{ type: _angular_core.Input },],
-    'filterState': [{ type: _angular_core.Input, args: ['filter',] },],
-    'filterChange': [{ type: _angular_core.Output },],
-    'markerOver': [{ type: _angular_core.Output },],
-    'markerOut': [{ type: _angular_core.Output },],
-    'markerClick': [{ type: _angular_core.Output },],
-    'onResize': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
-};
 
-var VerticalBarChartDirective = (function () {
+var VerticalBarChartDirective = /** @class */ (function () {
     function VerticalBarChartDirective(el) {
         // Chart Ready event
-        this.chartReady = new _angular_core.EventEmitter();
+        this.chartReady = new core.EventEmitter();
         // Create the chart
         this.chartWrapper = new ChartWrapper(el, sentio.chart.verticalBars(), this.chartReady);
         // Set up the resizer
@@ -645,54 +645,54 @@ var VerticalBarChartDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    VerticalBarChartDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: 'sentioVerticalBarChart'
+                },] },
+    ];
+    /** @nocollapse */
+    VerticalBarChartDirective.ctorParameters = function () { return [
+        { type: core.ElementRef, },
+    ]; };
+    VerticalBarChartDirective.propDecorators = {
+        'model': [{ type: core.Input },],
+        'widthExtent': [{ type: core.Input },],
+        'resizeEnabled': [{ type: core.Input, args: ['resize',] },],
+        'duration': [{ type: core.Input },],
+        'chartReady': [{ type: core.Output },],
+        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+    };
     return VerticalBarChartDirective;
 }());
-VerticalBarChartDirective.decorators = [
-    { type: _angular_core.Directive, args: [{
-                selector: 'sentioVerticalBarChart'
-            },] },
-];
-/** @nocollapse */
-VerticalBarChartDirective.ctorParameters = function () { return [
-    { type: _angular_core.ElementRef, },
-]; };
-VerticalBarChartDirective.propDecorators = {
-    'model': [{ type: _angular_core.Input },],
-    'widthExtent': [{ type: _angular_core.Input },],
-    'resizeEnabled': [{ type: _angular_core.Input, args: ['resize',] },],
-    'duration': [{ type: _angular_core.Input },],
-    'chartReady': [{ type: _angular_core.Output },],
-    'onResize': [{ type: _angular_core.HostListener, args: ['window:resize', ['$event'],] },],
-};
 
-var SentioModule = (function () {
+var SentioModule = /** @class */ (function () {
     function SentioModule() {
     }
     SentioModule.forRoot = function () {
         return { ngModule: SentioModule, providers: [] };
     };
+    SentioModule.decorators = [
+        { type: core.NgModule, args: [{
+                    exports: [
+                        DonutChartDirective,
+                        MatrixChartDirective,
+                        RealtimeTimelineDirective,
+                        TimelineDirective,
+                        VerticalBarChartDirective
+                    ],
+                    declarations: [
+                        DonutChartDirective,
+                        MatrixChartDirective,
+                        RealtimeTimelineDirective,
+                        TimelineDirective,
+                        VerticalBarChartDirective
+                    ]
+                },] },
+    ];
+    /** @nocollapse */
+    SentioModule.ctorParameters = function () { return []; };
     return SentioModule;
 }());
-SentioModule.decorators = [
-    { type: _angular_core.NgModule, args: [{
-                exports: [
-                    DonutChartDirective,
-                    MatrixChartDirective,
-                    RealtimeTimelineDirective,
-                    TimelineDirective,
-                    VerticalBarChartDirective
-                ],
-                declarations: [
-                    DonutChartDirective,
-                    MatrixChartDirective,
-                    RealtimeTimelineDirective,
-                    TimelineDirective,
-                    VerticalBarChartDirective
-                ]
-            },] },
-];
-/** @nocollapse */
-SentioModule.ctorParameters = function () { return []; };
 
 exports.SentioModule = SentioModule;
 

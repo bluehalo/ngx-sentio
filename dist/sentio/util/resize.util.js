@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import * as d3 from 'd3';
 /* tslint:disable:max-classes-per-file */
-var ResizeDimension = (function () {
+var ResizeDimension = /** @class */ (function () {
     function ResizeDimension(width, height) {
         this.width = width;
         this.height = height;
@@ -12,7 +12,7 @@ export { ResizeDimension };
 /**
  * Resize utility class
  */
-var ResizeUtil = (function () {
+var ResizeUtil = /** @class */ (function () {
     function ResizeUtil(el, enabled, debounce, sample) {
         if (enabled === void 0) { enabled = true; }
         if (debounce === void 0) { debounce = 200; }

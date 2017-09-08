@@ -2,7 +2,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
 import { ResizeUtil } from '../util/resize.util';
-var RealtimeTimelineDirective = (function () {
+var RealtimeTimelineDirective = /** @class */ (function () {
     function RealtimeTimelineDirective(el) {
         // Chart Ready event
         this.chartReady = new EventEmitter();
@@ -100,32 +100,32 @@ var RealtimeTimelineDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    RealtimeTimelineDirective.decorators = [
+        { type: Directive, args: [{
+                    selector: 'sentioRealtimeTimeline'
+                },] },
+    ];
+    /** @nocollapse */
+    RealtimeTimelineDirective.ctorParameters = function () { return [
+        { type: ElementRef, },
+    ]; };
+    RealtimeTimelineDirective.propDecorators = {
+        'model': [{ type: Input },],
+        'markers': [{ type: Input },],
+        'yExtent': [{ type: Input },],
+        'xExtent': [{ type: Input },],
+        'delay': [{ type: Input },],
+        'fps': [{ type: Input },],
+        'interval': [{ type: Input },],
+        'resizeWidth': [{ type: Input },],
+        'resizeHeight': [{ type: Input },],
+        'chartReady': [{ type: Output },],
+        'markerOver': [{ type: Output },],
+        'markerOut': [{ type: Output },],
+        'markerClick': [{ type: Output },],
+        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+    };
     return RealtimeTimelineDirective;
 }());
 export { RealtimeTimelineDirective };
-RealtimeTimelineDirective.decorators = [
-    { type: Directive, args: [{
-                selector: 'sentioRealtimeTimeline'
-            },] },
-];
-/** @nocollapse */
-RealtimeTimelineDirective.ctorParameters = function () { return [
-    { type: ElementRef, },
-]; };
-RealtimeTimelineDirective.propDecorators = {
-    'model': [{ type: Input },],
-    'markers': [{ type: Input },],
-    'yExtent': [{ type: Input },],
-    'xExtent': [{ type: Input },],
-    'delay': [{ type: Input },],
-    'fps': [{ type: Input },],
-    'interval': [{ type: Input },],
-    'resizeWidth': [{ type: Input },],
-    'resizeHeight': [{ type: Input },],
-    'chartReady': [{ type: Output },],
-    'markerOver': [{ type: Output },],
-    'markerOut': [{ type: Output },],
-    'markerClick': [{ type: Output },],
-    'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
-};
 //# sourceMappingURL=realtime-timeline.directive.js.map

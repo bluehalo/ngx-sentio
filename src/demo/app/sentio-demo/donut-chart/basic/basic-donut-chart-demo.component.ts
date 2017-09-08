@@ -13,21 +13,23 @@ implements OnInit {
 	model: any[] = [];
 
 	chartReady(chart: sentio.chart.DonutChart): void {
-		chart.colorScale(d3.scaleOrdinal().range(['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c']));
-		chart.label((d: any) => { return d.key + ' (' + d.value + ')'; });
-	};
+		chart.colorScale(d3.scaleOrdinal().range([ '#a6cee3', '#1f78b4', '#b2df8a', '#33a02c' ]));
+		chart.label((d: any) => `${d.key} (${d.value})`);
+	}
 
 	update(): void {
-		let samples = 5;
-		let newModel: Object[] = [];
+		const samples = 5;
+
+		const newModel: any[] = [];
 		for (let i: number = 0; i < samples; i++) {
 			newModel.push({
 				key: `key: ${i}`,
 				value: Math.floor(Math.random() * samples)
 			});
 		}
+
 		this.model = newModel;
-	};
+	}
 
 	ngOnInit(): void {
 		this.update();

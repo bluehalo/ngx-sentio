@@ -16,11 +16,11 @@ implements OnInit {
 
 	update(): void {
 		this.hwm = Date.now();
-		let newModel: any[] = [];
+		const newModel: any[] = [];
 
 		['series1', 'series2'].forEach((s) => {
-			let k = s;
-			let d: any[] = [];
+			const k = s;
+			const d: any[] = [];
 
 			for (let i = 0; i < this.interval / this.binSize; i++) {
 				d.unshift([ this.hwm - (i * this.binSize), Math.random() * 10 ]);

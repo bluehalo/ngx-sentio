@@ -2,7 +2,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
 import { ResizeUtil } from '../util/resize.util';
-var DonutChartDirective = (function () {
+var DonutChartDirective = /** @class */ (function () {
     function DonutChartDirective(el) {
         // Chart Ready event
         this.chartReady = new EventEmitter();
@@ -73,24 +73,24 @@ var DonutChartDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    DonutChartDirective.decorators = [
+        { type: Directive, args: [{
+                    selector: 'sentioDonutChart'
+                },] },
+    ];
+    /** @nocollapse */
+    DonutChartDirective.ctorParameters = function () { return [
+        { type: ElementRef, },
+    ]; };
+    DonutChartDirective.propDecorators = {
+        'model': [{ type: Input },],
+        'colorScale': [{ type: Input },],
+        'resizeEnabled': [{ type: Input, args: ['resize',] },],
+        'duration': [{ type: Input },],
+        'chartReady': [{ type: Output },],
+        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+    };
     return DonutChartDirective;
 }());
 export { DonutChartDirective };
-DonutChartDirective.decorators = [
-    { type: Directive, args: [{
-                selector: 'sentioDonutChart'
-            },] },
-];
-/** @nocollapse */
-DonutChartDirective.ctorParameters = function () { return [
-    { type: ElementRef, },
-]; };
-DonutChartDirective.propDecorators = {
-    'model': [{ type: Input },],
-    'colorScale': [{ type: Input },],
-    'resizeEnabled': [{ type: Input, args: ['resize',] },],
-    'duration': [{ type: Input },],
-    'chartReady': [{ type: Output },],
-    'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
-};
 //# sourceMappingURL=donut-chart.directive.js.map

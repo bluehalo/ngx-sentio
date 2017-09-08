@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 /**
  * Wrapper for chart info
  */
-var ChartWrapper = (function () {
+var ChartWrapper = /** @class */ (function () {
     /**
      * Creates the chart, binds it to the dom element.
      * This doesn't do any DOM manipulation yet.

@@ -2,7 +2,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
 import { ResizeUtil } from '../util/resize.util';
-var TimelineDirective = (function () {
+var TimelineDirective = /** @class */ (function () {
     function TimelineDirective(el) {
         // Chart Ready event
         this.chartReady = new EventEmitter();
@@ -126,32 +126,32 @@ var TimelineDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    TimelineDirective.decorators = [
+        { type: Directive, args: [{
+                    selector: 'sentioTimeline'
+                },] },
+    ];
+    /** @nocollapse */
+    TimelineDirective.ctorParameters = function () { return [
+        { type: ElementRef, },
+    ]; };
+    TimelineDirective.propDecorators = {
+        'model': [{ type: Input },],
+        'markers': [{ type: Input },],
+        'yExtent': [{ type: Input },],
+        'xExtent': [{ type: Input },],
+        'resizeWidth': [{ type: Input },],
+        'resizeHeight': [{ type: Input },],
+        'chartReady': [{ type: Output },],
+        'filterEnabled': [{ type: Input },],
+        'filterState': [{ type: Input, args: ['filter',] },],
+        'filterChange': [{ type: Output },],
+        'markerOver': [{ type: Output },],
+        'markerOut': [{ type: Output },],
+        'markerClick': [{ type: Output },],
+        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+    };
     return TimelineDirective;
 }());
 export { TimelineDirective };
-TimelineDirective.decorators = [
-    { type: Directive, args: [{
-                selector: 'sentioTimeline'
-            },] },
-];
-/** @nocollapse */
-TimelineDirective.ctorParameters = function () { return [
-    { type: ElementRef, },
-]; };
-TimelineDirective.propDecorators = {
-    'model': [{ type: Input },],
-    'markers': [{ type: Input },],
-    'yExtent': [{ type: Input },],
-    'xExtent': [{ type: Input },],
-    'resizeWidth': [{ type: Input },],
-    'resizeHeight': [{ type: Input },],
-    'chartReady': [{ type: Output },],
-    'filterEnabled': [{ type: Input },],
-    'filterState': [{ type: Input, args: ['filter',] },],
-    'filterChange': [{ type: Output },],
-    'markerOver': [{ type: Output },],
-    'markerOut': [{ type: Output },],
-    'markerClick': [{ type: Output },],
-    'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
-};
 //# sourceMappingURL=timeline.directive.js.map

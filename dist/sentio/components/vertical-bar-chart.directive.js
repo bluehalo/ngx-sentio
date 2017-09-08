@@ -2,7 +2,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from
 import * as sentio from '@asymmetrik/sentio';
 import { ChartWrapper } from '../util/chart-wrapper.util';
 import { ResizeUtil } from '../util/resize.util';
-var VerticalBarChartDirective = (function () {
+var VerticalBarChartDirective = /** @class */ (function () {
     function VerticalBarChartDirective(el) {
         // Chart Ready event
         this.chartReady = new EventEmitter();
@@ -68,25 +68,24 @@ var VerticalBarChartDirective = (function () {
             this.chartWrapper.chart.redraw();
         }
     };
+    VerticalBarChartDirective.decorators = [
+        { type: Directive, args: [{
+                    selector: 'sentioVerticalBarChart'
+                },] },
+    ];
+    /** @nocollapse */
+    VerticalBarChartDirective.ctorParameters = function () { return [
+        { type: ElementRef, },
+    ]; };
+    VerticalBarChartDirective.propDecorators = {
+        'model': [{ type: Input },],
+        'widthExtent': [{ type: Input },],
+        'resizeEnabled': [{ type: Input, args: ['resize',] },],
+        'duration': [{ type: Input },],
+        'chartReady': [{ type: Output },],
+        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+    };
     return VerticalBarChartDirective;
 }());
 export { VerticalBarChartDirective };
-VerticalBarChartDirective.decorators = [
-    { type: Directive, args: [{
-                selector: 'sentioVerticalBarChart'
-            },] },
-];
-/** @nocollapse */
-VerticalBarChartDirective.ctorParameters = function () { return [
-    { type: ElementRef, },
-]; };
-VerticalBarChartDirective.propDecorators = {
-    'model': [{ type: Input },],
-    'widthExtent': [{ type: Input },],
-    'resizeEnabled': [{ type: Input, args: ['resize',] },],
-    'duration': [{ type: Input },],
-    'chartReady': [{ type: Output },],
-    'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
-};
-;
 //# sourceMappingURL=vertical-bar-chart.directive.js.map

@@ -113,7 +113,7 @@ export class RealtimeTimelineDirective
 
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {
 
-		let resize: boolean = false;
+		const resize: boolean = false;
 		let redraw: boolean = false;
 
 		if (changes['model']) {
