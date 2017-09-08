@@ -1,9 +1,9 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
 import * as sentio from '@asymmetrik/sentio';
 
-import { ChartWrapper } from '../util/chart-wrapper.util';
-import { ResizeDimension, ResizeUtil } from '../util/resize.util';
-
+import { ChartWrapper } from '../../util/chart-wrapper.util';
+import { ResizeUtil } from '../../util/resize.util';
+import { TimelineUtil } from './timeline.util';
 
 @Directive({
 	selector: 'sentioTimeline'
@@ -35,6 +35,7 @@ export class TimelineDirective
 
 	chartWrapper: ChartWrapper<sentio.chart.TimelineChart>;
 	resizeUtil: ResizeUtil;
+	timelineUtil: TimelineUtil<sentio.chart.TimelineChart>;
 
 	constructor(el: ElementRef) {
 
@@ -43,37 +44,8 @@ export class TimelineDirective
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
+		this.timelineUtil = new TimelineUtil<sentio.chart.TimelineChart>(this.chartWrapper);
 
-	}
-
-	/**
-	 * For the timeline, both dimensions scale independently
-	 */
-	setChartDimensions(dim: ResizeDimension, force: boolean = false): void {
-
-		let resize = false;
-
-		if ((force || this.resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
-
-			// pin the height to the width
-			this.chartWrapper.chart
-				.width(dim.width);
-			resize = true;
-
-		}
-
-		if ((force || this.resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
-
-			// pin the height to the width
-			this.chartWrapper.chart
-				.height(dim.height);
-			resize = true;
-
-		}
-
-		if (resize) {
-			this.chartWrapper.chart.resize();
-		}
 	}
 
 	/**
@@ -121,13 +93,13 @@ export class TimelineDirective
 			.subscribe(() => {
 
 				// Do the resize operation
-				this.setChartDimensions(this.resizeUtil.getSize());
+				this.timelineUtil.setChartDimensions(this.resizeUtil.getSize(), this.resizeWidth, this.resizeHeight);
 				this.chartWrapper.chart.redraw();
 
 			});
 
 		// Set the initial size of the chart
-		this.setChartDimensions(this.resizeUtil.getSize(), true);
+		this.timelineUtil.setChartDimensions(this.resizeUtil.getSize(), this.resizeWidth, this.resizeHeight, true);
 		this.chartWrapper.chart.redraw();
 
 		// Set the filter (if it exists)

@@ -4,10 +4,10 @@ import { RouterModule } from '@angular/router';
 import { BasicDonutChartDemoComponent } from './charts/donut/basic/basic-donut-chart-demo.component';
 import { BasicMatrixChartDemoComponent } from './charts/matrix/basic/basic-matrix-chart-demo.component';
 import { BasicVerticalBarChartDemoComponent } from './charts/vertical-bar/basic/basic-vertical-bar-chart-demo.component';
-import { BasicRealtimeTimelineLineDemoComponent } from './timelines/realtime/basic/basic-realtime-timeline-line-demo.component';
-import { BasicTimelineLineDemoComponent } from './timelines/basic/basic-timeline-line-demo.component';
-import { ResizeTimelineLineDemoComponent } from './timelines/resize/resize-timeline-line-demo.component';
-import { ZoomableTimelineLineDemoComponent } from './timelines/zoomable/zoomable-timeline-line-demo.component';
+import { BasicRealtimeTimelineLineDemoComponent } from './charts/timeline/realtime/basic/basic-realtime-timeline-line-demo.component';
+import { BasicTimelineLineDemoComponent } from './charts/timeline/basic/basic-timeline-line-demo.component';
+import { ResizeTimelineLineDemoComponent } from './charts/timeline/resize/resize-timeline-line-demo.component';
+import { ZoomableTimelineLineDemoComponent } from './charts/timeline/zoomable/zoomable-timeline-line-demo.component';
 
 @NgModule({
 	imports: [

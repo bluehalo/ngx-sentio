@@ -1,4 +1,4 @@
-/*! @asymmetrik/ngx-sentio - 4.5.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
+/*! @asymmetrik/ngx-sentio - 4.6.0 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3'), require('rxjs')) :
 	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3', 'rxjs'], factory) :
@@ -301,6 +301,41 @@ var MatrixChartDirective = /** @class */ (function () {
     return MatrixChartDirective;
 }());
 
+/**
+ * Wrapper for common timeline stuff
+ */
+var TimelineUtil = /** @class */ (function () {
+    /**
+     * Creates the chart, binds it to the dom element.
+     * This doesn't do any DOM manipulation yet.
+     * @param el
+     * @param chart
+     */
+    function TimelineUtil(chartWrapper) {
+        this.chartWrapper = chartWrapper;
+    }
+    TimelineUtil.prototype.setChartDimensions = function (dim, resizeWidth, resizeHeight, force) {
+        if (force === void 0) { force = false; }
+        var resize = false;
+        if ((force || resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+            // pin the height to the width
+            this.chartWrapper.chart
+                .width(dim.width);
+            resize = true;
+        }
+        if ((force || resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
+            // pin the height to the width
+            this.chartWrapper.chart
+                .height(dim.height);
+            resize = true;
+        }
+        if (resize) {
+            this.chartWrapper.chart.resize();
+        }
+    };
+    return TimelineUtil;
+}());
+
 var RealtimeTimelineDirective = /** @class */ (function () {
     function RealtimeTimelineDirective(el) {
         // Chart Ready event
@@ -313,29 +348,8 @@ var RealtimeTimelineDirective = /** @class */ (function () {
         this.chartWrapper = new ChartWrapper(el, sentio.chart.realtimeTimeline(), this.chartReady);
         // Set up the resizer
         this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
+        this.timelineUtil = new TimelineUtil(this.chartWrapper);
     }
-    /**
-     * For the timeline, both dimensions scale independently
-     */
-    RealtimeTimelineDirective.prototype.setChartDimensions = function (dim, force) {
-        if (force === void 0) { force = false; }
-        var resize = false;
-        if ((force || this.resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
-            // pin the height to the width
-            this.chartWrapper.chart
-                .width(dim.width);
-            resize = true;
-        }
-        if ((force || this.resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
-            // pin the height to the width
-            this.chartWrapper.chart
-                .height(dim.height);
-            resize = true;
-        }
-        if (resize) {
-            this.chartWrapper.chart.resize();
-        }
-    };
     RealtimeTimelineDirective.prototype.onResize = function (event) {
         this.resizeUtil.resizeObserver.next(event);
     };
@@ -351,11 +365,11 @@ var RealtimeTimelineDirective = /** @class */ (function () {
         this.resizeUtil.resizeSource
             .subscribe(function () {
             // Do the resize operation
-            _this.setChartDimensions(_this.resizeUtil.getSize());
+            _this.timelineUtil.setChartDimensions(_this.resizeUtil.getSize(), _this.resizeWidth, _this.resizeHeight);
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize(), true);
+        this.timelineUtil.setChartDimensions(this.resizeUtil.getSize(), this.resizeWidth, this.resizeHeight, true);
         this.chartWrapper.chart.redraw();
     };
     RealtimeTimelineDirective.prototype.ngOnDestroy = function () {
@@ -454,29 +468,8 @@ var TimelineDirective = /** @class */ (function () {
         this.chartWrapper = new ChartWrapper(el, sentio.chart.timeline(), this.chartReady);
         // Set up the resizer
         this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
+        this.timelineUtil = new TimelineUtil(this.chartWrapper);
     }
-    /**
-     * For the timeline, both dimensions scale independently
-     */
-    TimelineDirective.prototype.setChartDimensions = function (dim, force) {
-        if (force === void 0) { force = false; }
-        var resize = false;
-        if ((force || this.resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
-            // pin the height to the width
-            this.chartWrapper.chart
-                .width(dim.width);
-            resize = true;
-        }
-        if ((force || this.resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
-            // pin the height to the width
-            this.chartWrapper.chart
-                .height(dim.height);
-            resize = true;
-        }
-        if (resize) {
-            this.chartWrapper.chart.resize();
-        }
-    };
     TimelineDirective.prototype.onResize = function (event) {
         this.resizeUtil.resizeObserver.next(event);
     };
@@ -499,11 +492,11 @@ var TimelineDirective = /** @class */ (function () {
         this.resizeUtil.resizeSource
             .subscribe(function () {
             // Do the resize operation
-            _this.setChartDimensions(_this.resizeUtil.getSize());
+            _this.timelineUtil.setChartDimensions(_this.resizeUtil.getSize(), _this.resizeWidth, _this.resizeHeight);
             _this.chartWrapper.chart.redraw();
         });
         // Set the initial size of the chart
-        this.setChartDimensions(this.resizeUtil.getSize(), true);
+        this.timelineUtil.setChartDimensions(this.resizeUtil.getSize(), this.resizeWidth, this.resizeHeight, true);
         this.chartWrapper.chart.redraw();
         // Set the filter (if it exists)
         if (null != this.filterState) {

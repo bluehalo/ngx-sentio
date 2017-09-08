@@ -1,5 +1,6 @@
 import { ElementRef } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
+
 import * as d3 from 'd3';
 
 /* tslint:disable:max-classes-per-file */

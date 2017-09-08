@@ -6,7 +6,7 @@ import { SentioDemoComponent } from './sentio-demo.component';
 import { SentioDemoRoutingModule } from './sentio-demo-routing.module';
 
 import { ChartsDemoModule } from './charts/charts-demo.module';
-import { TimelinesDemoModule } from './timelines/timelines-demo.module';
+import { TimelinesDemoModule } from './charts/timeline/timelines-demo.module';
 
 
 @NgModule({

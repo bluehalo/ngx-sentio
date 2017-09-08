@@ -6,6 +6,10 @@ import { SentioModule } from '../../../../sentio/sentio.module';
 import { BasicDonutChartDemoComponent } from './donut/basic/basic-donut-chart-demo.component';
 import { BasicMatrixChartDemoComponent } from './matrix/basic/basic-matrix-chart-demo.component';
 import { BasicVerticalBarChartDemoComponent } from './vertical-bar/basic/basic-vertical-bar-chart-demo.component';
+import { BasicTimelineLineDemoComponent } from './timeline/basic/basic-timeline-line-demo.component';
+import { ResizeTimelineLineDemoComponent } from './timeline/resize/resize-timeline-line-demo.component';
+import { BasicRealtimeTimelineLineDemoComponent } from './timeline/realtime/basic/basic-realtime-timeline-line-demo.component';
+import { ZoomableTimelineLineDemoComponent } from './timeline/zoomable/zoomable-timeline-line-demo.component';
 
 
 @NgModule({
@@ -16,13 +20,21 @@ import { BasicVerticalBarChartDemoComponent } from './vertical-bar/basic/basic-v
 	declarations: [
 		BasicDonutChartDemoComponent,
 		BasicMatrixChartDemoComponent,
-		BasicVerticalBarChartDemoComponent
+		BasicVerticalBarChartDemoComponent,
+		BasicTimelineLineDemoComponent,
+		ResizeTimelineLineDemoComponent,
+		BasicRealtimeTimelineLineDemoComponent,
+		ZoomableTimelineLineDemoComponent
 	],
 
 	exports: [
 		BasicDonutChartDemoComponent,
 		BasicMatrixChartDemoComponent,
-		BasicVerticalBarChartDemoComponent
+		BasicVerticalBarChartDemoComponent,
+		BasicTimelineLineDemoComponent,
+		ResizeTimelineLineDemoComponent,
+		BasicRealtimeTimelineLineDemoComponent,
+		ZoomableTimelineLineDemoComponent
 	]
 })
 export class ChartsDemoModule { }
