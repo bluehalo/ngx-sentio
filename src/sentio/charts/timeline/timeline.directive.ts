@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { chartTimeline, PointEvents, Series, TimelineChart } from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeUtil } from '../../util/resize.util';
@@ -11,58 +11,57 @@ import { TimelineUtil } from './timeline.util';
 export class TimelineDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: any[];
-	@Input() markers: any[];
+	@Input('sentioData') data: any[];
+	@Input('sentioSeries') series: Series[];
+	@Input('sentioMarkers') markers: any[];
 
-	@Input() yExtent: [ number, number ];
-	@Input() xExtent: [ number, number ];
+	@Input('sentioYExtent') yExtent: [ number, number ];
+	@Input('sentioXExtent') xExtent: [ number, number ];
 
-	@Input() resizeWidth: boolean;
-	@Input() resizeHeight: boolean;
+	@Input('sentioShowGrid') showGrid: boolean;
+	@Input('sentioShowXGrid') showXGrid: boolean;
+	@Input('sentioShowYGrid') showYGrid: boolean;
+	@Input('sentioPointEvents') pointEvents: PointEvents;
+
+	@Input('sentioResizeWidth') resizeWidth: boolean;
+	@Input('sentioResizeHeight') resizeHeight: boolean;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<sentio.chart.TimelineChart>();
+	@Output('sentioChartReady') chartReady = new EventEmitter<TimelineChart>();
 
-	// Timeline filter/brush support
-	@Input() filterEnabled: boolean;
-	@Input('filter') filterState: [number, number] | null;
-	@Output() filterChange = new EventEmitter<[number, number] | null>();
+	// Enabled/Disable brushing the timeline
+	@Input('sentioBrushEnabled') brushEnabled: boolean;
+
+	// Brush state
+	@Input('sentioBrush') brushState: [ number, number ];
+
 
 	// Interaction events
-	@Output() markerOver: EventEmitter<any> = new EventEmitter<any>();
-	@Output() markerOut: EventEmitter<any> = new EventEmitter<any>();
-	@Output() markerClick: EventEmitter<any> = new EventEmitter<any>();
+	@Output('sentioBrushChange') brush = new EventEmitter<[number, number]>();
 
-	chartWrapper: ChartWrapper<sentio.chart.TimelineChart>;
+	@Output('sentioPointMouseover') pointMouseover: EventEmitter<any> = new EventEmitter<any>();
+	@Output('sentioPointMouseout') pointMouseout: EventEmitter<any> = new EventEmitter<any>();
+	@Output('sentioPointClick') pointClick: EventEmitter<any> = new EventEmitter<any>();
+
+	@Output('sentioMarkerMouseover') markerMouseover: EventEmitter<any> = new EventEmitter<any>();
+	@Output('sentioMarkerMouseout') markerMouseout: EventEmitter<any> = new EventEmitter<any>();
+	@Output('sentioMarkerClick') markerClick: EventEmitter<any> = new EventEmitter<any>();
+
+
+	chartWrapper: ChartWrapper<TimelineChart>;
 	resizeUtil: ResizeUtil;
-	timelineUtil: TimelineUtil<sentio.chart.TimelineChart>;
+	timelineUtil: TimelineUtil<TimelineChart>;
+
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper<sentio.chart.TimelineChart>(el, sentio.chart.timeline(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<TimelineChart>(el, chartTimeline(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
-		this.timelineUtil = new TimelineUtil<sentio.chart.TimelineChart>(this.chartWrapper);
+		this.timelineUtil = new TimelineUtil<TimelineChart>(this.chartWrapper);
 
-	}
-
-	/**
-	 * Did the state of the filter change?
-	 */
-	didFilterChange = (current: [ number, number ] | null, previous: [ number, number ] | null) => {
-
-		// Deep compare the filter
-		if (current === previous ||
-			(null != current && null != previous
-			&& current[0] === previous[0]
-			&& current[1] === previous[1])) {
-			return false;
-		}
-
-		// We know it changed
-		return true;
 	}
 
 	@HostListener('window:resize', ['$event'])
@@ -75,18 +74,26 @@ export class TimelineDirective
 		// Initialize the chart
 		this.chartWrapper.initialize();
 
-		// register for the marker events
-		this.chartWrapper.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
-		this.chartWrapper.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
-		this.chartWrapper.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
+		// register for the point events
+		this.chartWrapper.chart.dispatch()
+			.on('pointClick.internal', (d: any) => this.pointClick.emit(d))
+			.on('pointMouseover.internal', (d: any) => this.pointMouseover.emit(d))
+			.on('pointMouseout.internal', (d: any) => this.pointMouseout.emit(d));
 
-		// register for the filter end event
-		this.chartWrapper.chart.dispatch().on('filterend', (fs: [ number, number ] | null) => {
-			// If the filter actually changed, emit the event
-			if (this.didFilterChange(fs, this.filterState)) {
-				setTimeout(() => { this.filterChange.emit(fs); });
-			}
-		});
+		// register for the marker events
+		this.chartWrapper.chart.dispatch()
+			.on('markerClick.internal', (d: any) => this.markerClick.emit(d))
+			.on('markerMouseover.internal', (d: any) => this.markerMouseover.emit(d))
+			.on('markerMouseout.internal', (d: any) => this.markerMouseout.emit(d));
+
+		// register for the brush end event
+		this.chartWrapper.chart.dispatch()
+			.on('brushEnd.internal', (fs: [ number, number ]) => {
+				// If the brush actually changed, emit the event
+				if (this.timelineUtil.didBrushChange(fs, this.brushState)) {
+					setTimeout(() => { this.brush.emit(fs); });
+				}
+			});
 
 		// Set up the resize callback
 		this.resizeUtil.resizeSource
@@ -102,9 +109,9 @@ export class TimelineDirective
 		this.timelineUtil.setChartDimensions(this.resizeUtil.getSize(), this.resizeWidth, this.resizeHeight, true);
 		this.chartWrapper.chart.redraw();
 
-		// Set the filter (if it exists)
-		if (null != this.filterState) {
-			this.chartWrapper.chart.setFilter(this.filterState);
+		// Set the brush (if it exists)
+		if (null != this.brushState) {
+			this.chartWrapper.chart.setBrush(this.brushState);
 		}
 	}
 
@@ -114,50 +121,16 @@ export class TimelineDirective
 
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {
 
-		const resize: boolean = false;
-		let redraw: boolean = false;
-
-		if (changes['model']) {
-			this.chartWrapper.chart.data(this.model);
-			redraw = redraw || !changes['model'].isFirstChange();
-		}
-		if (changes['markers']) {
-			this.chartWrapper.chart.markers(this.markers);
-			redraw = redraw || !changes['markers'].isFirstChange();
-		}
-
-		if (changes['yExtent']) {
-			this.chartWrapper.chart.yExtent().overrideValue(this.yExtent);
-			redraw = redraw || !changes['yExtent'].isFirstChange();
-		}
-		if (changes['xExtent']) {
-			this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
-			redraw = redraw || !changes['xExtent'].isFirstChange();
-		}
-
-		if (changes['filterEnabled']) {
-			this.chartWrapper.chart.filter(this.filterEnabled);
-			redraw = redraw || !changes['filterEnabled'].isFirstChange();
-		}
-		if (changes['filterState'] && !changes['filterState'].isFirstChange()) {
-
-			// Only apply it if it actually changed
-			if (this.didFilterChange(changes['filterState'].currentValue, changes['filterState'].previousValue)) {
-
-				this.chartWrapper.chart.setFilter(this.filterState);
-				redraw = true;
-
-			}
-
-		}
+		const retVal = this.timelineUtil.onChanges(changes);
 
 		// Only redraw once if necessary
-		if (resize) {
+		if (retVal.resize) {
 			this.chartWrapper.chart.resize();
 		}
-		if (redraw) {
+		if (retVal.redraw) {
 			this.chartWrapper.chart.redraw();
 		}
+
 	}
 
 }

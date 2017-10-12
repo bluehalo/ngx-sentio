@@ -3,7 +3,7 @@
 	"artifactName": "ngx-sentio",
 	"moduleName": "ngxSentio",
 	"description": "Angular 2+ components for Sentio",
-	"version": "4.6.0",
+	"version": "5.0.0-alpha.1",
 
 	"author": "Asymmetrik, Ltd.",
 	"copyright": "Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.",
@@ -22,7 +22,7 @@
 		"@angular/core": ">=2",
 		"@angular/common": ">=2",
 
-		"@asymmetrik/sentio": "4",
+		"@asymmetrik/sentio": "5.0.0-alpha.6",
 
 		"d3": "4"
 	},
@@ -36,7 +36,7 @@
 		"@angular/platform-browser-dynamic": "4",
 		"@angular/router": "4",
 
-		"@asymmetrik/sentio": "4",
+		"@asymmetrik/sentio": "5.0.0-alpha.6",
 		"bootstrap": "3",
 
 		"d3": "4.10",
@@ -61,6 +61,7 @@
 		"css-loader": "0.28",
 		"file-loader": "0.11",
 		"html-loader": "0.5",
+		"raw-loader": "0.5",
 		"resolve-url-loader": "2.1",
 		"sass-loader": "6.0",
 		"style-loader": "0.18",

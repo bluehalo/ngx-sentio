@@ -1,6 +1,6 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange} from '@angular/core';
 
-import * as sentio from '@asymmetrik/sentio';
+import { chartRealtimeTimeline, RealtimeTimelineChart, Series } from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../../../util/chart-wrapper.util';
 import { ResizeUtil } from '../../../util/resize.util';
@@ -13,39 +13,44 @@ import { TimelineUtil } from '../timeline.util';
 export class RealtimeTimelineDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: any[];
-	@Input() markers: any[];
+	@Input('sentioData') data: any[];
+	@Input('sentioSeries') series: Series[];
+	@Input('sentioMarkers') markers: any[];
 
-	@Input() yExtent: [number, number];
-	@Input() xExtent: [number, number];
+	@Input('sentioYExtent') yExtent: [number, number];
+	@Input('sentioXExtent') xExtent: [number, number];
 
-	@Input() delay: number;
-	@Input() fps: number;
-	@Input() interval: number;
+	@Input('sentioShowGrid') showGrid: boolean;
+	@Input('sentioShowXGrid') showXGrid: boolean;
+	@Input('sentioShowYGrid') showYGrid: boolean;
 
-	@Input() resizeWidth: boolean;
-	@Input() resizeHeight: boolean;
+	@Input('sentioDelay') delay: number;
+	@Input('sentioFps') fps: number;
+	@Input('sentioInterval') interval: number;
+
+	@Input('sentioResizeWidth') resizeWidth: boolean;
+	@Input('sentioResizeHeight') resizeHeight: boolean;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<sentio.chart.RealtimeTimelineChart>();
+	@Output('sentioChartReady') chartReady = new EventEmitter<RealtimeTimelineChart>();
 
 	// Interaction events
-	@Output() markerOver = new EventEmitter<any>();
-	@Output() markerOut = new EventEmitter<any>();
-	@Output() markerClick = new EventEmitter<any>();
+	@Output('sentioMarkerMouseover') markerMouseover = new EventEmitter<any>();
+	@Output('sentioMarkerMouseout') markerMouseout = new EventEmitter<any>();
+	@Output('sentioMarkerClick') markerClick = new EventEmitter<any>();
 
-	chartWrapper: ChartWrapper<sentio.chart.RealtimeTimelineChart>;
+	chartWrapper: ChartWrapper<RealtimeTimelineChart>;
 	resizeUtil: ResizeUtil;
-	timelineUtil: TimelineUtil<sentio.chart.RealtimeTimelineChart>;
+	timelineUtil: TimelineUtil<RealtimeTimelineChart>;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper<sentio.chart.RealtimeTimelineChart>(el, sentio.chart.realtimeTimeline(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<RealtimeTimelineChart>(el, chartRealtimeTimeline(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
-		this.timelineUtil = new TimelineUtil<sentio.chart.RealtimeTimelineChart>(this.chartWrapper);
+		this.timelineUtil = new TimelineUtil<RealtimeTimelineChart>(this.chartWrapper);
 
 	}
 
@@ -61,8 +66,8 @@ export class RealtimeTimelineDirective
 
 		// register for the marker events
 		this.chartWrapper.chart.dispatch().on('markerClick', (p: any) => { this.markerClick.emit(p); });
-		this.chartWrapper.chart.dispatch().on('markerMouseover', (p: any) => { this.markerOver.emit(p); });
-		this.chartWrapper.chart.dispatch().on('markerMouseout', (p: any) => { this.markerOut.emit(p); });
+		this.chartWrapper.chart.dispatch().on('markerMouseover', (p: any) => { this.markerMouseover.emit(p); });
+		this.chartWrapper.chart.dispatch().on('markerMouseout', (p: any) => { this.markerMouseout.emit(p); });
 
 		// Set up the resize callback
 		this.resizeUtil.resizeSource
@@ -86,44 +91,25 @@ export class RealtimeTimelineDirective
 
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {
 
-		const resize: boolean = false;
-		let redraw: boolean = false;
-
-		if (changes['model']) {
-			this.chartWrapper.chart.data(this.model);
-			redraw = redraw || !changes['model'].isFirstChange();
-		}
-		if (changes['markers']) {
-			this.chartWrapper.chart.markers(this.markers);
-			redraw = redraw || !changes['markers'].isFirstChange();
-		}
-
-		if (changes['yExtent']) {
-			this.chartWrapper.chart.yExtent().overrideValue(this.yExtent);
-			redraw = redraw || !changes['yExtent'].isFirstChange();
-		}
-		if (changes['xExtent']) {
-			this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
-			redraw = redraw || !changes['xExtent'].isFirstChange();
-		}
+		const retVal = this.timelineUtil.onChanges(changes);
 
 		if (changes['fps']) {
 			this.chartWrapper.chart.fps(this.fps);
 		}
 		if (changes['delay']) {
 			this.chartWrapper.chart.delay(this.delay);
-			redraw = redraw || !changes['delay'].isFirstChange();
+			retVal.redraw = retVal.redraw || !changes['delay'].isFirstChange();
 		}
 		if (changes['interval']) {
 			this.chartWrapper.chart.interval(this.interval);
-			redraw = redraw || !changes['interval'].isFirstChange();
+			retVal.redraw = retVal.redraw || !changes['interval'].isFirstChange();
 		}
 
 		// Only redraw once if necessary
-		if (resize) {
+		if (retVal.resize) {
 			this.chartWrapper.chart.resize();
 		}
-		if (redraw) {
+		if (retVal.redraw) {
 			this.chartWrapper.chart.redraw();
 		}
 	}

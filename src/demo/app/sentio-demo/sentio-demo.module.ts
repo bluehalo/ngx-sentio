@@ -6,7 +6,6 @@ import { SentioDemoComponent } from './sentio-demo.component';
 import { SentioDemoRoutingModule } from './sentio-demo-routing.module';
 
 import { ChartsDemoModule } from './charts/charts-demo.module';
-import { TimelinesDemoModule } from './charts/timeline/timelines-demo.module';
 
 
 @NgModule({
@@ -15,9 +14,7 @@ import { TimelinesDemoModule } from './charts/timeline/timelines-demo.module';
 		RouterModule,
 
 		SentioDemoRoutingModule,
-
-		ChartsDemoModule,
-		TimelinesDemoModule
+		ChartsDemoModule
 	],
 	declarations: [
 		SentioDemoComponent

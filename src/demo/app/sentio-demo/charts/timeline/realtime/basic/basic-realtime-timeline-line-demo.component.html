@@ -6,10 +6,11 @@
 		<br/>
 		<sentioRealtimeTimeline
 			style="height:100px;"
-			[model]="model"
-			[markers]="markers"
-			(chartReady)="chartReady($event)"
-			resizeWidth="true">
+			[sentioData]="data"
+			[sentioSeries]="series"
+			[sentioMarkers]="markers"
+			(sentioChartReady)="chartReady($event)"
+			sentioResizeWidth="true">
 		</sentioRealtimeTimeline>
 
 	</div>

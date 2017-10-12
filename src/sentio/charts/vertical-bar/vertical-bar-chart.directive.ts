@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { chartVerticalBars, VerticalBarsChart } from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
@@ -11,22 +11,23 @@ import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
 export class VerticalBarChartDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: any[];
-	@Input() widthExtent: [number, number];
+	@Input('sentioData') data: any[];
 
-	@Input('resize') resizeEnabled: boolean;
-	@Input() duration: number;
+	@Input('sentioWidthExtent') widthExtent: [number, number];
+	@Input('sentioResize') resizeEnabled: boolean;
+
+	@Input('sentioDuration') duration: number;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<sentio.chart.VerticalBarsChart>();
+	@Output('sentioChartReady') chartReady = new EventEmitter<VerticalBarsChart>();
 
-	chartWrapper: ChartWrapper<sentio.chart.VerticalBarsChart>;
+	chartWrapper: ChartWrapper<VerticalBarsChart>;
 	resizeUtil: ResizeUtil;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper<sentio.chart.VerticalBarsChart>(el, sentio.chart.verticalBars(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<VerticalBarsChart>(el, chartVerticalBars(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
@@ -80,9 +81,9 @@ export class VerticalBarChartDirective
 		let resize: boolean = false;
 		let redraw: boolean = false;
 
-		if (changes['model']) {
-			this.chartWrapper.chart.data(this.model);
-			redraw = redraw || !changes['model'].isFirstChange();
+		if (changes['data']) {
+			this.chartWrapper.chart.data(this.data);
+			redraw = redraw || !changes['data'].isFirstChange();
 		}
 
 		if (changes['widthExtent']) {
@@ -90,10 +91,10 @@ export class VerticalBarChartDirective
 			redraw = redraw || !changes['widthExtent'].isFirstChange();
 		}
 
-		if (changes['resize']) {
+		if (changes['resizeEnabled']) {
 			this.resizeUtil.enabled = this.resizeEnabled;
 
-			resize = resize || (this.resizeEnabled && !changes['resize'].isFirstChange());
+			resize = resize || (this.resizeEnabled && !changes['resizeEnabled'].isFirstChange());
 			redraw = redraw || resize;
 		}
 

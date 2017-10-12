@@ -1,7 +1,7 @@
 import { ElementRef } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
 
-import * as d3 from 'd3';
+import { select as d3_select } from 'd3-selection';
 
 /* tslint:disable:max-classes-per-file */
 export class ResizeDimension {
@@ -21,7 +21,7 @@ export class ResizeUtil {
 	constructor(el: ElementRef, enabled: boolean = true, debounce: number = 200, sample: number = 100) {
 		this.enabled = enabled;
 
-		this.chartElement = d3.select(el.nativeElement);
+		this.chartElement = d3_select(el.nativeElement);
 
 		// Create a hot observable for resize events
 		this.resizeSource = Observable

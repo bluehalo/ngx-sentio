@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import * as sentio from '@asymmetrik/sentio';
+import { MatrixChart, Series } from '@asymmetrik/sentio';
 
 @Component({
 	selector: 'basic-matrix-chart-demo',
@@ -9,69 +9,56 @@ import * as sentio from '@asymmetrik/sentio';
 export class BasicMatrixChartDemoComponent
 implements OnInit {
 
-	model: any[] = [];
+	data: any[] = [];
+	series: Series[] = [];
 
-	chartReady(chart: sentio.chart.MatrixChart): void {
+	swap(i: number, j: number, arr: any[]): void {
+		const t = arr[j];
+		arr[j] = arr[i];
+		arr[i] = t;
+	}
+
+
+	chartReady(chart: MatrixChart): void {
 		chart.key((d: any, i: number) => `${i}`)
-		.value((d: any) => +d)
-		.margin({ top: 20, right: 2, bottom: 2, left: 80 });
+			.margin({ top: 20, right: 2, bottom: 2, left: 80 });
 	}
 
 	update(): void {
-		const data: number[] = [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
-		const series: any[] = [];
 
-		series.push({
-			key: 'increasing', label: 'Increasing',
-			values: data.map((d: any, i: number) => i)
-		});
-		series.push({
-			key: 'decreasing', label: 'Decreasing',
-			values: data.map((d: any, i: number, arr: any[]) => (arr.length - i - 1))
-		});
-		series.push({
-			key: 'upAndDown', label: 'Up and Down',
-			values: data.map((d: any, i: number, arr: any[]) => (arr.length / 2 - Math.abs(-i + arr.length / 2)))
-		});
-		series.push({
-			key: 'flatHigh', label: 'Flat High',
-			values: data.map((d: any, i: number) => 19)
-		});
-		series.push({
-			key: 'flatLow', label: 'Flat Low',
-			values: data.map((d: any, i: number) => 0)
-		});
-		series.push({
-			key: 'flatMid', label: 'Flat Mid',
-			values: data.map((d: any, i: number) => 10)
-		});
-		series.push({
-			key: 'spikeHigh', label: 'Spike High',
-			values: data.map((d: any, i: number) => ((Math.random() > 0.1) ? 1 : 19))
-		});
-		series.push({
-			key: 'spikeLow', label: 'Spike Low',
-			values: data.map((d: any, i: number) => ((Math.random() > 0.1) ? 19 : 1))
-		});
-		series.push({
-			key: 'random', label: 'random',
-			values: data.map((d: any, i: number) => (Math.random() * 19))
-		});
+		const series: any[] = [
+			{ key: 'increasing', label: 'Increasing', value: (i: number) => i },
+			{ key: 'decreasing', label: 'Decreasing', value: (i: number, size: number) => size - i - 1 },
+			{ key: 'upAndDown', label: 'Up and Down', value: (i: number, size: number) => (size / 2) - Math.abs(-i + (size / 2)) },
+			{ key: 'flatHigh', label: 'Flat High', value: () => 19 },
+			{ key: 'flatLow', label: 'Flat Low', value: () => 0 },
+			{ key: 'flatMid', label: 'Flat Mid', value: () => 10 },
+			{ key: 'spikeHigh', label: 'Spike High', value: () => (Math.random() > 0.1) ? 1 : 19 },
+			{ key: 'spikeLow', label: 'Spike Low', value: () => (Math.random() > 0.1) ? 19 : 1 },
+			{ key: 'random', label: 'random', value: () => Math.random() * 19 }
+		];
 
 		// Remove a couple things
 		series.splice(Math.floor(Math.random() * series.length), 1);
 		series.splice(Math.floor(Math.random() * series.length), 1);
 
 		// Swap a couple things
-		const swap = (i: number, j: number, arr: any[]) => {
-			const t = arr[j];
-			arr[j] = arr[i];
-			arr[i] = t;
-		};
-		swap(Math.floor(Math.random() * series.length), Math.floor(Math.random() * series.length), series);
-		swap(Math.floor(Math.random() * series.length), Math.floor(Math.random() * series.length), series);
+		this.swap(Math.floor(Math.random() * series.length), Math.floor(Math.random() * series.length), series);
+		this.swap(Math.floor(Math.random() * series.length), Math.floor(Math.random() * series.length), series);
 
-		this.model = series;
+		// Create the data
+		const data = [];
+		for (let i = 0; i < 24; i++) {
+			const entry = { key: i };
+			series.forEach((s) => {
+				entry[s.key] = s.value(i, 24);
+				s.getValue = (d: any) => d[s.key];
+			});
+			data.push(entry);
+		}
+
+		this.series = series;
+		this.data = data;
 	}
 
 	ngOnInit(): void {

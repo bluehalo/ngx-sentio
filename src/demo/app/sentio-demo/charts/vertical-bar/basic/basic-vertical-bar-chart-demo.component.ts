@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
 })
 export class BasicVerticalBarChartDemoComponent {
 
-	model: any[] = [];
+	data: any[] = [];
 
 	chartReady(chart: any): void {
 		chart.label((d: any) => `${d.key}&lrm; (${d.value})`);
@@ -22,7 +22,7 @@ export class BasicVerticalBarChartDemoComponent {
 				value: Math.floor(Math.random() * 100)
 			});
 		}
-		this.model = newData
+		this.data = newData
 			.sort((a: any, b: any) => b.value - a.value)
 			.slice(0, 12);
 	}

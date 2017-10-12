@@ -1,26 +1,26 @@
 import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
-import { RealtimeTimelineChart, Series } from '@asymmetrik/sentio';
+import { AutoBrushTimelineChart, Series } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../../util/chart-wrapper.util';
 import { ResizeUtil } from '../../../util/resize.util';
 import { TimelineUtil } from '../timeline.util';
-export declare class RealtimeTimelineDirective implements OnChanges, OnDestroy, OnInit {
+export declare class AutoBrushTimelineComponent implements OnChanges, OnDestroy, OnInit {
     data: any[];
     series: Series[];
     markers: any[];
     yExtent: [number, number];
     xExtent: [number, number];
-    delay: number;
-    fps: number;
-    interval: number;
     resizeWidth: boolean;
     resizeHeight: boolean;
-    chartReady: EventEmitter<RealtimeTimelineChart>;
+    chartReady: EventEmitter<AutoBrushTimelineChart>;
+    brushEnabled: boolean;
+    brushState: [number, number];
+    brushChange: EventEmitter<[number, number]>;
     markerMouseover: EventEmitter<any>;
     markerMouseout: EventEmitter<any>;
     markerClick: EventEmitter<any>;
-    chartWrapper: ChartWrapper<RealtimeTimelineChart>;
+    chartWrapper: ChartWrapper<AutoBrushTimelineChart>;
     resizeUtil: ResizeUtil;
-    timelineUtil: TimelineUtil<RealtimeTimelineChart>;
+    timelineUtil: TimelineUtil<AutoBrushTimelineChart>;
     constructor(el: ElementRef);
     onResize(event: any): void;
     ngOnInit(): void;

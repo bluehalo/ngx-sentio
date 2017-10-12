@@ -94,6 +94,7 @@ gulp.task('rollup-js', () => {
 			external: [
 				'@angular/core',
 				'd3',
+				'd3-selection',
 				'rxjs',
 				'@asymmetrik/sentio'
 			],
@@ -115,6 +116,7 @@ gulp.task('rollup-js', () => {
 					'@angular/core': 'ng.core',
 					'@asymmetrik/sentio': 'sentio',
 					'd3': 'd3',
+					'd3-selection': 'd3',
 					'rxjs': 'Rx'
 				}
 			});

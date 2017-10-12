@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Series } from '@asymmetrik/sentio';
+
 @Component({
 	selector: 'basic-timeline-line-demo',
 	templateUrl: 'basic-timeline-line-demo.component.html'
@@ -7,9 +9,15 @@ import { Component, OnInit } from '@angular/core';
 export class BasicTimelineLineDemoComponent
 implements OnInit {
 
-	model: any[] = [];
-	filterEnabled = true;
-	filter: [ number, number ] = [ Date.now() - 10000, Date.now() - 5000 ];
+	data: any[] = [];
+	series: Series[] = [
+		{ key: 'series1', label: 'Series 1', getValue: (d: any) => d.s1},
+		{ key: 'series2', label: 'Series 2', getValue: (d: any) => d.s2}
+	];
+
+	brushEnabled = true;
+	brush: [ number, number ] = [ Date.now() - 10000, Date.now() - 5000 ];
+
 	interval = 60000;
 	binSize = 1000;
 	hwm: number = Date.now();
@@ -21,31 +29,28 @@ implements OnInit {
 
 	update(): void {
 		this.hwm = Date.now();
-		const newModel: any[] = [];
+		const newData: any[] = [];
 
-		['series1', 'series2'].forEach((s) => {
-			const k = s;
-			const d: any[] = [];
+		for (let i = 0; i < this.interval / this.binSize; i++) {
+			newData.unshift({
+				0: this.hwm - (i * this.binSize),
+				s1: Math.random() * 10,
+				s2: Math.random() * 5
+			});
+		}
 
-			for (let i = 0; i < this.interval / this.binSize; i++) {
-				d.unshift([ this.hwm - (i * this.binSize), Math.random() * 10 ]);
-			}
-
-			newModel.push({ key: k, values: d });
-		});
-
-		this.model = newModel;
+		this.data = newData;
 	}
 
-	clearFilter(): void {
-		this.filter = null;
+	clearBrush(): void {
+		this.brush = null;
 	}
 
-	randomFilter(): void {
+	randomBrush(): void {
 		const lf: number = this.hwm - Math.random() * this.interval;
 		const hf: number = lf + Math.random() * 20000;
-		const newFilter: [ number, number ] = [ lf, hf ];
-		this.filter = newFilter;
+		const newBrush: [ number, number ] = [ lf, hf ];
+		this.brush = newBrush;
 	}
 
 	ngOnInit(): void {

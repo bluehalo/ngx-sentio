@@ -1,14 +1,14 @@
 import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { VerticalBarsChart } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
 export declare class VerticalBarChartDirective implements OnChanges, OnDestroy, OnInit {
-    model: any[];
+    data: any[];
     widthExtent: [number, number];
     resizeEnabled: boolean;
     duration: number;
-    chartReady: EventEmitter<sentio.chart.VerticalBarsChart>;
-    chartWrapper: ChartWrapper<sentio.chart.VerticalBarsChart>;
+    chartReady: EventEmitter<VerticalBarsChart>;
+    chartWrapper: ChartWrapper<VerticalBarsChart>;
     resizeUtil: ResizeUtil;
     constructor(el: ElementRef);
     /**

@@ -1,6 +1,6 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 
-import * as sentio from '@asymmetrik/sentio';
+import { controllerRealtimeBins, Series } from '@asymmetrik/sentio';
 
 @Component({
 	selector: 'basic-realtime-timeline-line-demo',
@@ -10,9 +10,12 @@ export class BasicRealtimeTimelineLineDemoComponent
 implements OnInit {
 
 	chart: any;
-	model: any[] = [];
-	bins: any = sentio.controller.realtimeBins({ binCount: 60, binSize: 1000 });
+
+	data: any[] = [];
+	series: Series[] = [ { key: 'series1', label: 'Series 1', getValue(d: any) { return d[1]; } } ];
 	markers: any[] = [];
+
+	bins: any = controllerRealtimeBins({ binCount: 60, binSize: 1000 });
 	hwm: number = Date.now();
 
 	chartReady(chart: any): void {
@@ -52,7 +55,7 @@ implements OnInit {
 
 	@HostListener('mousemove', ['$event'])
 	onMouseMove(): void {
-		this.bins.add([Date.now()]);
+		this.bins.add([ Date.now() ]);
 	}
 
 	ngOnInit(): void {
@@ -60,9 +63,6 @@ implements OnInit {
 			.updateBin((bin: any[]) => { bin[1] += 1; })
 			.createSeed(() => 0);
 
-		this.model = [
-			{ key: 'series1', values: this.bins.bins() }
-		];
-
+		this.data = this.bins.bins();
 	}
 }

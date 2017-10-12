@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { chartDonut } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeUtil } from '../../util/resize.util';
 var DonutChartDirective = /** @class */ (function () {
@@ -7,7 +7,7 @@ var DonutChartDirective = /** @class */ (function () {
         // Chart Ready event
         this.chartReady = new EventEmitter();
         // Create the chart
-        this.chartWrapper = new ChartWrapper(el, sentio.chart.donut(), this.chartReady);
+        this.chartWrapper = new ChartWrapper(el, chartDonut(), this.chartReady);
         // Set up the resizer
         this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
     }
@@ -49,20 +49,20 @@ var DonutChartDirective = /** @class */ (function () {
     DonutChartDirective.prototype.ngOnChanges = function (changes) {
         var resize = false;
         var redraw = false;
-        if (changes['model']) {
-            this.chartWrapper.chart.data(this.model);
-            redraw = redraw || !changes['model'].isFirstChange();
+        if (changes['sentioData']) {
+            this.chartWrapper.chart.data(this.data);
+            redraw = redraw || !changes['sentioData'].isFirstChange();
         }
-        if (changes['duration']) {
+        if (changes['sentioDuration']) {
             this.chartWrapper.chart.duration(this.duration);
         }
-        if (changes['colorScale']) {
+        if (changes['sentioColorScale']) {
             this.chartWrapper.chart.colorScale(this.colorScale);
-            redraw = redraw || !changes['colorScale'].isFirstChange();
+            redraw = redraw || !changes['sentioColorScale'].isFirstChange();
         }
-        if (changes['resize']) {
+        if (changes['sentioResize']) {
             this.resizeUtil.enabled = this.resizeEnabled;
-            resize = resize || (this.resizeEnabled && !changes['resize'].isFirstChange());
+            resize = resize || (this.resizeEnabled && !changes['sentioResize'].isFirstChange());
             redraw = redraw || resize;
         }
         // Only redraw once if necessary
@@ -83,11 +83,11 @@ var DonutChartDirective = /** @class */ (function () {
         { type: ElementRef, },
     ]; };
     DonutChartDirective.propDecorators = {
-        'model': [{ type: Input },],
-        'colorScale': [{ type: Input },],
-        'resizeEnabled': [{ type: Input, args: ['resize',] },],
-        'duration': [{ type: Input },],
-        'chartReady': [{ type: Output },],
+        'data': [{ type: Input, args: ['sentioData',] },],
+        'colorScale': [{ type: Input, args: ['sentioColorScale',] },],
+        'resizeEnabled': [{ type: Input, args: ['sentioResize',] },],
+        'duration': [{ type: Input, args: ['sentioDuration',] },],
+        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
         'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
     };
     return DonutChartDirective;

@@ -1,12 +1,12 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { chartMatrix } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 var MatrixChartDirective = /** @class */ (function () {
     function MatrixChartDirective(el) {
         // Chart Ready event
         this.chartReady = new EventEmitter();
         // Create the chart
-        this.chartWrapper = new ChartWrapper(el, sentio.chart.matrix(), this.chartReady);
+        this.chartWrapper = new ChartWrapper(el, chartMatrix(), this.chartReady);
     }
     MatrixChartDirective.prototype.ngOnInit = function () {
         // Initialize the chart
@@ -18,11 +18,11 @@ var MatrixChartDirective = /** @class */ (function () {
     };
     MatrixChartDirective.prototype.ngOnChanges = function (changes) {
         var redraw = false;
-        if (changes['model']) {
-            this.chartWrapper.chart.data(this.model);
-            redraw = redraw || !changes['model'].isFirstChange();
+        if (changes['sentioModel']) {
+            this.chartWrapper.chart.data(this.data);
+            redraw = redraw || !changes['sentioModel'].isFirstChange();
         }
-        if (changes['duration']) {
+        if (changes['sentioDuration']) {
             this.chartWrapper.chart.duration(this.duration);
         }
         // Only redraw once if possible
@@ -40,9 +40,9 @@ var MatrixChartDirective = /** @class */ (function () {
         { type: ElementRef, },
     ]; };
     MatrixChartDirective.propDecorators = {
-        'model': [{ type: Input },],
-        'duration': [{ type: Input },],
-        'chartReady': [{ type: Output },],
+        'data': [{ type: Input, args: ['sentioData',] },],
+        'duration': [{ type: Input, args: ['sentioDuration',] },],
+        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
     };
     return MatrixChartDirective;
 }());

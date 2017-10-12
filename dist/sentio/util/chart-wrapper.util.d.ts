@@ -1,9 +1,9 @@
 import { ElementRef, EventEmitter } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { internal } from '@asymmetrik/sentio';
 /**
  * Wrapper for chart info
  */
-export declare class ChartWrapper<T extends sentio.internal.BaseChart> {
+export declare class ChartWrapper<T extends internal.BaseChart> {
     chart: T;
     chartElement: any;
     chartReady: EventEmitter<T>;

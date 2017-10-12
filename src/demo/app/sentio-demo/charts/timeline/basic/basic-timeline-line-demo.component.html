@@ -2,17 +2,18 @@
 	<div class="col-md-12">
 
 		<button class="btn btn-default" (click)="update()">Update</button>
-		<button class="btn btn-default" (click)="clearFilter()">Clear Filter</button>
-		<button class="btn btn-default" (click)="randomFilter()">Random Filter</button>
+		<button class="btn btn-default" (click)="clearBrush()">Clear Brush</button>
+		<button class="btn btn-default" (click)="randomBrush()">Random Brush</button>
 		<br/>
 
 		<sentioTimeline
 			style="height:100px;"
-			[model]="model"
-			resizeWidth="true"
-			filterEnabled="true"
-			[(filter)]="filter"
-			(filterChange)="eventHandler('filterChanged', $event)">
+			[sentioData]="data"
+			[sentioSeries]="series"
+			sentioResizeWidth="true"
+			sentioBrushEnabled="true"
+			[(sentioBrush)]="brush"
+			(sentioBrushChange)="eventHandler('brushChanged', $event)">
 		</sentioTimeline>
 
 	</div>

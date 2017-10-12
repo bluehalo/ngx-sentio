@@ -7,7 +7,7 @@ import { BasicVerticalBarChartDemoComponent } from './charts/vertical-bar/basic/
 import { BasicRealtimeTimelineLineDemoComponent } from './charts/timeline/realtime/basic/basic-realtime-timeline-line-demo.component';
 import { BasicTimelineLineDemoComponent } from './charts/timeline/basic/basic-timeline-line-demo.component';
 import { ResizeTimelineLineDemoComponent } from './charts/timeline/resize/resize-timeline-line-demo.component';
-import { ZoomableTimelineLineDemoComponent } from './charts/timeline/zoomable/zoomable-timeline-line-demo.component';
+import { AutoBrushTimelineLineDemoComponent } from './charts/timeline/auto-brush/auto-brush-timeline-line-demo.component';
 
 @NgModule({
 	imports: [
@@ -21,32 +21,32 @@ import { ZoomableTimelineLineDemoComponent } from './charts/timeline/zoomable/zo
 						redirectTo: '/'
 					},
 					{
-						path: 'charts/donut',
+						path: 'donut',
 						component: BasicDonutChartDemoComponent
 					},
 					{
-						path: 'charts/matrix',
+						path: 'matrix',
 						component: BasicMatrixChartDemoComponent
 					},
 					{
-						path: 'charts/verticalBars',
+						path: 'verticalBars',
 						component: BasicVerticalBarChartDemoComponent
 					},
 					{
-						path: 'timelines/basic',
+						path: 'timeline/basic',
 						component: BasicTimelineLineDemoComponent
 					},
 					{
-						path: 'timelines/resize',
+						path: 'timeline/resize',
 						component: ResizeTimelineLineDemoComponent
 					},
 					{
-						path: 'timelines/realtime-basic',
+						path: 'timeline/realtime-basic',
 						component: BasicRealtimeTimelineLineDemoComponent
 					},
 					{
-						path: 'timelines/zoomable',
-						component: ZoomableTimelineLineDemoComponent
+						path: 'timeline/auto-brush',
+						component: AutoBrushTimelineLineDemoComponent
 					}
 				]
 			},

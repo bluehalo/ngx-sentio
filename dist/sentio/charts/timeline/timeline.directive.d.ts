@@ -1,30 +1,27 @@
 import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { Series, TimelineChart } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeUtil } from '../../util/resize.util';
 import { TimelineUtil } from './timeline.util';
 export declare class TimelineDirective implements OnChanges, OnDestroy, OnInit {
-    model: any[];
+    data: any[];
+    series: Series[];
     markers: any[];
     yExtent: [number, number];
     xExtent: [number, number];
     resizeWidth: boolean;
     resizeHeight: boolean;
-    chartReady: EventEmitter<sentio.chart.TimelineChart>;
-    filterEnabled: boolean;
-    filterState: [number, number] | null;
-    filterChange: EventEmitter<[number, number]>;
-    markerOver: EventEmitter<any>;
-    markerOut: EventEmitter<any>;
+    chartReady: EventEmitter<TimelineChart>;
+    brushEnabled: boolean;
+    brushState: [number, number];
+    brushChange: EventEmitter<[number, number]>;
+    markerMouseover: EventEmitter<any>;
+    markerMouseout: EventEmitter<any>;
     markerClick: EventEmitter<any>;
-    chartWrapper: ChartWrapper<sentio.chart.TimelineChart>;
+    chartWrapper: ChartWrapper<TimelineChart>;
     resizeUtil: ResizeUtil;
-    timelineUtil: TimelineUtil<sentio.chart.TimelineChart>;
+    timelineUtil: TimelineUtil<TimelineChart>;
     constructor(el: ElementRef);
-    /**
-     * Did the state of the filter change?
-     */
-    didFilterChange: (current: [number, number], previous: [number, number]) => boolean;
     onResize(event: any): void;
     ngOnInit(): void;
     ngOnDestroy(): void;

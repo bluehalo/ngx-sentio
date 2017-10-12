@@ -4,8 +4,9 @@
 		<button class="btn btn-default" (click)="update()">Update</button>
 		<br/>
 		<sentioMatrixChart
-			[model]="model"
-			(chartReady)="chartReady($event)">
+			[sentioData]="data"
+			[sentioSeries]="series"
+			(sentioChartReady)="chartReady($event)">
 		</sentioMatrixChart>
 
 	</div>

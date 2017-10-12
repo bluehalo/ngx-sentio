@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { chartMatrix, MatrixChart, Series } from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 
@@ -10,18 +10,19 @@ import { ChartWrapper } from '../../util/chart-wrapper.util';
 export class MatrixChartDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: any[];
-	@Input() duration: number;
+	@Input('sentioData') data: any[];
+	@Input('sentioSeries') series: Series[];
+	@Input('sentioDuration') duration: number;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<sentio.chart.MatrixChart>();
+	@Output('sentioChartReady') chartReady = new EventEmitter<MatrixChart>();
 
-	chartWrapper: ChartWrapper<sentio.chart.MatrixChart>;
+	chartWrapper: ChartWrapper<MatrixChart>;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper<sentio.chart.MatrixChart>(el, sentio.chart.matrix(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<MatrixChart>(el, chartMatrix(), this.chartReady);
 
 	}
 
@@ -40,10 +41,15 @@ export class MatrixChartDirective
 	ngOnChanges(changes: { [key: string]: SimpleChange }) {
 		let redraw: boolean = false;
 
-		if (changes['model']) {
-			this.chartWrapper.chart.data(this.model);
-			redraw = redraw || !changes['model'].isFirstChange();
+		if (changes['data']) {
+			this.chartWrapper.chart.data(this.data);
+			redraw = redraw || !changes['data'].isFirstChange();
 		}
+		if (changes['series']) {
+			this.chartWrapper.chart.series(this.series);
+			redraw = redraw || !changes['series'].isFirstChange();
+		}
+
 		if (changes['duration']) {
 			this.chartWrapper.chart.duration(this.duration);
 		}

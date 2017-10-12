@@ -4,10 +4,10 @@
 		<button class="btn btn-default" (click)="update()">Update</button>
 		<br/>
 		<sentioVerticalBarChart
-			[model]="model"
-			[widthExtent]="widthExtent"
-			resize="true"
-			(chartReady)="chartReady($event)">
+			[sentioData]="data"
+			[sentioWidthExtent]="widthExtent"
+			sentioResize="true"
+			(sentioChartReady)="chartReady($event)">
 		</sentioVerticalBarChart>
 
 	</div>

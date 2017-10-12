@@ -9,7 +9,7 @@ import { BasicVerticalBarChartDemoComponent } from './vertical-bar/basic/basic-v
 import { BasicTimelineLineDemoComponent } from './timeline/basic/basic-timeline-line-demo.component';
 import { ResizeTimelineLineDemoComponent } from './timeline/resize/resize-timeline-line-demo.component';
 import { BasicRealtimeTimelineLineDemoComponent } from './timeline/realtime/basic/basic-realtime-timeline-line-demo.component';
-import { ZoomableTimelineLineDemoComponent } from './timeline/zoomable/zoomable-timeline-line-demo.component';
+import { AutoBrushTimelineLineDemoComponent } from './timeline/auto-brush/auto-brush-timeline-line-demo.component';
 
 
 @NgModule({
@@ -24,7 +24,7 @@ import { ZoomableTimelineLineDemoComponent } from './timeline/zoomable/zoomable-
 		BasicTimelineLineDemoComponent,
 		ResizeTimelineLineDemoComponent,
 		BasicRealtimeTimelineLineDemoComponent,
-		ZoomableTimelineLineDemoComponent
+		AutoBrushTimelineLineDemoComponent
 	],
 
 	exports: [
@@ -34,7 +34,7 @@ import { ZoomableTimelineLineDemoComponent } from './timeline/zoomable/zoomable-
 		BasicTimelineLineDemoComponent,
 		ResizeTimelineLineDemoComponent,
 		BasicRealtimeTimelineLineDemoComponent,
-		ZoomableTimelineLineDemoComponent
+		AutoBrushTimelineLineDemoComponent
 	]
 })
 export class ChartsDemoModule { }

@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import * as d3 from 'd3';
+import { select as d3_select } from 'd3-selection';
 /* tslint:disable:max-classes-per-file */
 var ResizeDimension = /** @class */ (function () {
     function ResizeDimension(width, height) {
@@ -19,7 +19,7 @@ var ResizeUtil = /** @class */ (function () {
         if (sample === void 0) { sample = 100; }
         var _this = this;
         this.enabled = enabled;
-        this.chartElement = d3.select(el.nativeElement);
+        this.chartElement = d3_select(el.nativeElement);
         // Create a hot observable for resize events
         this.resizeSource = Observable
             .create(function (observer) {

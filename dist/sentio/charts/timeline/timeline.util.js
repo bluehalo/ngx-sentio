@@ -9,6 +9,20 @@ var TimelineUtil = /** @class */ (function () {
      * @param chart
      */
     function TimelineUtil(chartWrapper) {
+        /**
+         * Did the state of the brush change?
+         */
+        this.didBrushChange = function (current, previous) {
+            // Deep compare the brush
+            if (current === previous ||
+                (null != current && null != previous
+                    && current[0] === previous[0]
+                    && current[1] === previous[1])) {
+                return false;
+            }
+            // We know it changed
+            return true;
+        };
         this.chartWrapper = chartWrapper;
     }
     TimelineUtil.prototype.setChartDimensions = function (dim, resizeWidth, resizeHeight, force) {

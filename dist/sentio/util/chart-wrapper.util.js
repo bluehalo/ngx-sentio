@@ -1,4 +1,4 @@
-import * as d3 from 'd3';
+import { select as d3_select } from 'd3-selection';
 /**
  * Wrapper for chart info
  */
@@ -10,7 +10,7 @@ var ChartWrapper = /** @class */ (function () {
      * @param chart
      */
     function ChartWrapper(el, chart, chartReady) {
-        this.chartElement = d3.select(el.nativeElement);
+        this.chartElement = d3_select(el.nativeElement);
         this.chart = chart;
         this.chartReady = chartReady;
     }

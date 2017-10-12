@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { chartVerticalBars } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeUtil } from '../../util/resize.util';
 var VerticalBarChartDirective = /** @class */ (function () {
@@ -7,7 +7,7 @@ var VerticalBarChartDirective = /** @class */ (function () {
         // Chart Ready event
         this.chartReady = new EventEmitter();
         // Create the chart
-        this.chartWrapper = new ChartWrapper(el, sentio.chart.verticalBars(), this.chartReady);
+        this.chartWrapper = new ChartWrapper(el, chartVerticalBars(), this.chartReady);
         // Set up the resizer
         this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
     }
@@ -47,17 +47,17 @@ var VerticalBarChartDirective = /** @class */ (function () {
     VerticalBarChartDirective.prototype.ngOnChanges = function (changes) {
         var resize = false;
         var redraw = false;
-        if (changes['model']) {
-            this.chartWrapper.chart.data(this.model);
-            redraw = redraw || !changes['model'].isFirstChange();
+        if (changes['sentioData']) {
+            this.chartWrapper.chart.data(this.data);
+            redraw = redraw || !changes['sentioData'].isFirstChange();
         }
-        if (changes['widthExtent']) {
+        if (changes['sentioWidthExtent']) {
             this.chartWrapper.chart.widthExtent().overrideValue(this.widthExtent);
-            redraw = redraw || !changes['widthExtent'].isFirstChange();
+            redraw = redraw || !changes['sentioWidthExtent'].isFirstChange();
         }
-        if (changes['resize']) {
+        if (changes['sentioResize']) {
             this.resizeUtil.enabled = this.resizeEnabled;
-            resize = resize || (this.resizeEnabled && !changes['resize'].isFirstChange());
+            resize = resize || (this.resizeEnabled && !changes['sentioResize'].isFirstChange());
             redraw = redraw || resize;
         }
         // Only redraw once if necessary
@@ -78,11 +78,11 @@ var VerticalBarChartDirective = /** @class */ (function () {
         { type: ElementRef, },
     ]; };
     VerticalBarChartDirective.propDecorators = {
-        'model': [{ type: Input },],
-        'widthExtent': [{ type: Input },],
-        'resizeEnabled': [{ type: Input, args: ['resize',] },],
-        'duration': [{ type: Input },],
-        'chartReady': [{ type: Output },],
+        'data': [{ type: Input, args: ['sentioData',] },],
+        'widthExtent': [{ type: Input, args: ['sentioWidthExtent',] },],
+        'resizeEnabled': [{ type: Input, args: ['sentioResize',] },],
+        'duration': [{ type: Input, args: ['sentioDuration',] },],
+        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
         'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
     };
     return VerticalBarChartDirective;

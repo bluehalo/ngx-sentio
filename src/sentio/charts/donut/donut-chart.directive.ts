@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChange } from '@angular/core';
-import * as sentio from '@asymmetrik/sentio';
+import { chartDonut, DonutChart } from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
@@ -11,22 +11,22 @@ import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
 export class DonutChartDirective
 	implements OnChanges, OnDestroy, OnInit {
 
-	@Input() model: any[];
-	@Input() colorScale: any;
+	@Input('sentioData') data: any[];
+	@Input('sentioColorScale') colorScale: any;
 
-	@Input('resize') resizeEnabled: boolean;
-	@Input() duration: number;
+	@Input('sentioResize') resizeEnabled: boolean;
+	@Input('sentioDuration') duration: number;
 
 	// Chart Ready event
-	@Output() chartReady = new EventEmitter<sentio.chart.DonutChart>();
+	@Output('sentioChartReady') chartReady = new EventEmitter<DonutChart>();
 
-	chartWrapper: ChartWrapper<sentio.chart.DonutChart>;
+	chartWrapper: ChartWrapper<DonutChart>;
 	resizeUtil: ResizeUtil;
 
 	constructor(el: ElementRef) {
 
 		// Create the chart
-		this.chartWrapper = new ChartWrapper<sentio.chart.DonutChart>(el, sentio.chart.donut(), this.chartReady);
+		this.chartWrapper = new ChartWrapper<DonutChart>(el, chartDonut(), this.chartReady);
 
 		// Set up the resizer
 		this.resizeUtil = new ResizeUtil(el, this.resizeEnabled);
@@ -85,9 +85,9 @@ export class DonutChartDirective
 		let resize: boolean = false;
 		let redraw: boolean = false;
 
-		if (changes['model']) {
-			this.chartWrapper.chart.data(this.model);
-			redraw = redraw || !changes['model'].isFirstChange();
+		if (changes['data']) {
+			this.chartWrapper.chart.data(this.data);
+			redraw = redraw || !changes['data'].isFirstChange();
 		}
 
 		if (changes['duration']) {
@@ -97,10 +97,10 @@ export class DonutChartDirective
 			this.chartWrapper.chart.colorScale(this.colorScale);
 			redraw = redraw || !changes['colorScale'].isFirstChange();
 		}
-		if (changes['resize']) {
+		if (changes['resizeEnabled']) {
 			this.resizeUtil.enabled = this.resizeEnabled;
 
-			resize = resize || (this.resizeEnabled && !changes['resize'].isFirstChange());
+			resize = resize || (this.resizeEnabled && !changes['resizeEnabled'].isFirstChange());
 			redraw = redraw || resize;
 		}
 
