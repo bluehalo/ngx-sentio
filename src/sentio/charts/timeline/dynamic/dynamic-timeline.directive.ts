@@ -1,7 +1,9 @@
-import { ContentChild, Directive, EventEmitter, OnInit, Output} from '@angular/core';
+import { ContentChild, Directive, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { AutoBrushTimelineDirective } from '../auto-brush/auto-brush-timeline.directive';
 import { TimelineDirective } from '../timeline.directive';
+import { DynamicTimelineReadyEvent } from './dynamic-timeline-ready.event';
+
 import { AutoBrushTimelineChart, TimelineChart } from '@asymmetrik/sentio';
 
 @Directive({
@@ -14,7 +16,7 @@ implements OnInit {
 	@ContentChild(AutoBrushTimelineDirective) autoBrushDirective: AutoBrushTimelineDirective;
 
 	// Chart Ready event
-	@Output('sentioChartReady') chartReady = new EventEmitter<TimelineChart>();
+	@Output('sentioChartReady') chartReady = new EventEmitter<DynamicTimelineReadyEvent>();
 
 	timeline: TimelineChart;
 	autoBrush: AutoBrushTimelineChart;
@@ -51,6 +53,9 @@ implements OnInit {
 			.on('brushChange.internalDynamicTimeline', (newBrush: [ number, number ]) => {
 				this.setTimelineExtent(newBrush);
 			});
+
+		// Emit that the charts are ready
+		this.chartReady.emit({ timeline: this.timeline, autoBrush: this.autoBrush });
 	}
 
 	// Set the timeline extent to the new value

@@ -32,6 +32,8 @@ var DynamicTimelineDirective = /** @class */ (function () {
             .on('brushChange.internalDynamicTimeline', function (newBrush) {
             _this.setTimelineExtent(newBrush);
         });
+        // Emit that the charts are ready
+        this.chartReady.emit({ timeline: this.timeline, autoBrush: this.autoBrush });
     };
     // Set the timeline extent to the new value
     DynamicTimelineDirective.prototype.setTimelineExtent = function (newExtent) {

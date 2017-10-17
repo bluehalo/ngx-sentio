@@ -1,8 +1,9 @@
 import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 
-import { AutoBrushTimelineChart, Series, TimelineChart } from '@asymmetrik/sentio';
+import { Series } from '@asymmetrik/sentio';
 
 import { DynamicTimelineDirective } from '../../../../../../sentio/charts/timeline/dynamic/dynamic-timeline.directive';
+import { DynamicTimelineReadyEvent } from '../../../../../../sentio/charts/timeline/dynamic/dynamic-timeline-ready.event';
 
 @Component({
 	selector: 'dynamic-timeline-line-demo',
@@ -41,17 +42,15 @@ export class DynamicTimelineLineDemoComponent {
 	brushData: any[] = [];
 	brushSeries: Series[] = [];
 
-	timelineReady(chart: TimelineChart) {
-		chart.dispatch()
+	chartsReady(charts: DynamicTimelineReadyEvent) {
+		charts.timeline.dispatch()
 			.on('pointMouseover.context', this.updateContextPoint.bind(this))
 			.on('pointMouseout.context', this.updateContextNoPoint.bind(this));
 
-	}
-
-	brushReady(chart: AutoBrushTimelineChart) {
-		chart.dispatch()
+		charts.autoBrush.dispatch()
 			.on('brushChange.context', this.updateContextNoPoint.bind(this));
 	}
+
 
 	zoom(level: number) {
 		this.dynamicTimelineRef.setBrush([ this.now - level, this.now ]);
