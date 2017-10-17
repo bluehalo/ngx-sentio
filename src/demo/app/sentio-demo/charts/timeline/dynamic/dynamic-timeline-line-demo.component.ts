@@ -43,12 +43,14 @@ export class DynamicTimelineLineDemoComponent {
 
 	timelineReady(chart: TimelineChart) {
 		chart.dispatch()
-			.on('pointMouseover', this.updateContextPoint)
-			.on('pointMouseout', this.updateContextNoPoint);
+			.on('pointMouseover.context', this.updateContextPoint.bind(this))
+			.on('pointMouseout.context', this.updateContextNoPoint.bind(this));
+
 	}
 
 	brushReady(chart: AutoBrushTimelineChart) {
-		// Nothing
+		chart.dispatch()
+			.on('brushChange.context', this.updateContextNoPoint.bind(this));
 	}
 
 	zoom(level: number) {

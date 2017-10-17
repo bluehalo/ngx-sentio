@@ -16,10 +16,18 @@ var VerticalBarChartDirective = /** @class */ (function () {
      */
     VerticalBarChartDirective.prototype.setChartDimensions = function (dim, force) {
         if (force === void 0) { force = false; }
-        if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+        var size;
+        // If resize is enabled, we want to resize to parent
+        if (this.resizeEnabled) {
+            size = dim.parent;
+        }
+        else if (force) {
+            size = dim.element;
+        }
+        if (null != size && null != size.width && this.chartWrapper.chart.width() !== size.width) {
             // pin the height to the width
             this.chartWrapper.chart
-                .width(dim.width)
+                .width(size.width)
                 .resize();
         }
     };

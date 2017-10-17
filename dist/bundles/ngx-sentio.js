@@ -30,14 +30,6 @@ var ChartWrapper = /** @class */ (function () {
     return ChartWrapper;
 }());
 
-/* tslint:disable:max-classes-per-file */
-var ResizeDimension = /** @class */ (function () {
-    function ResizeDimension(width, height) {
-        this.width = width;
-        this.height = height;
-    }
-    return ResizeDimension;
-}());
 /**
  * Resize utility class
  */
@@ -49,6 +41,7 @@ var ResizeUtil = /** @class */ (function () {
         var _this = this;
         this.enabled = enabled;
         this.chartElement = d3Selection.select(el.nativeElement);
+        this.chartElement.style('display', 'block');
         // Create a hot observable for resize events
         this.resizeSource = rxjs.Observable
             .create(function (observer) {
@@ -87,76 +80,38 @@ var ResizeUtil = /** @class */ (function () {
         }
         return dim;
     };
-    /**
-     * Returns the size of the element (only returns height/width if they are specified on the DOM elements)
-     * Checks attributes and style
-     *
-     * @param element
-     * @returns {ResizeDimension}
-     */
-    ResizeUtil.getSpecifiedSize = function (element) {
-        var width = element.attributes.width || ResizeUtil.getPixelDimension(element.style.width);
-        var height = element.attributes.height || ResizeUtil.getPixelDimension(element.style.height);
-        return new ResizeDimension(width, height);
-    };
-    /**
-     * Returns the size of the element
-     * Checks client size
-     *
-     * @param element
-     * @returns {ResizeDimension}
-     */
-    ResizeUtil.getActualSize = function (element) {
-        var cs = getComputedStyle(element);
-        var paddingX = ResizeUtil.parseFloat(cs.paddingLeft, 0) + ResizeUtil.parseFloat(cs.paddingRight, 0);
-        var paddingY = ResizeUtil.parseFloat(cs.paddingTop, 0) + ResizeUtil.parseFloat(cs.paddingBottom, 0);
-        var borderX = ResizeUtil.parseFloat(cs.borderLeftWidth, 0) + ResizeUtil.parseFloat(cs.borderRightWidth, 0);
-        var borderY = ResizeUtil.parseFloat(cs.borderTopWidth, 0) + ResizeUtil.parseFloat(cs.borderBottomWidth, 0);
-        // Element width and height minus padding and border
-        var width = element.offsetWidth - paddingX - borderX;
-        var height = element.offsetHeight - paddingY - borderY;
-        return new ResizeDimension(width, height);
-    };
-    /**
-     * Gets the specified dimensions of the element
-     * @returns {ResizeDimension}
-     */
-    ResizeUtil.prototype.getSpecifiedSize = function () {
-        return ResizeUtil.getSpecifiedSize(this.chartElement.node());
-    };
-    /**
-     * Get the element size (with no overflow)
-     * @returns {ResizeDimension}
-     */
-    ResizeUtil.prototype.getActualSize = function () {
+    ResizeUtil.prototype.getComputedElementSize = function (element) {
         // Get the raw body element
         var body = document.body;
         // Cache the old overflow style
         var overflow = body.style.overflow;
         body.style.overflow = 'hidden';
-        // The first element child of our selector should be the <div> we injected
-        var rawElement = this.chartElement.node().parentElement;
-        var size = ResizeUtil.getActualSize(rawElement);
+        var cs = getComputedStyle(element);
+        var width = ResizeUtil.parseFloat(cs.width, 0);
+        var height = ResizeUtil.parseFloat(cs.height, 0);
         // Reapply the old overflow setting
         body.style.overflow = overflow;
-        return size;
+        return { width: width, height: height };
     };
     /**
-     * Gets the size of the element (this is the actual size overridden by specified size)
-     * Actual size should be based on the size of the parent
+     * Gets the size context info for the current element
+     * Two relevant things are computed:
+     *
+     * element size:
+     *   Determines the chart size if the user has tried to specify the size on the directive
+     *   - directive element size
+     *
+     * parent size:
+     *   Used when resizing to fit parent. The size returned should be the size that the element should be.
+     *   - directive parent size minus padding, margin, and border
+     *
      *
      * @returns {ResizeDimension}
      */
     ResizeUtil.prototype.getSize = function () {
-        var specifiedSize = this.getSpecifiedSize();
-        var size = this.getActualSize();
-        if (null != specifiedSize.height) {
-            size.height = specifiedSize.height;
-        }
-        if (null != specifiedSize.width) {
-            size.width = specifiedSize.width;
-        }
-        return size;
+        var element = this.getComputedElementSize(this.chartElement.node());
+        var parent = this.getComputedElementSize(this.chartElement.node().parentElement);
+        return { element: element, parent: parent };
     };
     ResizeUtil.prototype.destroy = function () {
         this.resizeObserver.complete();
@@ -179,11 +134,19 @@ var DonutChartDirective = /** @class */ (function () {
      */
     DonutChartDirective.prototype.setChartDimensions = function (dim, force) {
         if (force === void 0) { force = false; }
-        if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+        var size;
+        // If resize is enabled, we want to resize to parent
+        if (this.resizeEnabled) {
+            size = dim.parent;
+        }
+        else if (force) {
+            size = dim.element;
+        }
+        if (null != size && null != size.width && this.chartWrapper.chart.width() !== size.width) {
             // pin the height to the width
             this.chartWrapper.chart
-                .width(dim.width)
-                .height(dim.width)
+                .width(size.width)
+                .height(size.width)
                 .resize();
         }
     };
@@ -255,57 +218,6 @@ var DonutChartDirective = /** @class */ (function () {
     return DonutChartDirective;
 }());
 
-var MatrixChartDirective = /** @class */ (function () {
-    function MatrixChartDirective(el) {
-        // Chart Ready event
-        this.chartReady = new core.EventEmitter();
-        // Create the chart
-        this.chartWrapper = new ChartWrapper(el, sentio.chartMatrix(), this.chartReady);
-    }
-    MatrixChartDirective.prototype.ngOnInit = function () {
-        // Initialize the chart
-        this.chartWrapper.initialize();
-        this.chartWrapper.chart.redraw();
-    };
-    MatrixChartDirective.prototype.ngOnDestroy = function () {
-        // Nothing for now
-    };
-    MatrixChartDirective.prototype.ngOnChanges = function (changes) {
-        var redraw = false;
-        if (changes['data']) {
-            this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['data'].isFirstChange();
-        }
-        if (changes['series']) {
-            this.chartWrapper.chart.series(this.series);
-            redraw = redraw || !changes['series'].isFirstChange();
-        }
-        if (changes['duration']) {
-            this.chartWrapper.chart.duration(this.duration);
-        }
-        // Only redraw once if possible
-        if (redraw) {
-            this.chartWrapper.chart.redraw();
-        }
-    };
-    MatrixChartDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: 'sentioMatrixChart'
-                },] },
-    ];
-    /** @nocollapse */
-    MatrixChartDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
-    ]; };
-    MatrixChartDirective.propDecorators = {
-        'data': [{ type: core.Input, args: ['sentioData',] },],
-        'series': [{ type: core.Input, args: ['sentioSeries',] },],
-        'duration': [{ type: core.Input, args: ['sentioDuration',] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-    };
-    return MatrixChartDirective;
-}());
-
 /**
  * Wrapper for common timeline stuff
  */
@@ -336,16 +248,28 @@ var TimelineUtil = /** @class */ (function () {
     TimelineUtil.prototype.setChartDimensions = function (dim, resizeWidth, resizeHeight, force) {
         if (force === void 0) { force = false; }
         var resize = false;
-        if ((force || resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
-            // pin the height to the width
-            this.chartWrapper.chart
-                .width(dim.width);
+        var width;
+        var height;
+        // If resize is enabled, we want to resize to parent
+        if (resizeWidth) {
+            width = dim.parent.width;
+        }
+        else if (force) {
+            width = dim.element.width;
+        }
+        // If resize is enabled, we want to resize to parent
+        if (resizeHeight) {
+            height = dim.parent.height;
+        }
+        else if (force) {
+            height = dim.element.height;
+        }
+        if (null != width && this.chartWrapper.chart.width() !== width) {
+            this.chartWrapper.chart.width(width);
             resize = true;
         }
-        if ((force || resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
-            // pin the height to the width
-            this.chartWrapper.chart
-                .height(dim.height);
+        if (null != height && this.chartWrapper.chart.height() !== height) {
+            this.chartWrapper.chart.height(height);
             resize = true;
         }
         if (resize) {
@@ -407,31 +331,34 @@ var TimelineUtil = /** @class */ (function () {
     return TimelineUtil;
 }());
 
-var RealtimeTimelineDirective = /** @class */ (function () {
-    function RealtimeTimelineDirective(el) {
+var AutoBrushTimelineDirective = /** @class */ (function () {
+    function AutoBrushTimelineDirective(el) {
         // Chart Ready event
         this.chartReady = new core.EventEmitter();
-        // Interaction events
-        this.markerMouseover = new core.EventEmitter();
-        this.markerMouseout = new core.EventEmitter();
-        this.markerClick = new core.EventEmitter();
+        this.brushChange = new core.EventEmitter();
+        // Extent State
+        this.extentChange = new core.EventEmitter();
         // Create the chart
-        this.chartWrapper = new ChartWrapper(el, sentio.chartRealtimeTimeline(), this.chartReady);
+        this.chartWrapper = new ChartWrapper(el, sentio.chartAutoBrushTimeline(), this.chartReady);
         // Set up the resizer
         this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
         this.timelineUtil = new TimelineUtil(this.chartWrapper);
     }
-    RealtimeTimelineDirective.prototype.onResize = function (event) {
+    AutoBrushTimelineDirective.prototype.onResize = function (event) {
         this.resizeUtil.resizeObserver.next(event);
     };
-    RealtimeTimelineDirective.prototype.ngOnInit = function () {
+    AutoBrushTimelineDirective.prototype.ngOnInit = function () {
         var _this = this;
         // Initialize the chart
         this.chartWrapper.initialize();
-        // register for the marker events
-        this.chartWrapper.chart.dispatch().on('markerClick', function (p) { _this.markerClick.emit(p); });
-        this.chartWrapper.chart.dispatch().on('markerMouseover', function (p) { _this.markerMouseover.emit(p); });
-        this.chartWrapper.chart.dispatch().on('markerMouseout', function (p) { _this.markerMouseout.emit(p); });
+        // register for the auto-brush events
+        this.chartWrapper.chart.dispatch()
+            .on('brushChange.internal', function (brush) {
+            if (_this.timelineUtil.didBrushChange(brush, _this.brushState)) {
+                setTimeout(function () { _this.brushChange.emit(brush); });
+            }
+        })
+            .on('extentChange.internal', function (extent) { return _this.extentChange.emit(extent); });
         // Set up the resize callback
         this.resizeUtil.resizeSource
             .subscribe(function () {
@@ -442,23 +369,16 @@ var RealtimeTimelineDirective = /** @class */ (function () {
         // Set the initial size of the chart
         this.timelineUtil.setChartDimensions(this.resizeUtil.getSize(), this.resizeWidth, this.resizeHeight, true);
         this.chartWrapper.chart.redraw();
+        // Set the brush (if it exists)
+        if (null != this.brushState) {
+            this.chartWrapper.chart.setBrush(this.brushState);
+        }
     };
-    RealtimeTimelineDirective.prototype.ngOnDestroy = function () {
+    AutoBrushTimelineDirective.prototype.ngOnDestroy = function () {
         this.resizeUtil.destroy();
     };
-    RealtimeTimelineDirective.prototype.ngOnChanges = function (changes) {
+    AutoBrushTimelineDirective.prototype.ngOnChanges = function (changes) {
         var retVal = this.timelineUtil.onChanges(changes);
-        if (changes['fps']) {
-            this.chartWrapper.chart.fps(this.fps);
-        }
-        if (changes['delay']) {
-            this.chartWrapper.chart.delay(this.delay);
-            retVal.redraw = retVal.redraw || !changes['delay'].isFirstChange();
-        }
-        if (changes['interval']) {
-            this.chartWrapper.chart.interval(this.interval);
-            retVal.redraw = retVal.redraw || !changes['interval'].isFirstChange();
-        }
         // Only redraw once if necessary
         if (retVal.resize) {
             this.chartWrapper.chart.resize();
@@ -467,36 +387,35 @@ var RealtimeTimelineDirective = /** @class */ (function () {
             this.chartWrapper.chart.redraw();
         }
     };
-    RealtimeTimelineDirective.decorators = [
+    AutoBrushTimelineDirective.decorators = [
         { type: core.Directive, args: [{
-                    selector: 'sentioRealtimeTimeline'
+                    selector: 'sentioAutoBrushTimeline'
                 },] },
     ];
     /** @nocollapse */
-    RealtimeTimelineDirective.ctorParameters = function () { return [
+    AutoBrushTimelineDirective.ctorParameters = function () { return [
         { type: core.ElementRef, },
     ]; };
-    RealtimeTimelineDirective.propDecorators = {
+    AutoBrushTimelineDirective.propDecorators = {
         'data': [{ type: core.Input, args: ['sentioData',] },],
         'series': [{ type: core.Input, args: ['sentioSeries',] },],
-        'markers': [{ type: core.Input, args: ['sentioMarkers',] },],
         'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
-        'xExtent': [{ type: core.Input, args: ['sentioXExtent',] },],
-        'showGrid': [{ type: core.Input, args: ['sentioShowGrid',] },],
-        'showXGrid': [{ type: core.Input, args: ['sentioShowXGrid',] },],
-        'showYGrid': [{ type: core.Input, args: ['sentioShowYGrid',] },],
-        'delay': [{ type: core.Input, args: ['sentioDelay',] },],
-        'fps': [{ type: core.Input, args: ['sentioFps',] },],
-        'interval': [{ type: core.Input, args: ['sentioInterval',] },],
         'resizeWidth': [{ type: core.Input, args: ['sentioResizeWidth',] },],
         'resizeHeight': [{ type: core.Input, args: ['sentioResizeHeight',] },],
+        'edgeTrigger': [{ type: core.Input, args: ['sentioEdgeTrigger',] },],
+        'zoomInTrigger': [{ type: core.Input, args: ['sentioZoomInTrigger',] },],
+        'zoomOutTrigger': [{ type: core.Input, args: ['sentioZoomOutTrigger',] },],
+        'zoomTarget': [{ type: core.Input, args: ['sentiozoomTarget',] },],
+        'maxExtent': [{ type: core.Input, args: ['sentioMaxExtent',] },],
+        'minExtent': [{ type: core.Input, args: ['sentioMinExtent',] },],
+        'minBrush': [{ type: core.Input, args: ['sentioMinBrush',] },],
         'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-        'markerMouseover': [{ type: core.Output, args: ['sentioMarkerMouseover',] },],
-        'markerMouseout': [{ type: core.Output, args: ['sentioMarkerMouseout',] },],
-        'markerClick': [{ type: core.Output, args: ['sentioMarkerClick',] },],
+        'brushState': [{ type: core.Input, args: ['sentioBrush',] },],
+        'brushChange': [{ type: core.Output, args: ['sentioBrushChange',] },],
+        'extentChange': [{ type: core.Output, args: ['sentioExtentChange',] },],
         'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
     };
-    return RealtimeTimelineDirective;
+    return AutoBrushTimelineDirective;
 }());
 
 var TimelineDirective = /** @class */ (function () {
@@ -606,6 +525,198 @@ var TimelineDirective = /** @class */ (function () {
     return TimelineDirective;
 }());
 
+var DynamicTimelineDirective = /** @class */ (function () {
+    function DynamicTimelineDirective() {
+    }
+    // Set the autoBrush timeline brush to the new value
+    DynamicTimelineDirective.prototype.setBrush = function (newBrush) {
+        this.autoBrush.setBrush(newBrush);
+        this.autoBrush.redraw();
+    };
+    DynamicTimelineDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        this.timeline = this.timelineDirective.chartWrapper.chart;
+        this.autoBrush = this.autoBrushDirective.chartWrapper.chart;
+        // Default config
+        this.timeline
+            .margin({ top: 16, right: 8, bottom: 24, left: 32 })
+            .showGrid(true)
+            .pointEvents('values')
+            .brush(false);
+        this.timeline.yExtent().overrideValue([0, undefined]);
+        this.timeline.xAxis().ticks(6);
+        this.timeline.xGridAxis().ticks(6);
+        this.autoBrush
+            .margin({ top: 2, right: 8, bottom: 2, left: 32 });
+        this.autoBrush.yExtent().overrideValue([0, undefined]);
+        // Auto Brush events
+        this.autoBrush.dispatch()
+            .on('brushChange.internalDynamicTimeline', function (newBrush) {
+            _this.setTimelineExtent(newBrush);
+        });
+    };
+    // Set the timeline extent to the new value
+    DynamicTimelineDirective.prototype.setTimelineExtent = function (newExtent) {
+        this.timeline.xExtent().overrideValue(newExtent);
+        this.timeline.redraw();
+    };
+    DynamicTimelineDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: '[sentioDynamicTimeline]'
+                },] },
+    ];
+    /** @nocollapse */
+    DynamicTimelineDirective.ctorParameters = function () { return []; };
+    DynamicTimelineDirective.propDecorators = {
+        'timelineDirective': [{ type: core.ContentChild, args: [TimelineDirective,] },],
+        'autoBrushDirective': [{ type: core.ContentChild, args: [AutoBrushTimelineDirective,] },],
+    };
+    return DynamicTimelineDirective;
+}());
+
+var MatrixChartDirective = /** @class */ (function () {
+    function MatrixChartDirective(el) {
+        // Chart Ready event
+        this.chartReady = new core.EventEmitter();
+        // Create the chart
+        this.chartWrapper = new ChartWrapper(el, sentio.chartMatrix(), this.chartReady);
+    }
+    MatrixChartDirective.prototype.ngOnInit = function () {
+        // Initialize the chart
+        this.chartWrapper.initialize();
+        this.chartWrapper.chart.redraw();
+    };
+    MatrixChartDirective.prototype.ngOnDestroy = function () {
+        // Nothing for now
+    };
+    MatrixChartDirective.prototype.ngOnChanges = function (changes) {
+        var redraw = false;
+        if (changes['data']) {
+            this.chartWrapper.chart.data(this.data);
+            redraw = redraw || !changes['data'].isFirstChange();
+        }
+        if (changes['series']) {
+            this.chartWrapper.chart.series(this.series);
+            redraw = redraw || !changes['series'].isFirstChange();
+        }
+        if (changes['duration']) {
+            this.chartWrapper.chart.duration(this.duration);
+        }
+        // Only redraw once if possible
+        if (redraw) {
+            this.chartWrapper.chart.redraw();
+        }
+    };
+    MatrixChartDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: 'sentioMatrixChart'
+                },] },
+    ];
+    /** @nocollapse */
+    MatrixChartDirective.ctorParameters = function () { return [
+        { type: core.ElementRef, },
+    ]; };
+    MatrixChartDirective.propDecorators = {
+        'data': [{ type: core.Input, args: ['sentioData',] },],
+        'series': [{ type: core.Input, args: ['sentioSeries',] },],
+        'duration': [{ type: core.Input, args: ['sentioDuration',] },],
+        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
+    };
+    return MatrixChartDirective;
+}());
+
+var RealtimeTimelineDirective = /** @class */ (function () {
+    function RealtimeTimelineDirective(el) {
+        // Chart Ready event
+        this.chartReady = new core.EventEmitter();
+        // Interaction events
+        this.markerMouseover = new core.EventEmitter();
+        this.markerMouseout = new core.EventEmitter();
+        this.markerClick = new core.EventEmitter();
+        // Create the chart
+        this.chartWrapper = new ChartWrapper(el, sentio.chartRealtimeTimeline(), this.chartReady);
+        // Set up the resizer
+        this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
+        this.timelineUtil = new TimelineUtil(this.chartWrapper);
+    }
+    RealtimeTimelineDirective.prototype.onResize = function (event) {
+        this.resizeUtil.resizeObserver.next(event);
+    };
+    RealtimeTimelineDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        // Initialize the chart
+        this.chartWrapper.initialize();
+        // register for the marker events
+        this.chartWrapper.chart.dispatch().on('markerClick', function (p) { _this.markerClick.emit(p); });
+        this.chartWrapper.chart.dispatch().on('markerMouseover', function (p) { _this.markerMouseover.emit(p); });
+        this.chartWrapper.chart.dispatch().on('markerMouseout', function (p) { _this.markerMouseout.emit(p); });
+        // Set up the resize callback
+        this.resizeUtil.resizeSource
+            .subscribe(function () {
+            // Do the resize operation
+            _this.timelineUtil.setChartDimensions(_this.resizeUtil.getSize(), _this.resizeWidth, _this.resizeHeight);
+            _this.chartWrapper.chart.redraw();
+        });
+        // Set the initial size of the chart
+        this.timelineUtil.setChartDimensions(this.resizeUtil.getSize(), this.resizeWidth, this.resizeHeight, true);
+        this.chartWrapper.chart.redraw();
+    };
+    RealtimeTimelineDirective.prototype.ngOnDestroy = function () {
+        this.resizeUtil.destroy();
+    };
+    RealtimeTimelineDirective.prototype.ngOnChanges = function (changes) {
+        var retVal = this.timelineUtil.onChanges(changes);
+        if (changes['fps']) {
+            this.chartWrapper.chart.fps(this.fps);
+        }
+        if (changes['delay']) {
+            this.chartWrapper.chart.delay(this.delay);
+            retVal.redraw = retVal.redraw || !changes['delay'].isFirstChange();
+        }
+        if (changes['interval']) {
+            this.chartWrapper.chart.interval(this.interval);
+            retVal.redraw = retVal.redraw || !changes['interval'].isFirstChange();
+        }
+        // Only redraw once if necessary
+        if (retVal.resize) {
+            this.chartWrapper.chart.resize();
+        }
+        if (retVal.redraw) {
+            this.chartWrapper.chart.redraw();
+        }
+    };
+    RealtimeTimelineDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: 'sentioRealtimeTimeline'
+                },] },
+    ];
+    /** @nocollapse */
+    RealtimeTimelineDirective.ctorParameters = function () { return [
+        { type: core.ElementRef, },
+    ]; };
+    RealtimeTimelineDirective.propDecorators = {
+        'data': [{ type: core.Input, args: ['sentioData',] },],
+        'series': [{ type: core.Input, args: ['sentioSeries',] },],
+        'markers': [{ type: core.Input, args: ['sentioMarkers',] },],
+        'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
+        'xExtent': [{ type: core.Input, args: ['sentioXExtent',] },],
+        'showGrid': [{ type: core.Input, args: ['sentioShowGrid',] },],
+        'showXGrid': [{ type: core.Input, args: ['sentioShowXGrid',] },],
+        'showYGrid': [{ type: core.Input, args: ['sentioShowYGrid',] },],
+        'delay': [{ type: core.Input, args: ['sentioDelay',] },],
+        'fps': [{ type: core.Input, args: ['sentioFps',] },],
+        'interval': [{ type: core.Input, args: ['sentioInterval',] },],
+        'resizeWidth': [{ type: core.Input, args: ['sentioResizeWidth',] },],
+        'resizeHeight': [{ type: core.Input, args: ['sentioResizeHeight',] },],
+        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
+        'markerMouseover': [{ type: core.Output, args: ['sentioMarkerMouseover',] },],
+        'markerMouseout': [{ type: core.Output, args: ['sentioMarkerMouseout',] },],
+        'markerClick': [{ type: core.Output, args: ['sentioMarkerClick',] },],
+        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+    };
+    return RealtimeTimelineDirective;
+}());
+
 var VerticalBarChartDirective = /** @class */ (function () {
     function VerticalBarChartDirective(el) {
         // Chart Ready event
@@ -620,10 +731,18 @@ var VerticalBarChartDirective = /** @class */ (function () {
      */
     VerticalBarChartDirective.prototype.setChartDimensions = function (dim, force) {
         if (force === void 0) { force = false; }
-        if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+        var size;
+        // If resize is enabled, we want to resize to parent
+        if (this.resizeEnabled) {
+            size = dim.parent;
+        }
+        else if (force) {
+            size = dim.element;
+        }
+        if (null != size && null != size.width && this.chartWrapper.chart.width() !== size.width) {
             // pin the height to the width
             this.chartWrapper.chart
-                .width(dim.width)
+                .width(size.width)
                 .resize();
         }
     };
@@ -692,93 +811,6 @@ var VerticalBarChartDirective = /** @class */ (function () {
     return VerticalBarChartDirective;
 }());
 
-var AutoBrushTimelineDirective = /** @class */ (function () {
-    function AutoBrushTimelineDirective(el) {
-        // Chart Ready event
-        this.chartReady = new core.EventEmitter();
-        this.brushChange = new core.EventEmitter();
-        // Extent State
-        this.extentChange = new core.EventEmitter();
-        // Create the chart
-        this.chartWrapper = new ChartWrapper(el, sentio.chartAutoBrushTimeline(), this.chartReady);
-        // Set up the resizer
-        this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
-        this.timelineUtil = new TimelineUtil(this.chartWrapper);
-    }
-    AutoBrushTimelineDirective.prototype.onResize = function (event) {
-        this.resizeUtil.resizeObserver.next(event);
-    };
-    AutoBrushTimelineDirective.prototype.ngOnInit = function () {
-        var _this = this;
-        // Initialize the chart
-        this.chartWrapper.initialize();
-        // register for the auto-brush events
-        this.chartWrapper.chart.dispatch()
-            .on('brushChange.internal', function (brush) {
-            if (_this.timelineUtil.didBrushChange(brush, _this.brushState)) {
-                setTimeout(function () { _this.brushChange.emit(brush); });
-            }
-        })
-            .on('extentChange.internal', function (extent) { return _this.extentChange.emit(extent); });
-        // Set up the resize callback
-        this.resizeUtil.resizeSource
-            .subscribe(function () {
-            // Do the resize operation
-            _this.timelineUtil.setChartDimensions(_this.resizeUtil.getSize(), _this.resizeWidth, _this.resizeHeight);
-            _this.chartWrapper.chart.redraw();
-        });
-        // Set the initial size of the chart
-        this.timelineUtil.setChartDimensions(this.resizeUtil.getSize(), this.resizeWidth, this.resizeHeight, true);
-        this.chartWrapper.chart.redraw();
-        // Set the brush (if it exists)
-        if (null != this.brushState) {
-            this.chartWrapper.chart.setBrush(this.brushState);
-        }
-    };
-    AutoBrushTimelineDirective.prototype.ngOnDestroy = function () {
-        this.resizeUtil.destroy();
-    };
-    AutoBrushTimelineDirective.prototype.ngOnChanges = function (changes) {
-        var retVal = this.timelineUtil.onChanges(changes);
-        // Only redraw once if necessary
-        if (retVal.resize) {
-            this.chartWrapper.chart.resize();
-        }
-        if (retVal.redraw) {
-            this.chartWrapper.chart.redraw();
-        }
-    };
-    AutoBrushTimelineDirective.decorators = [
-        { type: core.Directive, args: [{
-                    selector: 'sentioAutoBrushTimeline'
-                },] },
-    ];
-    /** @nocollapse */
-    AutoBrushTimelineDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
-    ]; };
-    AutoBrushTimelineDirective.propDecorators = {
-        'data': [{ type: core.Input, args: ['sentioData',] },],
-        'series': [{ type: core.Input, args: ['sentioSeries',] },],
-        'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
-        'resizeWidth': [{ type: core.Input, args: ['sentioResizeWidth',] },],
-        'resizeHeight': [{ type: core.Input, args: ['sentioResizeHeight',] },],
-        'edgeTrigger': [{ type: core.Input, args: ['sentioEdgeTrigger',] },],
-        'zoomInTrigger': [{ type: core.Input, args: ['sentioZoomInTrigger',] },],
-        'zoomOutTrigger': [{ type: core.Input, args: ['sentioZoomOutTrigger',] },],
-        'zoomTarget': [{ type: core.Input, args: ['sentiozoomTarget',] },],
-        'maxExtent': [{ type: core.Input, args: ['sentioMaxExtent',] },],
-        'minExtent': [{ type: core.Input, args: ['sentioMinExtent',] },],
-        'minBrush': [{ type: core.Input, args: ['sentioMinBrush',] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-        'brushState': [{ type: core.Input, args: ['sentioBrush',] },],
-        'brushChange': [{ type: core.Output, args: ['sentioBrushChange',] },],
-        'extentChange': [{ type: core.Output, args: ['sentioExtentChange',] },],
-        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
-    };
-    return AutoBrushTimelineDirective;
-}());
-
 var SentioModule = /** @class */ (function () {
     function SentioModule() {
     }
@@ -790,14 +822,16 @@ var SentioModule = /** @class */ (function () {
                     exports: [
                         AutoBrushTimelineDirective,
                         DonutChartDirective,
+                        DynamicTimelineDirective,
                         MatrixChartDirective,
                         RealtimeTimelineDirective,
                         TimelineDirective,
-                        VerticalBarChartDirective,
+                        VerticalBarChartDirective
                     ],
                     declarations: [
                         AutoBrushTimelineDirective,
                         DonutChartDirective,
+                        DynamicTimelineDirective,
                         MatrixChartDirective,
                         RealtimeTimelineDirective,
                         TimelineDirective,

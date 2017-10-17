@@ -1,7 +1,7 @@
 import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 import { VerticalBarsChart } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
-import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
+import { ResizeInfo, ResizeUtil } from '../../util/resize.util';
 export declare class VerticalBarChartDirective implements OnChanges, OnDestroy, OnInit {
     data: any[];
     widthExtent: [number, number];
@@ -14,7 +14,7 @@ export declare class VerticalBarChartDirective implements OnChanges, OnDestroy, 
     /**
      * For The vertical bar chart, we just resize width
      */
-    setChartDimensions(dim: ResizeDimension, force?: boolean): void;
+    setChartDimensions(dim: ResizeInfo, force?: boolean): void;
     onResize(event: any): void;
     ngOnInit(): void;
     ngOnDestroy(): void;

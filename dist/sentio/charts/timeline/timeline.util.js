@@ -28,16 +28,28 @@ var TimelineUtil = /** @class */ (function () {
     TimelineUtil.prototype.setChartDimensions = function (dim, resizeWidth, resizeHeight, force) {
         if (force === void 0) { force = false; }
         var resize = false;
-        if ((force || resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
-            // pin the height to the width
-            this.chartWrapper.chart
-                .width(dim.width);
+        var width;
+        var height;
+        // If resize is enabled, we want to resize to parent
+        if (resizeWidth) {
+            width = dim.parent.width;
+        }
+        else if (force) {
+            width = dim.element.width;
+        }
+        // If resize is enabled, we want to resize to parent
+        if (resizeHeight) {
+            height = dim.parent.height;
+        }
+        else if (force) {
+            height = dim.element.height;
+        }
+        if (null != width && this.chartWrapper.chart.width() !== width) {
+            this.chartWrapper.chart.width(width);
             resize = true;
         }
-        if ((force || resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
-            // pin the height to the width
-            this.chartWrapper.chart
-                .height(dim.height);
+        if (null != height && this.chartWrapper.chart.height() !== height) {
+            this.chartWrapper.chart.height(height);
             resize = true;
         }
         if (resize) {

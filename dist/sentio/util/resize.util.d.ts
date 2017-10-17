@@ -1,9 +1,12 @@
 import { ElementRef } from '@angular/core';
 import { Observable, Observer } from 'rxjs';
-export declare class ResizeDimension {
+export interface ElementSize {
     width: number;
     height: number;
-    constructor(width: number, height: number);
+}
+export interface ResizeInfo {
+    element: ElementSize;
+    parent: ElementSize;
 }
 /**
  * Resize utility class
@@ -11,8 +14,8 @@ export declare class ResizeDimension {
 export declare class ResizeUtil {
     chartElement: any;
     enabled: boolean;
-    resizeSource: Observable<ResizeDimension>;
-    resizeObserver: Observer<ResizeDimension>;
+    resizeSource: Observable<ResizeInfo>;
+    resizeObserver: Observer<ResizeInfo>;
     constructor(el: ElementRef, enabled?: boolean, debounce?: number, sample?: number);
     static parseFloat(value: any, defaultValue: number): number;
     /**
@@ -24,38 +27,22 @@ export declare class ResizeUtil {
      * @returns {number} the numerical representation of the pixel size
      */
     static getPixelDimension(dimStr: string): number;
+    getComputedElementSize(element: any): ElementSize;
     /**
-     * Returns the size of the element (only returns height/width if they are specified on the DOM elements)
-     * Checks attributes and style
+     * Gets the size context info for the current element
+     * Two relevant things are computed:
      *
-     * @param element
-     * @returns {ResizeDimension}
-     */
-    static getSpecifiedSize(element: any): ResizeDimension;
-    /**
-     * Returns the size of the element
-     * Checks client size
+     * element size:
+     *   Determines the chart size if the user has tried to specify the size on the directive
+     *   - directive element size
      *
-     * @param element
-     * @returns {ResizeDimension}
-     */
-    static getActualSize(element: any): ResizeDimension;
-    /**
-     * Gets the specified dimensions of the element
-     * @returns {ResizeDimension}
-     */
-    getSpecifiedSize(): ResizeDimension;
-    /**
-     * Get the element size (with no overflow)
-     * @returns {ResizeDimension}
-     */
-    getActualSize(): ResizeDimension;
-    /**
-     * Gets the size of the element (this is the actual size overridden by specified size)
-     * Actual size should be based on the size of the parent
+     * parent size:
+     *   Used when resizing to fit parent. The size returned should be the size that the element should be.
+     *   - directive parent size minus padding, margin, and border
+     *
      *
      * @returns {ResizeDimension}
      */
-    getSize(): ResizeDimension;
+    getSize(): ResizeInfo;
     destroy(): void;
 }

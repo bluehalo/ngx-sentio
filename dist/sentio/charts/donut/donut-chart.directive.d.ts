@@ -1,7 +1,7 @@
 import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
 import { DonutChart } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
-import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
+import { ResizeInfo, ResizeUtil } from '../../util/resize.util';
 export declare class DonutChartDirective implements OnChanges, OnDestroy, OnInit {
     data: any[];
     colorScale: any;
@@ -15,7 +15,7 @@ export declare class DonutChartDirective implements OnChanges, OnDestroy, OnInit
      * For the donut chart, we pin the height to the width
      * to keep the aspect ratio correct
      */
-    setChartDimensions(dim: ResizeDimension, force?: boolean): void;
+    setChartDimensions(dim: ResizeInfo, force?: boolean): void;
     onResize(event: any): void;
     ngOnInit(): void;
     ngOnDestroy(): void;
