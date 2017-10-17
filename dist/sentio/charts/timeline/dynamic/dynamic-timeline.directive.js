@@ -1,8 +1,10 @@
-import { ContentChild, Directive } from '@angular/core';
+import { ContentChild, Directive, EventEmitter, Output } from '@angular/core';
 import { AutoBrushTimelineDirective } from '../auto-brush/auto-brush-timeline.directive';
 import { TimelineDirective } from '../timeline.directive';
 var DynamicTimelineDirective = /** @class */ (function () {
     function DynamicTimelineDirective() {
+        // Chart Ready event
+        this.chartReady = new EventEmitter();
     }
     // Set the autoBrush timeline brush to the new value
     DynamicTimelineDirective.prototype.setBrush = function (newBrush) {
@@ -46,6 +48,7 @@ var DynamicTimelineDirective = /** @class */ (function () {
     DynamicTimelineDirective.propDecorators = {
         'timelineDirective': [{ type: ContentChild, args: [TimelineDirective,] },],
         'autoBrushDirective': [{ type: ContentChild, args: [AutoBrushTimelineDirective,] },],
+        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
     };
     return DynamicTimelineDirective;
 }());

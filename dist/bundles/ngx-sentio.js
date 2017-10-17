@@ -527,6 +527,8 @@ var TimelineDirective = /** @class */ (function () {
 
 var DynamicTimelineDirective = /** @class */ (function () {
     function DynamicTimelineDirective() {
+        // Chart Ready event
+        this.chartReady = new core.EventEmitter();
     }
     // Set the autoBrush timeline brush to the new value
     DynamicTimelineDirective.prototype.setBrush = function (newBrush) {
@@ -570,6 +572,7 @@ var DynamicTimelineDirective = /** @class */ (function () {
     DynamicTimelineDirective.propDecorators = {
         'timelineDirective': [{ type: core.ContentChild, args: [TimelineDirective,] },],
         'autoBrushDirective': [{ type: core.ContentChild, args: [AutoBrushTimelineDirective,] },],
+        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
     };
     return DynamicTimelineDirective;
 }());

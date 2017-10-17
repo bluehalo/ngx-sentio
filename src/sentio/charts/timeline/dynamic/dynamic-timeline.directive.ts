@@ -1,4 +1,4 @@
-import { ContentChild, Directive, OnInit } from '@angular/core';
+import { ContentChild, Directive, EventEmitter, OnInit, Output} from '@angular/core';
 
 import { AutoBrushTimelineDirective } from '../auto-brush/auto-brush-timeline.directive';
 import { TimelineDirective } from '../timeline.directive';
@@ -12,6 +12,9 @@ implements OnInit {
 
 	@ContentChild(TimelineDirective) timelineDirective: TimelineDirective;
 	@ContentChild(AutoBrushTimelineDirective) autoBrushDirective: AutoBrushTimelineDirective;
+
+	// Chart Ready event
+	@Output('sentioChartReady') chartReady = new EventEmitter<TimelineChart>();
 
 	timeline: TimelineChart;
 	autoBrush: AutoBrushTimelineChart;
