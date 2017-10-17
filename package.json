@@ -22,7 +22,7 @@
 		"@angular/core": ">=2",
 		"@angular/common": ">=2",
 
-		"@asymmetrik/sentio": "5.0.0-alpha.6",
+		"@asymmetrik/sentio": "5.0.0-alpha.7",
 
 		"d3": "4"
 	},
@@ -36,7 +36,7 @@
 		"@angular/platform-browser-dynamic": "4",
 		"@angular/router": "4",
 
-		"@asymmetrik/sentio": "5.0.0-alpha.6",
+		"@asymmetrik/sentio": "5.0.0-alpha.7",
 		"bootstrap": "3",
 
 		"d3": "4.10",

@@ -18,11 +18,15 @@ var MatrixChartDirective = /** @class */ (function () {
     };
     MatrixChartDirective.prototype.ngOnChanges = function (changes) {
         var redraw = false;
-        if (changes['sentioModel']) {
+        if (changes['data']) {
             this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioModel'].isFirstChange();
+            redraw = redraw || !changes['data'].isFirstChange();
         }
-        if (changes['sentioDuration']) {
+        if (changes['series']) {
+            this.chartWrapper.chart.series(this.series);
+            redraw = redraw || !changes['series'].isFirstChange();
+        }
+        if (changes['duration']) {
             this.chartWrapper.chart.duration(this.duration);
         }
         // Only redraw once if possible
@@ -41,6 +45,7 @@ var MatrixChartDirective = /** @class */ (function () {
     ]; };
     MatrixChartDirective.propDecorators = {
         'data': [{ type: Input, args: ['sentioData',] },],
+        'series': [{ type: Input, args: ['sentioSeries',] },],
         'duration': [{ type: Input, args: ['sentioDuration',] },],
         'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
     };

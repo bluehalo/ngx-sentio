@@ -4,8 +4,13 @@ import { Observable, Observer } from 'rxjs';
 import { select as d3_select } from 'd3-selection';
 
 /* tslint:disable:max-classes-per-file */
-export class ResizeDimension {
-	constructor(public width: number, public height: number) { }
+export interface ElementSize {
+	width: number;
+	height: number;
+}
+export interface ResizeInfo {
+	element: ElementSize;
+	parent: ElementSize;
 }
 
 /**
@@ -15,17 +20,18 @@ export class ResizeUtil {
 	chartElement: any;
 	enabled: boolean;
 
-	resizeSource: Observable<ResizeDimension>;
-	resizeObserver: Observer<ResizeDimension>;
+	resizeSource: Observable<ResizeInfo>;
+	resizeObserver: Observer<ResizeInfo>;
 
 	constructor(el: ElementRef, enabled: boolean = true, debounce: number = 200, sample: number = 100) {
 		this.enabled = enabled;
 
 		this.chartElement = d3_select(el.nativeElement);
+		this.chartElement.style('display', 'block');
 
 		// Create a hot observable for resize events
 		this.resizeSource = Observable
-			.create((observer: Observer<ResizeDimension>) => {
+			.create((observer: Observer<ResizeInfo>) => {
 				this.resizeObserver = observer;
 			})
 			.publish()
@@ -67,56 +73,7 @@ export class ResizeUtil {
 		return dim;
 	}
 
-	/**
-	 * Returns the size of the element (only returns height/width if they are specified on the DOM elements)
-	 * Checks attributes and style
-	 *
-	 * @param element
-	 * @returns {ResizeDimension}
-	 */
-	static getSpecifiedSize(element: any): ResizeDimension {
-		const width: number = element.attributes.width || ResizeUtil.getPixelDimension(element.style.width);
-		const height: number = element.attributes.height || ResizeUtil.getPixelDimension(element.style.height);
-
-		return new ResizeDimension(width, height);
-	}
-
-	/**
-	 * Returns the size of the element
-	 * Checks client size
-	 *
-	 * @param element
-	 * @returns {ResizeDimension}
-	 */
-	static getActualSize(element: any): ResizeDimension {
-		const cs = getComputedStyle(element);
-
-		const paddingX = ResizeUtil.parseFloat(cs.paddingLeft, 0) + ResizeUtil.parseFloat(cs.paddingRight, 0);
-		const paddingY = ResizeUtil.parseFloat(cs.paddingTop, 0) + ResizeUtil.parseFloat(cs.paddingBottom, 0);
-		const borderX = ResizeUtil.parseFloat(cs.borderLeftWidth, 0) + ResizeUtil.parseFloat(cs.borderRightWidth, 0);
-		const borderY = ResizeUtil.parseFloat(cs.borderTopWidth, 0) + ResizeUtil.parseFloat(cs.borderBottomWidth, 0);
-
-		// Element width and height minus padding and border
-		const width: number = element.offsetWidth - paddingX - borderX;
-		const height: number = element.offsetHeight - paddingY - borderY;
-
-		return new ResizeDimension(width, height);
-	}
-
-	/**
-	 * Gets the specified dimensions of the element
-	 * @returns {ResizeDimension}
-	 */
-	getSpecifiedSize(): ResizeDimension {
-		return ResizeUtil.getSpecifiedSize(this.chartElement.node());
-	}
-
-	/**
-	 * Get the element size (with no overflow)
-	 * @returns {ResizeDimension}
-	 */
-	getActualSize(): ResizeDimension {
-
+	getComputedElementSize(element: any): ElementSize {
 		// Get the raw body element
 		const body = document.body;
 
@@ -124,35 +81,38 @@ export class ResizeUtil {
 		const overflow: string = body.style.overflow;
 		body.style.overflow = 'hidden';
 
-		// The first element child of our selector should be the <div> we injected
-		const rawElement = this.chartElement.node().parentElement;
+		const cs = getComputedStyle(element);
 
-		const size = ResizeUtil.getActualSize(rawElement);
+		const width = ResizeUtil.parseFloat(cs.width, 0);
+		const height = ResizeUtil.parseFloat(cs.height, 0);
 
 		// Reapply the old overflow setting
 		body.style.overflow = overflow;
 
-		return size;
+		return { width, height };
 	}
 
+
 	/**
-	 * Gets the size of the element (this is the actual size overridden by specified size)
-	 * Actual size should be based on the size of the parent
+	 * Gets the size context info for the current element
+	 * Two relevant things are computed:
+	 *
+	 * element size:
+	 *   Determines the chart size if the user has tried to specify the size on the directive
+	 *   - directive element size
+	 *
+	 * parent size:
+	 *   Used when resizing to fit parent. The size returned should be the size that the element should be.
+	 *   - directive parent size minus padding, margin, and border
+	 *
 	 *
 	 * @returns {ResizeDimension}
 	 */
-	getSize(): ResizeDimension {
-		const specifiedSize = this.getSpecifiedSize();
-		const size = this.getActualSize();
+	getSize(): ResizeInfo {
+		const element = this.getComputedElementSize(this.chartElement.node());
+		const parent = this.getComputedElementSize(this.chartElement.node().parentElement);
 
-		if (null != specifiedSize.height) {
-			size.height = specifiedSize.height;
-		}
-		if (null != specifiedSize.width) {
-			size.width = specifiedSize.width;
-		}
-
-		return size;
+		return { element, parent };
 	}
 
 	destroy(): void {

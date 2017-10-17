@@ -7,8 +7,11 @@ var TimelineDirective = /** @class */ (function () {
     function TimelineDirective(el) {
         // Chart Ready event
         this.chartReady = new EventEmitter();
-        this.brushChange = new EventEmitter();
         // Interaction events
+        this.brush = new EventEmitter();
+        this.pointMouseover = new EventEmitter();
+        this.pointMouseout = new EventEmitter();
+        this.pointClick = new EventEmitter();
         this.markerMouseover = new EventEmitter();
         this.markerMouseout = new EventEmitter();
         this.markerClick = new EventEmitter();
@@ -25,17 +28,22 @@ var TimelineDirective = /** @class */ (function () {
         var _this = this;
         // Initialize the chart
         this.chartWrapper.initialize();
+        // register for the point events
+        this.chartWrapper.chart.dispatch()
+            .on('pointClick.internal', function (d) { return _this.pointClick.emit(d); })
+            .on('pointMouseover.internal', function (d) { return _this.pointMouseover.emit(d); })
+            .on('pointMouseout.internal', function (d) { return _this.pointMouseout.emit(d); });
         // register for the marker events
         this.chartWrapper.chart.dispatch()
-            .on('markerClick', this.markerClick.emit)
-            .on('markerMouseover', this.markerMouseover.emit)
-            .on('markerMouseout', this.markerMouseout.emit);
+            .on('markerClick.internal', function (d) { return _this.markerClick.emit(d); })
+            .on('markerMouseover.internal', function (d) { return _this.markerMouseover.emit(d); })
+            .on('markerMouseout.internal', function (d) { return _this.markerMouseout.emit(d); });
         // register for the brush end event
         this.chartWrapper.chart.dispatch()
-            .on('brushEnd', function (fs) {
+            .on('brushEnd.internal', function (fs) {
             // If the brush actually changed, emit the event
             if (_this.timelineUtil.didBrushChange(fs, _this.brushState)) {
-                setTimeout(function () { _this.brushChange.emit(fs); });
+                setTimeout(function () { _this.brush.emit(fs); });
             }
         });
         // Set up the resize callback
@@ -57,44 +65,12 @@ var TimelineDirective = /** @class */ (function () {
         this.resizeUtil.destroy();
     };
     TimelineDirective.prototype.ngOnChanges = function (changes) {
-        var resize = false;
-        var redraw = false;
-        if (changes['sentioData']) {
-            this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
-        }
-        if (changes['sentioSeries']) {
-            this.chartWrapper.chart.series(this.series);
-            redraw = redraw || !changes['sentioSeries'].isFirstChange();
-        }
-        if (changes['sentioMarkers']) {
-            this.chartWrapper.chart.markers(this.markers);
-            redraw = redraw || !changes['sentioMarkers'].isFirstChange();
-        }
-        if (changes['sentioYExtent']) {
-            this.chartWrapper.chart.yExtent().overrideValue(this.yExtent);
-            redraw = redraw || !changes['sentioYExtent'].isFirstChange();
-        }
-        if (changes['sentioXExtent']) {
-            this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
-            redraw = redraw || !changes['sentioXExtent'].isFirstChange();
-        }
-        if (changes['sentioBrushEnabled']) {
-            this.chartWrapper.chart.brush(this.brushEnabled);
-            redraw = redraw || !changes['sentioBrushEnabled'].isFirstChange();
-        }
-        if (changes['sentioBrush'] && !changes['sentioBrush'].isFirstChange()) {
-            // Only apply it if it actually changed
-            if (this.timelineUtil.didBrushChange(changes['sentioBrush'].currentValue, changes['sentioBrush'].previousValue)) {
-                this.chartWrapper.chart.setBrush(this.brushState);
-                redraw = true;
-            }
-        }
+        var retVal = this.timelineUtil.onChanges(changes);
         // Only redraw once if necessary
-        if (resize) {
+        if (retVal.resize) {
             this.chartWrapper.chart.resize();
         }
-        if (redraw) {
+        if (retVal.redraw) {
             this.chartWrapper.chart.redraw();
         }
     };
@@ -113,12 +89,19 @@ var TimelineDirective = /** @class */ (function () {
         'markers': [{ type: Input, args: ['sentioMarkers',] },],
         'yExtent': [{ type: Input, args: ['sentioYExtent',] },],
         'xExtent': [{ type: Input, args: ['sentioXExtent',] },],
+        'showGrid': [{ type: Input, args: ['sentioShowGrid',] },],
+        'showXGrid': [{ type: Input, args: ['sentioShowXGrid',] },],
+        'showYGrid': [{ type: Input, args: ['sentioShowYGrid',] },],
+        'pointEvents': [{ type: Input, args: ['sentioPointEvents',] },],
         'resizeWidth': [{ type: Input, args: ['sentioResizeWidth',] },],
         'resizeHeight': [{ type: Input, args: ['sentioResizeHeight',] },],
         'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
         'brushEnabled': [{ type: Input, args: ['sentioBrushEnabled',] },],
         'brushState': [{ type: Input, args: ['sentioBrush',] },],
-        'brushChange': [{ type: Output, args: ['sentioBrushChange',] },],
+        'brush': [{ type: Output, args: ['sentioBrushChange',] },],
+        'pointMouseover': [{ type: Output, args: ['sentioPointMouseover',] },],
+        'pointMouseout': [{ type: Output, args: ['sentioPointMouseout',] },],
+        'pointClick': [{ type: Output, args: ['sentioPointClick',] },],
         'markerMouseover': [{ type: Output, args: ['sentioMarkerMouseover',] },],
         'markerMouseout': [{ type: Output, args: ['sentioMarkerMouseout',] },],
         'markerClick': [{ type: Output, args: ['sentioMarkerClick',] },],

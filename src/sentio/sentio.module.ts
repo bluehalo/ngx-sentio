@@ -1,6 +1,7 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 
 import { DonutChartDirective } from './charts/donut/donut-chart.directive';
+import { DynamicTimelineDirective } from './charts/timeline/dynamic/dynamic-timeline.directive';
 import { MatrixChartDirective } from './charts/matrix/matrix-chart.directive';
 import { RealtimeTimelineDirective } from './charts/timeline/realtime/realtime-timeline.directive';
 import { TimelineDirective } from './charts/timeline/timeline.directive';
@@ -11,14 +12,16 @@ import { AutoBrushTimelineDirective } from './charts/timeline/auto-brush/auto-br
 	exports: [
 		AutoBrushTimelineDirective,
 		DonutChartDirective,
+		DynamicTimelineDirective,
 		MatrixChartDirective,
 		RealtimeTimelineDirective,
 		TimelineDirective,
-		VerticalBarChartDirective,
+		VerticalBarChartDirective
 	],
 	declarations: [
 		AutoBrushTimelineDirective,
 		DonutChartDirective,
+		DynamicTimelineDirective,
 		MatrixChartDirective,
 		RealtimeTimelineDirective,
 		TimelineDirective,

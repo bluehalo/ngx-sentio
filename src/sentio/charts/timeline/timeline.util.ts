@@ -3,7 +3,7 @@ import { SimpleChange } from '@angular/core';
 import { TimelineChart } from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../../util/chart-wrapper.util';
-import { ResizeDimension } from '../../util/resize.util';
+import { ResizeInfo } from '../../util/resize.util';
 
 /**
  * Wrapper for common timeline stuff
@@ -23,26 +23,38 @@ export class TimelineUtil<T extends TimelineChart> {
 	}
 
 
-	setChartDimensions(dim: ResizeDimension, resizeWidth: boolean, resizeHeight: boolean, force: boolean = false): void {
+	setChartDimensions(dim: ResizeInfo, resizeWidth: boolean, resizeHeight: boolean, force: boolean = false): void {
 
 		let resize = false;
+		let width: number;
+		let height: number;
 
-		if ((force || resizeWidth) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
-
-			// pin the height to the width
-			this.chartWrapper.chart
-				.width(dim.width);
-			resize = true;
-
+		// If resize is enabled, we want to resize to parent
+		if (resizeWidth) {
+			width = dim.parent.width;
+		}
+		// If resize isn't enabled but we're forcing resize, we want to resize to element
+		else if (force) {
+			width = dim.element.width;
 		}
 
-		if ((force || resizeHeight) && null != dim.height && this.chartWrapper.chart.height() !== dim.height) {
+		// If resize is enabled, we want to resize to parent
+		if (resizeHeight) {
+			height = dim.parent.height;
+		}
+		// If resize isn't enabled but we're forcing resize, we want to resize to element
+		else if (force) {
+			height = dim.element.height;
+		}
 
-			// pin the height to the width
-			this.chartWrapper.chart
-				.height(dim.height);
+		if (null != width && this.chartWrapper.chart.width() !== width) {
+			this.chartWrapper.chart.width(width);
 			resize = true;
+		}
 
+		if (null != height && this.chartWrapper.chart.height() !== height) {
+			this.chartWrapper.chart.height(height);
+			resize = true;
 		}
 
 		if (resize) {

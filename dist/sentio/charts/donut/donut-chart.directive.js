@@ -49,20 +49,20 @@ var DonutChartDirective = /** @class */ (function () {
     DonutChartDirective.prototype.ngOnChanges = function (changes) {
         var resize = false;
         var redraw = false;
-        if (changes['sentioData']) {
+        if (changes['data']) {
             this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
+            redraw = redraw || !changes['data'].isFirstChange();
         }
-        if (changes['sentioDuration']) {
+        if (changes['duration']) {
             this.chartWrapper.chart.duration(this.duration);
         }
-        if (changes['sentioColorScale']) {
+        if (changes['colorScale']) {
             this.chartWrapper.chart.colorScale(this.colorScale);
-            redraw = redraw || !changes['sentioColorScale'].isFirstChange();
+            redraw = redraw || !changes['colorScale'].isFirstChange();
         }
-        if (changes['sentioResize']) {
+        if (changes['resizeEnabled']) {
             this.resizeUtil.enabled = this.resizeEnabled;
-            resize = resize || (this.resizeEnabled && !changes['sentioResize'].isFirstChange());
+            resize = resize || (this.resizeEnabled && !changes['resizeEnabled'].isFirstChange());
             redraw = redraw || resize;
         }
         // Only redraw once if necessary

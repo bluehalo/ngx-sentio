@@ -1,8 +1,9 @@
 import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
-import { MatrixChart } from '@asymmetrik/sentio';
+import { MatrixChart, Series } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 export declare class MatrixChartDirective implements OnChanges, OnDestroy, OnInit {
     data: any[];
+    series: Series[];
     duration: number;
     chartReady: EventEmitter<MatrixChart>;
     chartWrapper: ChartWrapper<MatrixChart>;

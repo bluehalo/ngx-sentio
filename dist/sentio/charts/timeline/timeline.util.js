@@ -44,6 +44,58 @@ var TimelineUtil = /** @class */ (function () {
             this.chartWrapper.chart.resize();
         }
     };
+    TimelineUtil.prototype.onChanges = function (changes) {
+        var resize = false;
+        var redraw = false;
+        if (changes['data']) {
+            this.chartWrapper.chart.data(changes['data'].currentValue);
+            redraw = redraw || !changes['data'].isFirstChange();
+        }
+        if (changes['series']) {
+            this.chartWrapper.chart.series(changes['series'].currentValue);
+            redraw = redraw || !changes['series'].isFirstChange();
+        }
+        if (changes['markers']) {
+            this.chartWrapper.chart.markers(changes['markers'].currentValue);
+            redraw = redraw || !changes['markers'].isFirstChange();
+        }
+        if (changes['yExtent']) {
+            this.chartWrapper.chart.yExtent().overrideValue(changes['yExtent'].currentValue);
+            redraw = redraw || !changes['yExtent'].isFirstChange();
+        }
+        if (changes['xExtent']) {
+            this.chartWrapper.chart.xExtent().overrideValue(changes['xExtent'].currentValue);
+            redraw = redraw || !changes['xExtent'].isFirstChange();
+        }
+        if (changes['showGrid']) {
+            this.chartWrapper.chart.showGrid(changes['showGrid'].currentValue);
+            redraw = redraw || !changes['showGrid'].isFirstChange();
+        }
+        if (changes['showXGrid']) {
+            this.chartWrapper.chart.showXGrid(changes['showXGrid'].currentValue);
+            redraw = redraw || !changes['showXGrid'].isFirstChange();
+        }
+        if (changes['showYGrid']) {
+            this.chartWrapper.chart.showYGrid(changes['showYGrid'].currentValue);
+            redraw = redraw || !changes['showYGrid'].isFirstChange();
+        }
+        if (changes['pointEvents']) {
+            this.chartWrapper.chart.pointEvents(changes['pointEvents'].currentValue);
+            redraw = redraw || !changes['showYGrid'].isFirstChange();
+        }
+        if (changes['brushEnabled']) {
+            this.chartWrapper.chart.brush(changes['brushEnabled'].currentValue);
+            redraw = redraw || !changes['brushEnabled'].isFirstChange();
+        }
+        if (changes['brushState'] && !changes['brushState'].isFirstChange()) {
+            // Only apply it if it actually changed
+            if (this.didBrushChange(changes['brushState'].currentValue, changes['brushState'].previousValue)) {
+                this.chartWrapper.chart.setBrush(changes['brushState'].currentValue);
+                redraw = true;
+            }
+        }
+        return { resize: resize, redraw: redraw };
+    };
     return TimelineUtil;
 }());
 export { TimelineUtil };

@@ -43,44 +43,23 @@ var RealtimeTimelineDirective = /** @class */ (function () {
         this.resizeUtil.destroy();
     };
     RealtimeTimelineDirective.prototype.ngOnChanges = function (changes) {
-        var resize = false;
-        var redraw = false;
-        if (changes['sentioData']) {
-            this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
-        }
-        if (changes['sentioSeries']) {
-            this.chartWrapper.chart.series(this.series);
-            redraw = redraw || !changes['sentioSeries'].isFirstChange();
-        }
-        if (changes['sentioMarkers']) {
-            this.chartWrapper.chart.markers(this.markers);
-            redraw = redraw || !changes['sentioMarkers'].isFirstChange();
-        }
-        if (changes['sentioYExtent']) {
-            this.chartWrapper.chart.yExtent().overrideValue(this.yExtent);
-            redraw = redraw || !changes['sentioYExtent'].isFirstChange();
-        }
-        if (changes['sentioXExtent']) {
-            this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
-            redraw = redraw || !changes['sentioXExtent'].isFirstChange();
-        }
-        if (changes['sentioFps']) {
+        var retVal = this.timelineUtil.onChanges(changes);
+        if (changes['fps']) {
             this.chartWrapper.chart.fps(this.fps);
         }
-        if (changes['sentioDelay']) {
+        if (changes['delay']) {
             this.chartWrapper.chart.delay(this.delay);
-            redraw = redraw || !changes['sentioDelay'].isFirstChange();
+            retVal.redraw = retVal.redraw || !changes['delay'].isFirstChange();
         }
-        if (changes['sentioInterval']) {
+        if (changes['interval']) {
             this.chartWrapper.chart.interval(this.interval);
-            redraw = redraw || !changes['sentioInterval'].isFirstChange();
+            retVal.redraw = retVal.redraw || !changes['interval'].isFirstChange();
         }
         // Only redraw once if necessary
-        if (resize) {
+        if (retVal.resize) {
             this.chartWrapper.chart.resize();
         }
-        if (redraw) {
+        if (retVal.redraw) {
             this.chartWrapper.chart.redraw();
         }
     };
@@ -99,6 +78,9 @@ var RealtimeTimelineDirective = /** @class */ (function () {
         'markers': [{ type: Input, args: ['sentioMarkers',] },],
         'yExtent': [{ type: Input, args: ['sentioYExtent',] },],
         'xExtent': [{ type: Input, args: ['sentioXExtent',] },],
+        'showGrid': [{ type: Input, args: ['sentioShowGrid',] },],
+        'showXGrid': [{ type: Input, args: ['sentioShowXGrid',] },],
+        'showYGrid': [{ type: Input, args: ['sentioShowYGrid',] },],
         'delay': [{ type: Input, args: ['sentioDelay',] },],
         'fps': [{ type: Input, args: ['sentioFps',] },],
         'interval': [{ type: Input, args: ['sentioInterval',] },],

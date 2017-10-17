@@ -211,20 +211,20 @@ var DonutChartDirective = /** @class */ (function () {
     DonutChartDirective.prototype.ngOnChanges = function (changes) {
         var resize = false;
         var redraw = false;
-        if (changes['sentioData']) {
+        if (changes['data']) {
             this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
+            redraw = redraw || !changes['data'].isFirstChange();
         }
-        if (changes['sentioDuration']) {
+        if (changes['duration']) {
             this.chartWrapper.chart.duration(this.duration);
         }
-        if (changes['sentioColorScale']) {
+        if (changes['colorScale']) {
             this.chartWrapper.chart.colorScale(this.colorScale);
-            redraw = redraw || !changes['sentioColorScale'].isFirstChange();
+            redraw = redraw || !changes['colorScale'].isFirstChange();
         }
-        if (changes['sentioResize']) {
+        if (changes['resizeEnabled']) {
             this.resizeUtil.enabled = this.resizeEnabled;
-            resize = resize || (this.resizeEnabled && !changes['sentioResize'].isFirstChange());
+            resize = resize || (this.resizeEnabled && !changes['resizeEnabled'].isFirstChange());
             redraw = redraw || resize;
         }
         // Only redraw once if necessary
@@ -272,11 +272,15 @@ var MatrixChartDirective = /** @class */ (function () {
     };
     MatrixChartDirective.prototype.ngOnChanges = function (changes) {
         var redraw = false;
-        if (changes['sentioModel']) {
+        if (changes['data']) {
             this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioModel'].isFirstChange();
+            redraw = redraw || !changes['data'].isFirstChange();
         }
-        if (changes['sentioDuration']) {
+        if (changes['series']) {
+            this.chartWrapper.chart.series(this.series);
+            redraw = redraw || !changes['series'].isFirstChange();
+        }
+        if (changes['duration']) {
             this.chartWrapper.chart.duration(this.duration);
         }
         // Only redraw once if possible
@@ -295,6 +299,7 @@ var MatrixChartDirective = /** @class */ (function () {
     ]; };
     MatrixChartDirective.propDecorators = {
         'data': [{ type: core.Input, args: ['sentioData',] },],
+        'series': [{ type: core.Input, args: ['sentioSeries',] },],
         'duration': [{ type: core.Input, args: ['sentioDuration',] },],
         'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
     };
@@ -347,6 +352,58 @@ var TimelineUtil = /** @class */ (function () {
             this.chartWrapper.chart.resize();
         }
     };
+    TimelineUtil.prototype.onChanges = function (changes) {
+        var resize = false;
+        var redraw = false;
+        if (changes['data']) {
+            this.chartWrapper.chart.data(changes['data'].currentValue);
+            redraw = redraw || !changes['data'].isFirstChange();
+        }
+        if (changes['series']) {
+            this.chartWrapper.chart.series(changes['series'].currentValue);
+            redraw = redraw || !changes['series'].isFirstChange();
+        }
+        if (changes['markers']) {
+            this.chartWrapper.chart.markers(changes['markers'].currentValue);
+            redraw = redraw || !changes['markers'].isFirstChange();
+        }
+        if (changes['yExtent']) {
+            this.chartWrapper.chart.yExtent().overrideValue(changes['yExtent'].currentValue);
+            redraw = redraw || !changes['yExtent'].isFirstChange();
+        }
+        if (changes['xExtent']) {
+            this.chartWrapper.chart.xExtent().overrideValue(changes['xExtent'].currentValue);
+            redraw = redraw || !changes['xExtent'].isFirstChange();
+        }
+        if (changes['showGrid']) {
+            this.chartWrapper.chart.showGrid(changes['showGrid'].currentValue);
+            redraw = redraw || !changes['showGrid'].isFirstChange();
+        }
+        if (changes['showXGrid']) {
+            this.chartWrapper.chart.showXGrid(changes['showXGrid'].currentValue);
+            redraw = redraw || !changes['showXGrid'].isFirstChange();
+        }
+        if (changes['showYGrid']) {
+            this.chartWrapper.chart.showYGrid(changes['showYGrid'].currentValue);
+            redraw = redraw || !changes['showYGrid'].isFirstChange();
+        }
+        if (changes['pointEvents']) {
+            this.chartWrapper.chart.pointEvents(changes['pointEvents'].currentValue);
+            redraw = redraw || !changes['showYGrid'].isFirstChange();
+        }
+        if (changes['brushEnabled']) {
+            this.chartWrapper.chart.brush(changes['brushEnabled'].currentValue);
+            redraw = redraw || !changes['brushEnabled'].isFirstChange();
+        }
+        if (changes['brushState'] && !changes['brushState'].isFirstChange()) {
+            // Only apply it if it actually changed
+            if (this.didBrushChange(changes['brushState'].currentValue, changes['brushState'].previousValue)) {
+                this.chartWrapper.chart.setBrush(changes['brushState'].currentValue);
+                redraw = true;
+            }
+        }
+        return { resize: resize, redraw: redraw };
+    };
     return TimelineUtil;
 }());
 
@@ -390,44 +447,23 @@ var RealtimeTimelineDirective = /** @class */ (function () {
         this.resizeUtil.destroy();
     };
     RealtimeTimelineDirective.prototype.ngOnChanges = function (changes) {
-        var resize = false;
-        var redraw = false;
-        if (changes['sentioData']) {
-            this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
-        }
-        if (changes['sentioSeries']) {
-            this.chartWrapper.chart.series(this.series);
-            redraw = redraw || !changes['sentioSeries'].isFirstChange();
-        }
-        if (changes['sentioMarkers']) {
-            this.chartWrapper.chart.markers(this.markers);
-            redraw = redraw || !changes['sentioMarkers'].isFirstChange();
-        }
-        if (changes['sentioYExtent']) {
-            this.chartWrapper.chart.yExtent().overrideValue(this.yExtent);
-            redraw = redraw || !changes['sentioYExtent'].isFirstChange();
-        }
-        if (changes['sentioXExtent']) {
-            this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
-            redraw = redraw || !changes['sentioXExtent'].isFirstChange();
-        }
-        if (changes['sentioFps']) {
+        var retVal = this.timelineUtil.onChanges(changes);
+        if (changes['fps']) {
             this.chartWrapper.chart.fps(this.fps);
         }
-        if (changes['sentioDelay']) {
+        if (changes['delay']) {
             this.chartWrapper.chart.delay(this.delay);
-            redraw = redraw || !changes['sentioDelay'].isFirstChange();
+            retVal.redraw = retVal.redraw || !changes['delay'].isFirstChange();
         }
-        if (changes['sentioInterval']) {
+        if (changes['interval']) {
             this.chartWrapper.chart.interval(this.interval);
-            redraw = redraw || !changes['sentioInterval'].isFirstChange();
+            retVal.redraw = retVal.redraw || !changes['interval'].isFirstChange();
         }
         // Only redraw once if necessary
-        if (resize) {
+        if (retVal.resize) {
             this.chartWrapper.chart.resize();
         }
-        if (redraw) {
+        if (retVal.redraw) {
             this.chartWrapper.chart.redraw();
         }
     };
@@ -446,6 +482,9 @@ var RealtimeTimelineDirective = /** @class */ (function () {
         'markers': [{ type: core.Input, args: ['sentioMarkers',] },],
         'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
         'xExtent': [{ type: core.Input, args: ['sentioXExtent',] },],
+        'showGrid': [{ type: core.Input, args: ['sentioShowGrid',] },],
+        'showXGrid': [{ type: core.Input, args: ['sentioShowXGrid',] },],
+        'showYGrid': [{ type: core.Input, args: ['sentioShowYGrid',] },],
         'delay': [{ type: core.Input, args: ['sentioDelay',] },],
         'fps': [{ type: core.Input, args: ['sentioFps',] },],
         'interval': [{ type: core.Input, args: ['sentioInterval',] },],
@@ -464,8 +503,11 @@ var TimelineDirective = /** @class */ (function () {
     function TimelineDirective(el) {
         // Chart Ready event
         this.chartReady = new core.EventEmitter();
-        this.brushChange = new core.EventEmitter();
         // Interaction events
+        this.brush = new core.EventEmitter();
+        this.pointMouseover = new core.EventEmitter();
+        this.pointMouseout = new core.EventEmitter();
+        this.pointClick = new core.EventEmitter();
         this.markerMouseover = new core.EventEmitter();
         this.markerMouseout = new core.EventEmitter();
         this.markerClick = new core.EventEmitter();
@@ -482,17 +524,22 @@ var TimelineDirective = /** @class */ (function () {
         var _this = this;
         // Initialize the chart
         this.chartWrapper.initialize();
+        // register for the point events
+        this.chartWrapper.chart.dispatch()
+            .on('pointClick.internal', function (d) { return _this.pointClick.emit(d); })
+            .on('pointMouseover.internal', function (d) { return _this.pointMouseover.emit(d); })
+            .on('pointMouseout.internal', function (d) { return _this.pointMouseout.emit(d); });
         // register for the marker events
         this.chartWrapper.chart.dispatch()
-            .on('markerClick', this.markerClick.emit)
-            .on('markerMouseover', this.markerMouseover.emit)
-            .on('markerMouseout', this.markerMouseout.emit);
+            .on('markerClick.internal', function (d) { return _this.markerClick.emit(d); })
+            .on('markerMouseover.internal', function (d) { return _this.markerMouseover.emit(d); })
+            .on('markerMouseout.internal', function (d) { return _this.markerMouseout.emit(d); });
         // register for the brush end event
         this.chartWrapper.chart.dispatch()
-            .on('brushEnd', function (fs) {
+            .on('brushEnd.internal', function (fs) {
             // If the brush actually changed, emit the event
             if (_this.timelineUtil.didBrushChange(fs, _this.brushState)) {
-                setTimeout(function () { _this.brushChange.emit(fs); });
+                setTimeout(function () { _this.brush.emit(fs); });
             }
         });
         // Set up the resize callback
@@ -514,44 +561,12 @@ var TimelineDirective = /** @class */ (function () {
         this.resizeUtil.destroy();
     };
     TimelineDirective.prototype.ngOnChanges = function (changes) {
-        var resize = false;
-        var redraw = false;
-        if (changes['sentioData']) {
-            this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
-        }
-        if (changes['sentioSeries']) {
-            this.chartWrapper.chart.series(this.series);
-            redraw = redraw || !changes['sentioSeries'].isFirstChange();
-        }
-        if (changes['sentioMarkers']) {
-            this.chartWrapper.chart.markers(this.markers);
-            redraw = redraw || !changes['sentioMarkers'].isFirstChange();
-        }
-        if (changes['sentioYExtent']) {
-            this.chartWrapper.chart.yExtent().overrideValue(this.yExtent);
-            redraw = redraw || !changes['sentioYExtent'].isFirstChange();
-        }
-        if (changes['sentioXExtent']) {
-            this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
-            redraw = redraw || !changes['sentioXExtent'].isFirstChange();
-        }
-        if (changes['sentioBrushEnabled']) {
-            this.chartWrapper.chart.brush(this.brushEnabled);
-            redraw = redraw || !changes['sentioBrushEnabled'].isFirstChange();
-        }
-        if (changes['sentioBrush'] && !changes['sentioBrush'].isFirstChange()) {
-            // Only apply it if it actually changed
-            if (this.timelineUtil.didBrushChange(changes['sentioBrush'].currentValue, changes['sentioBrush'].previousValue)) {
-                this.chartWrapper.chart.setBrush(this.brushState);
-                redraw = true;
-            }
-        }
+        var retVal = this.timelineUtil.onChanges(changes);
         // Only redraw once if necessary
-        if (resize) {
+        if (retVal.resize) {
             this.chartWrapper.chart.resize();
         }
-        if (redraw) {
+        if (retVal.redraw) {
             this.chartWrapper.chart.redraw();
         }
     };
@@ -570,12 +585,19 @@ var TimelineDirective = /** @class */ (function () {
         'markers': [{ type: core.Input, args: ['sentioMarkers',] },],
         'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
         'xExtent': [{ type: core.Input, args: ['sentioXExtent',] },],
+        'showGrid': [{ type: core.Input, args: ['sentioShowGrid',] },],
+        'showXGrid': [{ type: core.Input, args: ['sentioShowXGrid',] },],
+        'showYGrid': [{ type: core.Input, args: ['sentioShowYGrid',] },],
+        'pointEvents': [{ type: core.Input, args: ['sentioPointEvents',] },],
         'resizeWidth': [{ type: core.Input, args: ['sentioResizeWidth',] },],
         'resizeHeight': [{ type: core.Input, args: ['sentioResizeHeight',] },],
         'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
         'brushEnabled': [{ type: core.Input, args: ['sentioBrushEnabled',] },],
         'brushState': [{ type: core.Input, args: ['sentioBrush',] },],
-        'brushChange': [{ type: core.Output, args: ['sentioBrushChange',] },],
+        'brush': [{ type: core.Output, args: ['sentioBrushChange',] },],
+        'pointMouseover': [{ type: core.Output, args: ['sentioPointMouseover',] },],
+        'pointMouseout': [{ type: core.Output, args: ['sentioPointMouseout',] },],
+        'pointClick': [{ type: core.Output, args: ['sentioPointClick',] },],
         'markerMouseover': [{ type: core.Output, args: ['sentioMarkerMouseover',] },],
         'markerMouseout': [{ type: core.Output, args: ['sentioMarkerMouseout',] },],
         'markerClick': [{ type: core.Output, args: ['sentioMarkerClick',] },],
@@ -629,17 +651,17 @@ var VerticalBarChartDirective = /** @class */ (function () {
     VerticalBarChartDirective.prototype.ngOnChanges = function (changes) {
         var resize = false;
         var redraw = false;
-        if (changes['sentioData']) {
+        if (changes['data']) {
             this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
+            redraw = redraw || !changes['data'].isFirstChange();
         }
-        if (changes['sentioWidthExtent']) {
+        if (changes['widthExtent']) {
             this.chartWrapper.chart.widthExtent().overrideValue(this.widthExtent);
-            redraw = redraw || !changes['sentioWidthExtent'].isFirstChange();
+            redraw = redraw || !changes['widthExtent'].isFirstChange();
         }
-        if (changes['sentioResize']) {
+        if (changes['resizeEnabled']) {
             this.resizeUtil.enabled = this.resizeEnabled;
-            resize = resize || (this.resizeEnabled && !changes['sentioResize'].isFirstChange());
+            resize = resize || (this.resizeEnabled && !changes['resizeEnabled'].isFirstChange());
             redraw = redraw || resize;
         }
         // Only redraw once if necessary
@@ -670,41 +692,34 @@ var VerticalBarChartDirective = /** @class */ (function () {
     return VerticalBarChartDirective;
 }());
 
-var AutoBrushTimelineComponent = /** @class */ (function () {
-    function AutoBrushTimelineComponent(el) {
+var AutoBrushTimelineDirective = /** @class */ (function () {
+    function AutoBrushTimelineDirective(el) {
         // Chart Ready event
         this.chartReady = new core.EventEmitter();
         this.brushChange = new core.EventEmitter();
-        // Interaction events
-        this.markerMouseover = new core.EventEmitter();
-        this.markerMouseout = new core.EventEmitter();
-        this.markerClick = new core.EventEmitter();
+        // Extent State
+        this.extentChange = new core.EventEmitter();
         // Create the chart
         this.chartWrapper = new ChartWrapper(el, sentio.chartAutoBrushTimeline(), this.chartReady);
         // Set up the resizer
         this.resizeUtil = new ResizeUtil(el, (this.resizeHeight || this.resizeWidth));
         this.timelineUtil = new TimelineUtil(this.chartWrapper);
     }
-    AutoBrushTimelineComponent.prototype.onResize = function (event) {
+    AutoBrushTimelineDirective.prototype.onResize = function (event) {
         this.resizeUtil.resizeObserver.next(event);
     };
-    AutoBrushTimelineComponent.prototype.ngOnInit = function () {
+    AutoBrushTimelineDirective.prototype.ngOnInit = function () {
         var _this = this;
         // Initialize the chart
         this.chartWrapper.initialize();
-        // register for the marker events
+        // register for the auto-brush events
         this.chartWrapper.chart.dispatch()
-            .on('markerClick', this.markerClick.emit)
-            .on('markerMouseover', this.markerMouseover.emit)
-            .on('markerMouseout', this.markerMouseout.emit);
-        // register for the brush end event
-        this.chartWrapper.chart.dispatch()
-            .on('brushEnd', function (fs) {
-            // If the brush actually changed, emit the event
-            if (_this.timelineUtil.didBrushChange(fs, _this.brushState)) {
-                setTimeout(function () { _this.brushChange.emit(fs); });
+            .on('brushChange.internal', function (brush) {
+            if (_this.timelineUtil.didBrushChange(brush, _this.brushState)) {
+                setTimeout(function () { _this.brushChange.emit(brush); });
             }
-        });
+        })
+            .on('extentChange.internal', function (extent) { return _this.extentChange.emit(extent); });
         // Set up the resize callback
         this.resizeUtil.resizeSource
             .subscribe(function () {
@@ -720,79 +735,48 @@ var AutoBrushTimelineComponent = /** @class */ (function () {
             this.chartWrapper.chart.setBrush(this.brushState);
         }
     };
-    AutoBrushTimelineComponent.prototype.ngOnDestroy = function () {
+    AutoBrushTimelineDirective.prototype.ngOnDestroy = function () {
         this.resizeUtil.destroy();
     };
-    AutoBrushTimelineComponent.prototype.ngOnChanges = function (changes) {
-        var resize = false;
-        var redraw = false;
-        if (changes['sentioData']) {
-            this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
-        }
-        if (changes['sentioSeries']) {
-            this.chartWrapper.chart.series(this.series);
-            redraw = redraw || !changes['sentioSeries'].isFirstChange();
-        }
-        if (changes['sentioMarkers']) {
-            this.chartWrapper.chart.markers(this.markers);
-            redraw = redraw || !changes['sentioMarkers'].isFirstChange();
-        }
-        if (changes['sentioYExtent']) {
-            this.chartWrapper.chart.yExtent().overrideValue(this.yExtent);
-            redraw = redraw || !changes['sentioYExtent'].isFirstChange();
-        }
-        if (changes['sentioXExtent']) {
-            this.chartWrapper.chart.xExtent().overrideValue(this.xExtent);
-            redraw = redraw || !changes['sentioXExtent'].isFirstChange();
-        }
-        if (changes['sentioBrushEnabled']) {
-            this.chartWrapper.chart.brush(this.brushEnabled);
-            redraw = redraw || !changes['sentioBrushEnabled'].isFirstChange();
-        }
-        if (changes['sentioBrush'] && !changes['sentioBrush'].isFirstChange()) {
-            // Only apply it if it actually changed
-            if (this.timelineUtil.didBrushChange(changes['sentioBrush'].currentValue, changes['sentioBrush'].previousValue)) {
-                this.chartWrapper.chart.setBrush(this.brushState);
-                redraw = true;
-            }
-        }
+    AutoBrushTimelineDirective.prototype.ngOnChanges = function (changes) {
+        var retVal = this.timelineUtil.onChanges(changes);
         // Only redraw once if necessary
-        if (resize) {
+        if (retVal.resize) {
             this.chartWrapper.chart.resize();
         }
-        if (redraw) {
+        if (retVal.redraw) {
             this.chartWrapper.chart.redraw();
         }
     };
-    AutoBrushTimelineComponent.decorators = [
-        { type: core.Component, args: [{
-                    selector: 'sentioAutoBrushTimeline',
-                    templateUrl: 'auto-brush-timeline.component.html'
+    AutoBrushTimelineDirective.decorators = [
+        { type: core.Directive, args: [{
+                    selector: 'sentioAutoBrushTimeline'
                 },] },
     ];
     /** @nocollapse */
-    AutoBrushTimelineComponent.ctorParameters = function () { return [
+    AutoBrushTimelineDirective.ctorParameters = function () { return [
         { type: core.ElementRef, },
     ]; };
-    AutoBrushTimelineComponent.propDecorators = {
+    AutoBrushTimelineDirective.propDecorators = {
         'data': [{ type: core.Input, args: ['sentioData',] },],
         'series': [{ type: core.Input, args: ['sentioSeries',] },],
-        'markers': [{ type: core.Input, args: ['sentioMarkers',] },],
         'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
-        'xExtent': [{ type: core.Input, args: ['sentioXExtent',] },],
         'resizeWidth': [{ type: core.Input, args: ['sentioResizeWidth',] },],
         'resizeHeight': [{ type: core.Input, args: ['sentioResizeHeight',] },],
+        'edgeTrigger': [{ type: core.Input, args: ['sentioEdgeTrigger',] },],
+        'zoomInTrigger': [{ type: core.Input, args: ['sentioZoomInTrigger',] },],
+        'zoomOutTrigger': [{ type: core.Input, args: ['sentioZoomOutTrigger',] },],
+        'zoomTarget': [{ type: core.Input, args: ['sentiozoomTarget',] },],
+        'maxExtent': [{ type: core.Input, args: ['sentioMaxExtent',] },],
+        'minExtent': [{ type: core.Input, args: ['sentioMinExtent',] },],
+        'minBrush': [{ type: core.Input, args: ['sentioMinBrush',] },],
         'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-        'brushEnabled': [{ type: core.Input, args: ['sentioBrushEnabled',] },],
         'brushState': [{ type: core.Input, args: ['sentioBrush',] },],
         'brushChange': [{ type: core.Output, args: ['sentioBrushChange',] },],
-        'markerMouseover': [{ type: core.Output, args: ['sentioMarkerMouseover',] },],
-        'markerMouseout': [{ type: core.Output, args: ['sentioMarkerMouseout',] },],
-        'markerClick': [{ type: core.Output, args: ['sentioMarkerClick',] },],
+        'extentChange': [{ type: core.Output, args: ['sentioExtentChange',] },],
         'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
     };
-    return AutoBrushTimelineComponent;
+    return AutoBrushTimelineDirective;
 }());
 
 var SentioModule = /** @class */ (function () {
@@ -804,7 +788,7 @@ var SentioModule = /** @class */ (function () {
     SentioModule.decorators = [
         { type: core.NgModule, args: [{
                     exports: [
-                        AutoBrushTimelineComponent,
+                        AutoBrushTimelineDirective,
                         DonutChartDirective,
                         MatrixChartDirective,
                         RealtimeTimelineDirective,
@@ -812,7 +796,7 @@ var SentioModule = /** @class */ (function () {
                         VerticalBarChartDirective,
                     ],
                     declarations: [
-                        AutoBrushTimelineComponent,
+                        AutoBrushTimelineDirective,
                         DonutChartDirective,
                         MatrixChartDirective,
                         RealtimeTimelineDirective,

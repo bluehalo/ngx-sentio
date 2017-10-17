@@ -1,5 +1,5 @@
 import { ElementRef, EventEmitter, OnChanges, OnDestroy, OnInit, SimpleChange } from '@angular/core';
-import { Series, TimelineChart } from '@asymmetrik/sentio';
+import { PointEvents, Series, TimelineChart } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeUtil } from '../../util/resize.util';
 import { TimelineUtil } from './timeline.util';
@@ -9,12 +9,19 @@ export declare class TimelineDirective implements OnChanges, OnDestroy, OnInit {
     markers: any[];
     yExtent: [number, number];
     xExtent: [number, number];
+    showGrid: boolean;
+    showXGrid: boolean;
+    showYGrid: boolean;
+    pointEvents: PointEvents;
     resizeWidth: boolean;
     resizeHeight: boolean;
     chartReady: EventEmitter<TimelineChart>;
     brushEnabled: boolean;
     brushState: [number, number];
-    brushChange: EventEmitter<[number, number]>;
+    brush: EventEmitter<[number, number]>;
+    pointMouseover: EventEmitter<any>;
+    pointMouseout: EventEmitter<any>;
+    pointClick: EventEmitter<any>;
     markerMouseover: EventEmitter<any>;
     markerMouseout: EventEmitter<any>;
     markerClick: EventEmitter<any>;

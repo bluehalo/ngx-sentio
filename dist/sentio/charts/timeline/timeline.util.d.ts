@@ -1,3 +1,4 @@
+import { SimpleChange } from '@angular/core';
 import { TimelineChart } from '@asymmetrik/sentio';
 import { ChartWrapper } from '../../util/chart-wrapper.util';
 import { ResizeDimension } from '../../util/resize.util';
@@ -18,4 +19,10 @@ export declare class TimelineUtil<T extends TimelineChart> {
      * Did the state of the brush change?
      */
     didBrushChange: (current: [number, number], previous: [number, number]) => boolean;
+    onChanges(changes: {
+        [key: string]: SimpleChange;
+    }): {
+        resize: boolean;
+        redraw: boolean;
+    };
 }

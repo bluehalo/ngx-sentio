@@ -9,6 +9,9 @@ export declare class RealtimeTimelineDirective implements OnChanges, OnDestroy, 
     markers: any[];
     yExtent: [number, number];
     xExtent: [number, number];
+    showGrid: boolean;
+    showXGrid: boolean;
+    showYGrid: boolean;
     delay: number;
     fps: number;
     interval: number;

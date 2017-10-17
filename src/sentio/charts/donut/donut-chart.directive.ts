@@ -2,7 +2,7 @@ import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, On
 import { chartDonut, DonutChart } from '@asymmetrik/sentio';
 
 import { ChartWrapper } from '../../util/chart-wrapper.util';
-import { ResizeDimension, ResizeUtil } from '../../util/resize.util';
+import { ElementSize, ResizeInfo, ResizeUtil } from '../../util/resize.util';
 
 
 @Directive({
@@ -38,15 +38,27 @@ export class DonutChartDirective
 	 * For the donut chart, we pin the height to the width
 	 * to keep the aspect ratio correct
 	 */
-	setChartDimensions(dim: ResizeDimension, force: boolean = false): void {
+	setChartDimensions(dim: ResizeInfo, force: boolean = false): void {
 
-		if ((force || this.resizeEnabled) && null != dim.width && this.chartWrapper.chart.width() !== dim.width) {
+		let size: ElementSize;
+
+		// If resize is enabled, we want to resize to parent
+		if (this.resizeEnabled) {
+			size = dim.parent;
+		}
+		// If resize isn't enabled but we're forcing resize, we want to resize to element
+		else if (force) {
+			size = dim.element;
+		}
+
+		if (null != size && null != size.width && this.chartWrapper.chart.width() !== size.width) {
 
 			// pin the height to the width
 			this.chartWrapper.chart
-				.width(dim.width)
-				.height(dim.width)
+				.width(size.width)
+				.height(size.width)
 				.resize();
+
 		}
 
 	}

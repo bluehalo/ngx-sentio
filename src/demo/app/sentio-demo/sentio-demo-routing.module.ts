@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+import { AutoBrushTimelineLineDemoComponent } from './charts/timeline/auto-brush/auto-brush-timeline-line-demo.component';
 import { BasicDonutChartDemoComponent } from './charts/donut/basic/basic-donut-chart-demo.component';
 import { BasicMatrixChartDemoComponent } from './charts/matrix/basic/basic-matrix-chart-demo.component';
-import { BasicVerticalBarChartDemoComponent } from './charts/vertical-bar/basic/basic-vertical-bar-chart-demo.component';
 import { BasicRealtimeTimelineLineDemoComponent } from './charts/timeline/realtime/basic/basic-realtime-timeline-line-demo.component';
 import { BasicTimelineLineDemoComponent } from './charts/timeline/basic/basic-timeline-line-demo.component';
+import { BasicVerticalBarChartDemoComponent } from './charts/vertical-bar/basic/basic-vertical-bar-chart-demo.component';
+import { DynamicTimelineLineDemoComponent } from './charts/timeline/dynamic/dynamic-timeline-line-demo.component';
 import { ResizeTimelineLineDemoComponent } from './charts/timeline/resize/resize-timeline-line-demo.component';
-import { AutoBrushTimelineLineDemoComponent } from './charts/timeline/auto-brush/auto-brush-timeline-line-demo.component';
+
 
 @NgModule({
 	imports: [
@@ -47,6 +49,10 @@ import { AutoBrushTimelineLineDemoComponent } from './charts/timeline/auto-brush
 					{
 						path: 'timeline/auto-brush',
 						component: AutoBrushTimelineLineDemoComponent
+					},
+					{
+						path: 'timeline/dynamic',
+						component: DynamicTimelineLineDemoComponent
 					}
 				]
 			},

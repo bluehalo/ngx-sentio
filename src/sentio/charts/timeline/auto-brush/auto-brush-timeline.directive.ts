@@ -17,11 +17,6 @@ implements OnChanges, OnDestroy, OnInit {
 	@Input('sentioSeries') series: Series[];
 
 	@Input('sentioYExtent') yExtent: [ number, number ];
-	@Input('sentioXExtent') xExtent: [ number, number ];
-
-	@Input('sentioShowGrid') showGrid: boolean;
-	@Input('sentioShowXGrid') showXGrid: boolean;
-	@Input('sentioShowYGrid') showYGrid: boolean;
 
 	@Input('sentioResizeWidth') resizeWidth: boolean;
 	@Input('sentioResizeHeight') resizeHeight: boolean;

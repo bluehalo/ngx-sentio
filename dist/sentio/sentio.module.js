@@ -4,7 +4,7 @@ import { MatrixChartDirective } from './charts/matrix/matrix-chart.directive';
 import { RealtimeTimelineDirective } from './charts/timeline/realtime/realtime-timeline.directive';
 import { TimelineDirective } from './charts/timeline/timeline.directive';
 import { VerticalBarChartDirective } from './charts/vertical-bar/vertical-bar-chart.directive';
-import { AutoBrushTimelineComponent } from './charts/timeline/auto-brush/auto-brush-timeline.component';
+import { AutoBrushTimelineDirective } from './charts/timeline/auto-brush/auto-brush-timeline.directive';
 var SentioModule = /** @class */ (function () {
     function SentioModule() {
     }
@@ -14,7 +14,7 @@ var SentioModule = /** @class */ (function () {
     SentioModule.decorators = [
         { type: NgModule, args: [{
                     exports: [
-                        AutoBrushTimelineComponent,
+                        AutoBrushTimelineDirective,
                         DonutChartDirective,
                         MatrixChartDirective,
                         RealtimeTimelineDirective,
@@ -22,7 +22,7 @@ var SentioModule = /** @class */ (function () {
                         VerticalBarChartDirective,
                     ],
                     declarations: [
-                        AutoBrushTimelineComponent,
+                        AutoBrushTimelineDirective,
                         DonutChartDirective,
                         MatrixChartDirective,
                         RealtimeTimelineDirective,

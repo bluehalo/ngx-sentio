@@ -47,17 +47,17 @@ var VerticalBarChartDirective = /** @class */ (function () {
     VerticalBarChartDirective.prototype.ngOnChanges = function (changes) {
         var resize = false;
         var redraw = false;
-        if (changes['sentioData']) {
+        if (changes['data']) {
             this.chartWrapper.chart.data(this.data);
-            redraw = redraw || !changes['sentioData'].isFirstChange();
+            redraw = redraw || !changes['data'].isFirstChange();
         }
-        if (changes['sentioWidthExtent']) {
+        if (changes['widthExtent']) {
             this.chartWrapper.chart.widthExtent().overrideValue(this.widthExtent);
-            redraw = redraw || !changes['sentioWidthExtent'].isFirstChange();
+            redraw = redraw || !changes['widthExtent'].isFirstChange();
         }
-        if (changes['sentioResize']) {
+        if (changes['resizeEnabled']) {
             this.resizeUtil.enabled = this.resizeEnabled;
-            resize = resize || (this.resizeEnabled && !changes['sentioResize'].isFirstChange());
+            resize = resize || (this.resizeEnabled && !changes['resizeEnabled'].isFirstChange());
             redraw = redraw || resize;
         }
         // Only redraw once if necessary
