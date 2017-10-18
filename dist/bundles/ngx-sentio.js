@@ -1,4 +1,4 @@
-/*! @asymmetrik/ngx-sentio - 5.0.0-alpha.4 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
+/*! @asymmetrik/ngx-sentio - 5.0.0-alpha.5 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3-selection'), require('rxjs')) :
 	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3-selection', 'rxjs'], factory) :
