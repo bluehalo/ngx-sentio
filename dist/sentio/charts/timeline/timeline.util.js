@@ -34,6 +34,7 @@ var TimelineUtil = /** @class */ (function () {
         if (resizeWidth) {
             width = dim.parent.width;
         }
+        // If resize isn't enabled but we're forcing resize, we want to resize to element
         else if (force) {
             width = dim.element.width;
         }
@@ -41,6 +42,7 @@ var TimelineUtil = /** @class */ (function () {
         if (resizeHeight) {
             height = dim.parent.height;
         }
+        // If resize isn't enabled but we're forcing resize, we want to resize to element
         else if (force) {
             height = dim.element.height;
         }

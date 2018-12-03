@@ -1,9 +1,9 @@
 /*! @asymmetrik/ngx-sentio - 5.0.0-alpha.10 - Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved. + */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3-selection'), require('rxjs')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3-selection', 'rxjs'], factory) :
-	(factory((global.ngxSentio = {}),global.ng.core,global.sentio,global.d3,global.Rx));
-}(this, (function (exports,core,sentio,d3Selection,rxjs) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@asymmetrik/sentio'), require('d3-selection'), require('rxjs'), require('rxjs/operators')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@asymmetrik/sentio', 'd3-selection', 'rxjs', 'rxjs/operators'], factory) :
+	(factory((global.ngxSentio = {}),global.ng.core,global.sentio,global.d3,global.Rx,global.operators));
+}(this, (function (exports,core,sentio,d3Selection,rxjs,operators) { 'use strict';
 
 /**
  * Wrapper for chart info
@@ -34,10 +34,10 @@ var ChartWrapper = /** @class */ (function () {
  * Resize utility class
  */
 var ResizeUtil = /** @class */ (function () {
-    function ResizeUtil(el, enabled, debounce, sample) {
+    function ResizeUtil(el, enabled, debounce, sampleNum) {
         if (enabled === void 0) { enabled = true; }
         if (debounce === void 0) { debounce = 200; }
-        if (sample === void 0) { sample = 100; }
+        if (sampleNum === void 0) { sampleNum = 100; }
         var _this = this;
         this.enabled = enabled;
         this.chartElement = d3Selection.select(el.nativeElement);
@@ -47,16 +47,14 @@ var ResizeUtil = /** @class */ (function () {
             .create(function (observer) {
             _this.resizeObserver = observer;
         })
-            .publish()
-            .refCount()
-            .filter(function () { return _this.enabled; });
+            .pipe(operators.publish(), operators.refCount(), operators.filter(function () { return _this.enabled; }));
         if (null != debounce) {
-            this.resizeSource = this.resizeSource.debounceTime(debounce);
+            this.resizeSource = this.resizeSource.pipe(operators.debounceTime(debounce));
         }
-        if (null != sample) {
-            this.resizeSource = this.resizeSource.sample(rxjs.Observable.interval(sample));
+        if (null != sampleNum) {
+            this.resizeSource = this.resizeSource.pipe(operators.sample(rxjs.interval(sampleNum)));
         }
-        this.resizeSource = this.resizeSource.map(function () { return _this.getSize(); });
+        this.resizeSource = this.resizeSource.pipe(operators.map(function () { return _this.getSize(); }));
     }
     ResizeUtil.parseFloat = function (value, defaultValue) {
         var toReturn = parseFloat(value);
@@ -139,6 +137,7 @@ var DonutChartDirective = /** @class */ (function () {
         if (this.resizeEnabled) {
             size = dim.parent;
         }
+        // If resize isn't enabled but we're forcing resize, we want to resize to element
         else if (force) {
             size = dim.element;
         }
@@ -205,15 +204,15 @@ var DonutChartDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     DonutChartDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
+        { type: core.ElementRef }
     ]; };
     DonutChartDirective.propDecorators = {
-        'data': [{ type: core.Input, args: ['sentioData',] },],
-        'colorScale': [{ type: core.Input, args: ['sentioColorScale',] },],
-        'resizeEnabled': [{ type: core.Input, args: ['sentioResize',] },],
-        'duration': [{ type: core.Input, args: ['sentioDuration',] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: core.Input, args: ['sentioData',] }],
+        colorScale: [{ type: core.Input, args: ['sentioColorScale',] }],
+        resizeEnabled: [{ type: core.Input, args: ['sentioResize',] }],
+        duration: [{ type: core.Input, args: ['sentioDuration',] }],
+        chartReady: [{ type: core.Output, args: ['sentioChartReady',] }],
+        onResize: [{ type: core.HostListener, args: ['window:resize', ['$event'],] }]
     };
     return DonutChartDirective;
 }());
@@ -254,6 +253,7 @@ var TimelineUtil = /** @class */ (function () {
         if (resizeWidth) {
             width = dim.parent.width;
         }
+        // If resize isn't enabled but we're forcing resize, we want to resize to element
         else if (force) {
             width = dim.element.width;
         }
@@ -261,6 +261,7 @@ var TimelineUtil = /** @class */ (function () {
         if (resizeHeight) {
             height = dim.parent.height;
         }
+        // If resize isn't enabled but we're forcing resize, we want to resize to element
         else if (force) {
             height = dim.element.height;
         }
@@ -394,26 +395,26 @@ var AutoBrushTimelineDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     AutoBrushTimelineDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
+        { type: core.ElementRef }
     ]; };
     AutoBrushTimelineDirective.propDecorators = {
-        'data': [{ type: core.Input, args: ['sentioData',] },],
-        'series': [{ type: core.Input, args: ['sentioSeries',] },],
-        'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
-        'resizeWidth': [{ type: core.Input, args: ['sentioResizeWidth',] },],
-        'resizeHeight': [{ type: core.Input, args: ['sentioResizeHeight',] },],
-        'edgeTrigger': [{ type: core.Input, args: ['sentioEdgeTrigger',] },],
-        'zoomInTrigger': [{ type: core.Input, args: ['sentioZoomInTrigger',] },],
-        'zoomOutTrigger': [{ type: core.Input, args: ['sentioZoomOutTrigger',] },],
-        'zoomTarget': [{ type: core.Input, args: ['sentiozoomTarget',] },],
-        'maxExtent': [{ type: core.Input, args: ['sentioMaxExtent',] },],
-        'minExtent': [{ type: core.Input, args: ['sentioMinExtent',] },],
-        'minBrush': [{ type: core.Input, args: ['sentioMinBrush',] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-        'brushState': [{ type: core.Input, args: ['sentioBrush',] },],
-        'brushChange': [{ type: core.Output, args: ['sentioBrushChange',] },],
-        'extentChange': [{ type: core.Output, args: ['sentioExtentChange',] },],
-        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: core.Input, args: ['sentioData',] }],
+        series: [{ type: core.Input, args: ['sentioSeries',] }],
+        yExtent: [{ type: core.Input, args: ['sentioYExtent',] }],
+        resizeWidth: [{ type: core.Input, args: ['sentioResizeWidth',] }],
+        resizeHeight: [{ type: core.Input, args: ['sentioResizeHeight',] }],
+        edgeTrigger: [{ type: core.Input, args: ['sentioEdgeTrigger',] }],
+        zoomInTrigger: [{ type: core.Input, args: ['sentioZoomInTrigger',] }],
+        zoomOutTrigger: [{ type: core.Input, args: ['sentioZoomOutTrigger',] }],
+        zoomTarget: [{ type: core.Input, args: ['sentiozoomTarget',] }],
+        maxExtent: [{ type: core.Input, args: ['sentioMaxExtent',] }],
+        minExtent: [{ type: core.Input, args: ['sentioMinExtent',] }],
+        minBrush: [{ type: core.Input, args: ['sentioMinBrush',] }],
+        chartReady: [{ type: core.Output, args: ['sentioChartReady',] }],
+        brushState: [{ type: core.Input, args: ['sentioBrush',] }],
+        brushChange: [{ type: core.Output, args: ['sentioBrushChange',] }],
+        extentChange: [{ type: core.Output, args: ['sentioExtentChange',] }],
+        onResize: [{ type: core.HostListener, args: ['window:resize', ['$event'],] }]
     };
     return AutoBrushTimelineDirective;
 }());
@@ -496,31 +497,31 @@ var TimelineDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     TimelineDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
+        { type: core.ElementRef }
     ]; };
     TimelineDirective.propDecorators = {
-        'data': [{ type: core.Input, args: ['sentioData',] },],
-        'series': [{ type: core.Input, args: ['sentioSeries',] },],
-        'markers': [{ type: core.Input, args: ['sentioMarkers',] },],
-        'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
-        'xExtent': [{ type: core.Input, args: ['sentioXExtent',] },],
-        'showGrid': [{ type: core.Input, args: ['sentioShowGrid',] },],
-        'showXGrid': [{ type: core.Input, args: ['sentioShowXGrid',] },],
-        'showYGrid': [{ type: core.Input, args: ['sentioShowYGrid',] },],
-        'pointEvents': [{ type: core.Input, args: ['sentioPointEvents',] },],
-        'resizeWidth': [{ type: core.Input, args: ['sentioResizeWidth',] },],
-        'resizeHeight': [{ type: core.Input, args: ['sentioResizeHeight',] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-        'brushEnabled': [{ type: core.Input, args: ['sentioBrushEnabled',] },],
-        'brushState': [{ type: core.Input, args: ['sentioBrush',] },],
-        'brush': [{ type: core.Output, args: ['sentioBrushChange',] },],
-        'pointMouseover': [{ type: core.Output, args: ['sentioPointMouseover',] },],
-        'pointMouseout': [{ type: core.Output, args: ['sentioPointMouseout',] },],
-        'pointClick': [{ type: core.Output, args: ['sentioPointClick',] },],
-        'markerMouseover': [{ type: core.Output, args: ['sentioMarkerMouseover',] },],
-        'markerMouseout': [{ type: core.Output, args: ['sentioMarkerMouseout',] },],
-        'markerClick': [{ type: core.Output, args: ['sentioMarkerClick',] },],
-        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: core.Input, args: ['sentioData',] }],
+        series: [{ type: core.Input, args: ['sentioSeries',] }],
+        markers: [{ type: core.Input, args: ['sentioMarkers',] }],
+        yExtent: [{ type: core.Input, args: ['sentioYExtent',] }],
+        xExtent: [{ type: core.Input, args: ['sentioXExtent',] }],
+        showGrid: [{ type: core.Input, args: ['sentioShowGrid',] }],
+        showXGrid: [{ type: core.Input, args: ['sentioShowXGrid',] }],
+        showYGrid: [{ type: core.Input, args: ['sentioShowYGrid',] }],
+        pointEvents: [{ type: core.Input, args: ['sentioPointEvents',] }],
+        resizeWidth: [{ type: core.Input, args: ['sentioResizeWidth',] }],
+        resizeHeight: [{ type: core.Input, args: ['sentioResizeHeight',] }],
+        chartReady: [{ type: core.Output, args: ['sentioChartReady',] }],
+        brushEnabled: [{ type: core.Input, args: ['sentioBrushEnabled',] }],
+        brushState: [{ type: core.Input, args: ['sentioBrush',] }],
+        brush: [{ type: core.Output, args: ['sentioBrushChange',] }],
+        pointMouseover: [{ type: core.Output, args: ['sentioPointMouseover',] }],
+        pointMouseout: [{ type: core.Output, args: ['sentioPointMouseout',] }],
+        pointClick: [{ type: core.Output, args: ['sentioPointClick',] }],
+        markerMouseover: [{ type: core.Output, args: ['sentioMarkerMouseover',] }],
+        markerMouseout: [{ type: core.Output, args: ['sentioMarkerMouseout',] }],
+        markerClick: [{ type: core.Output, args: ['sentioMarkerClick',] }],
+        onResize: [{ type: core.HostListener, args: ['window:resize', ['$event'],] }]
     };
     return TimelineDirective;
 }());
@@ -569,12 +570,10 @@ var DynamicTimelineDirective = /** @class */ (function () {
                     selector: '[sentioDynamicTimeline]'
                 },] },
     ];
-    /** @nocollapse */
-    DynamicTimelineDirective.ctorParameters = function () { return []; };
     DynamicTimelineDirective.propDecorators = {
-        'timelineDirective': [{ type: core.ContentChild, args: [TimelineDirective,] },],
-        'autoBrushDirective': [{ type: core.ContentChild, args: [AutoBrushTimelineDirective,] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
+        timelineDirective: [{ type: core.ContentChild, args: [TimelineDirective,] }],
+        autoBrushDirective: [{ type: core.ContentChild, args: [AutoBrushTimelineDirective,] }],
+        chartReady: [{ type: core.Output, args: ['sentioChartReady',] }]
     };
     return DynamicTimelineDirective;
 }());
@@ -619,13 +618,13 @@ var MatrixChartDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     MatrixChartDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
+        { type: core.ElementRef }
     ]; };
     MatrixChartDirective.propDecorators = {
-        'data': [{ type: core.Input, args: ['sentioData',] },],
-        'series': [{ type: core.Input, args: ['sentioSeries',] },],
-        'duration': [{ type: core.Input, args: ['sentioDuration',] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
+        data: [{ type: core.Input, args: ['sentioData',] }],
+        series: [{ type: core.Input, args: ['sentioSeries',] }],
+        duration: [{ type: core.Input, args: ['sentioDuration',] }],
+        chartReady: [{ type: core.Output, args: ['sentioChartReady',] }]
     };
     return MatrixChartDirective;
 }());
@@ -697,27 +696,27 @@ var RealtimeTimelineDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     RealtimeTimelineDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
+        { type: core.ElementRef }
     ]; };
     RealtimeTimelineDirective.propDecorators = {
-        'data': [{ type: core.Input, args: ['sentioData',] },],
-        'series': [{ type: core.Input, args: ['sentioSeries',] },],
-        'markers': [{ type: core.Input, args: ['sentioMarkers',] },],
-        'yExtent': [{ type: core.Input, args: ['sentioYExtent',] },],
-        'xExtent': [{ type: core.Input, args: ['sentioXExtent',] },],
-        'showGrid': [{ type: core.Input, args: ['sentioShowGrid',] },],
-        'showXGrid': [{ type: core.Input, args: ['sentioShowXGrid',] },],
-        'showYGrid': [{ type: core.Input, args: ['sentioShowYGrid',] },],
-        'delay': [{ type: core.Input, args: ['sentioDelay',] },],
-        'fps': [{ type: core.Input, args: ['sentioFps',] },],
-        'interval': [{ type: core.Input, args: ['sentioInterval',] },],
-        'resizeWidth': [{ type: core.Input, args: ['sentioResizeWidth',] },],
-        'resizeHeight': [{ type: core.Input, args: ['sentioResizeHeight',] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-        'markerMouseover': [{ type: core.Output, args: ['sentioMarkerMouseover',] },],
-        'markerMouseout': [{ type: core.Output, args: ['sentioMarkerMouseout',] },],
-        'markerClick': [{ type: core.Output, args: ['sentioMarkerClick',] },],
-        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: core.Input, args: ['sentioData',] }],
+        series: [{ type: core.Input, args: ['sentioSeries',] }],
+        markers: [{ type: core.Input, args: ['sentioMarkers',] }],
+        yExtent: [{ type: core.Input, args: ['sentioYExtent',] }],
+        xExtent: [{ type: core.Input, args: ['sentioXExtent',] }],
+        showGrid: [{ type: core.Input, args: ['sentioShowGrid',] }],
+        showXGrid: [{ type: core.Input, args: ['sentioShowXGrid',] }],
+        showYGrid: [{ type: core.Input, args: ['sentioShowYGrid',] }],
+        delay: [{ type: core.Input, args: ['sentioDelay',] }],
+        fps: [{ type: core.Input, args: ['sentioFps',] }],
+        interval: [{ type: core.Input, args: ['sentioInterval',] }],
+        resizeWidth: [{ type: core.Input, args: ['sentioResizeWidth',] }],
+        resizeHeight: [{ type: core.Input, args: ['sentioResizeHeight',] }],
+        chartReady: [{ type: core.Output, args: ['sentioChartReady',] }],
+        markerMouseover: [{ type: core.Output, args: ['sentioMarkerMouseover',] }],
+        markerMouseout: [{ type: core.Output, args: ['sentioMarkerMouseout',] }],
+        markerClick: [{ type: core.Output, args: ['sentioMarkerClick',] }],
+        onResize: [{ type: core.HostListener, args: ['window:resize', ['$event'],] }]
     };
     return RealtimeTimelineDirective;
 }());
@@ -741,6 +740,7 @@ var VerticalBarChartDirective = /** @class */ (function () {
         if (this.resizeEnabled) {
             size = dim.parent;
         }
+        // If resize isn't enabled but we're forcing resize, we want to resize to element
         else if (force) {
             size = dim.element;
         }
@@ -803,15 +803,15 @@ var VerticalBarChartDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     VerticalBarChartDirective.ctorParameters = function () { return [
-        { type: core.ElementRef, },
+        { type: core.ElementRef }
     ]; };
     VerticalBarChartDirective.propDecorators = {
-        'data': [{ type: core.Input, args: ['sentioData',] },],
-        'widthExtent': [{ type: core.Input, args: ['sentioWidthExtent',] },],
-        'resizeEnabled': [{ type: core.Input, args: ['sentioResize',] },],
-        'duration': [{ type: core.Input, args: ['sentioDuration',] },],
-        'chartReady': [{ type: core.Output, args: ['sentioChartReady',] },],
-        'onResize': [{ type: core.HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: core.Input, args: ['sentioData',] }],
+        widthExtent: [{ type: core.Input, args: ['sentioWidthExtent',] }],
+        resizeEnabled: [{ type: core.Input, args: ['sentioResize',] }],
+        duration: [{ type: core.Input, args: ['sentioDuration',] }],
+        chartReady: [{ type: core.Output, args: ['sentioChartReady',] }],
+        onResize: [{ type: core.HostListener, args: ['window:resize', ['$event'],] }]
     };
     return VerticalBarChartDirective;
 }());
@@ -844,8 +844,6 @@ var SentioModule = /** @class */ (function () {
                     ]
                 },] },
     ];
-    /** @nocollapse */
-    SentioModule.ctorParameters = function () { return []; };
     return SentioModule;
 }());
 

@@ -45,12 +45,10 @@ var DynamicTimelineDirective = /** @class */ (function () {
                     selector: '[sentioDynamicTimeline]'
                 },] },
     ];
-    /** @nocollapse */
-    DynamicTimelineDirective.ctorParameters = function () { return []; };
     DynamicTimelineDirective.propDecorators = {
-        'timelineDirective': [{ type: ContentChild, args: [TimelineDirective,] },],
-        'autoBrushDirective': [{ type: ContentChild, args: [AutoBrushTimelineDirective,] },],
-        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
+        timelineDirective: [{ type: ContentChild, args: [TimelineDirective,] }],
+        autoBrushDirective: [{ type: ContentChild, args: [AutoBrushTimelineDirective,] }],
+        chartReady: [{ type: Output, args: ['sentioChartReady',] }]
     };
     return DynamicTimelineDirective;
 }());

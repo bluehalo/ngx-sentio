@@ -21,6 +21,7 @@ var VerticalBarChartDirective = /** @class */ (function () {
         if (this.resizeEnabled) {
             size = dim.parent;
         }
+        // If resize isn't enabled but we're forcing resize, we want to resize to element
         else if (force) {
             size = dim.element;
         }
@@ -83,15 +84,15 @@ var VerticalBarChartDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     VerticalBarChartDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
+        { type: ElementRef }
     ]; };
     VerticalBarChartDirective.propDecorators = {
-        'data': [{ type: Input, args: ['sentioData',] },],
-        'widthExtent': [{ type: Input, args: ['sentioWidthExtent',] },],
-        'resizeEnabled': [{ type: Input, args: ['sentioResize',] },],
-        'duration': [{ type: Input, args: ['sentioDuration',] },],
-        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
-        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: Input, args: ['sentioData',] }],
+        widthExtent: [{ type: Input, args: ['sentioWidthExtent',] }],
+        resizeEnabled: [{ type: Input, args: ['sentioResize',] }],
+        duration: [{ type: Input, args: ['sentioDuration',] }],
+        chartReady: [{ type: Output, args: ['sentioChartReady',] }],
+        onResize: [{ type: HostListener, args: ['window:resize', ['$event'],] }]
     };
     return VerticalBarChartDirective;
 }());

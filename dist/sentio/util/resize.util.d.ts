@@ -16,7 +16,7 @@ export declare class ResizeUtil {
     enabled: boolean;
     resizeSource: Observable<ResizeInfo>;
     resizeObserver: Observer<ResizeInfo>;
-    constructor(el: ElementRef, enabled?: boolean, debounce?: number, sample?: number);
+    constructor(el: ElementRef, enabled?: boolean, debounce?: number, sampleNum?: number);
     static parseFloat(value: any, defaultValue: number): number;
     /**
      * Determines the numerical dimension given a string representation

@@ -1,13 +1,14 @@
-import { Observable } from 'rxjs';
+import { interval, Observable } from 'rxjs';
+import { debounceTime, filter, map, publish, refCount, sample } from 'rxjs/operators';
 import { select as d3_select } from 'd3-selection';
 /**
  * Resize utility class
  */
 var ResizeUtil = /** @class */ (function () {
-    function ResizeUtil(el, enabled, debounce, sample) {
+    function ResizeUtil(el, enabled, debounce, sampleNum) {
         if (enabled === void 0) { enabled = true; }
         if (debounce === void 0) { debounce = 200; }
-        if (sample === void 0) { sample = 100; }
+        if (sampleNum === void 0) { sampleNum = 100; }
         var _this = this;
         this.enabled = enabled;
         this.chartElement = d3_select(el.nativeElement);
@@ -17,16 +18,14 @@ var ResizeUtil = /** @class */ (function () {
             .create(function (observer) {
             _this.resizeObserver = observer;
         })
-            .publish()
-            .refCount()
-            .filter(function () { return _this.enabled; });
+            .pipe(publish(), refCount(), filter(function () { return _this.enabled; }));
         if (null != debounce) {
-            this.resizeSource = this.resizeSource.debounceTime(debounce);
+            this.resizeSource = this.resizeSource.pipe(debounceTime(debounce));
         }
-        if (null != sample) {
-            this.resizeSource = this.resizeSource.sample(Observable.interval(sample));
+        if (null != sampleNum) {
+            this.resizeSource = this.resizeSource.pipe(sample(interval(sampleNum)));
         }
-        this.resizeSource = this.resizeSource.map(function () { return _this.getSize(); });
+        this.resizeSource = this.resizeSource.pipe(map(function () { return _this.getSize(); }));
     }
     ResizeUtil.parseFloat = function (value, defaultValue) {
         var toReturn = parseFloat(value);

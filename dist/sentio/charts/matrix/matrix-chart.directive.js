@@ -41,13 +41,13 @@ var MatrixChartDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     MatrixChartDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
+        { type: ElementRef }
     ]; };
     MatrixChartDirective.propDecorators = {
-        'data': [{ type: Input, args: ['sentioData',] },],
-        'series': [{ type: Input, args: ['sentioSeries',] },],
-        'duration': [{ type: Input, args: ['sentioDuration',] },],
-        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
+        data: [{ type: Input, args: ['sentioData',] }],
+        series: [{ type: Input, args: ['sentioSeries',] }],
+        duration: [{ type: Input, args: ['sentioDuration',] }],
+        chartReady: [{ type: Output, args: ['sentioChartReady',] }]
     };
     return MatrixChartDirective;
 }());

@@ -11,5 +11,5 @@ export declare class DynamicTimelineDirective implements OnInit {
     autoBrush: AutoBrushTimelineChart;
     setBrush(newBrush: [number, number]): void;
     ngOnInit(): void;
-    private setTimelineExtent(newExtent);
+    private setTimelineExtent;
 }

@@ -66,26 +66,26 @@ var AutoBrushTimelineDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     AutoBrushTimelineDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
+        { type: ElementRef }
     ]; };
     AutoBrushTimelineDirective.propDecorators = {
-        'data': [{ type: Input, args: ['sentioData',] },],
-        'series': [{ type: Input, args: ['sentioSeries',] },],
-        'yExtent': [{ type: Input, args: ['sentioYExtent',] },],
-        'resizeWidth': [{ type: Input, args: ['sentioResizeWidth',] },],
-        'resizeHeight': [{ type: Input, args: ['sentioResizeHeight',] },],
-        'edgeTrigger': [{ type: Input, args: ['sentioEdgeTrigger',] },],
-        'zoomInTrigger': [{ type: Input, args: ['sentioZoomInTrigger',] },],
-        'zoomOutTrigger': [{ type: Input, args: ['sentioZoomOutTrigger',] },],
-        'zoomTarget': [{ type: Input, args: ['sentiozoomTarget',] },],
-        'maxExtent': [{ type: Input, args: ['sentioMaxExtent',] },],
-        'minExtent': [{ type: Input, args: ['sentioMinExtent',] },],
-        'minBrush': [{ type: Input, args: ['sentioMinBrush',] },],
-        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
-        'brushState': [{ type: Input, args: ['sentioBrush',] },],
-        'brushChange': [{ type: Output, args: ['sentioBrushChange',] },],
-        'extentChange': [{ type: Output, args: ['sentioExtentChange',] },],
-        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: Input, args: ['sentioData',] }],
+        series: [{ type: Input, args: ['sentioSeries',] }],
+        yExtent: [{ type: Input, args: ['sentioYExtent',] }],
+        resizeWidth: [{ type: Input, args: ['sentioResizeWidth',] }],
+        resizeHeight: [{ type: Input, args: ['sentioResizeHeight',] }],
+        edgeTrigger: [{ type: Input, args: ['sentioEdgeTrigger',] }],
+        zoomInTrigger: [{ type: Input, args: ['sentioZoomInTrigger',] }],
+        zoomOutTrigger: [{ type: Input, args: ['sentioZoomOutTrigger',] }],
+        zoomTarget: [{ type: Input, args: ['sentiozoomTarget',] }],
+        maxExtent: [{ type: Input, args: ['sentioMaxExtent',] }],
+        minExtent: [{ type: Input, args: ['sentioMinExtent',] }],
+        minBrush: [{ type: Input, args: ['sentioMinBrush',] }],
+        chartReady: [{ type: Output, args: ['sentioChartReady',] }],
+        brushState: [{ type: Input, args: ['sentioBrush',] }],
+        brushChange: [{ type: Output, args: ['sentioBrushChange',] }],
+        extentChange: [{ type: Output, args: ['sentioExtentChange',] }],
+        onResize: [{ type: HostListener, args: ['window:resize', ['$event'],] }]
     };
     return AutoBrushTimelineDirective;
 }());

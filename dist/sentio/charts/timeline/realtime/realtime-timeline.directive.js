@@ -70,27 +70,27 @@ var RealtimeTimelineDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     RealtimeTimelineDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
+        { type: ElementRef }
     ]; };
     RealtimeTimelineDirective.propDecorators = {
-        'data': [{ type: Input, args: ['sentioData',] },],
-        'series': [{ type: Input, args: ['sentioSeries',] },],
-        'markers': [{ type: Input, args: ['sentioMarkers',] },],
-        'yExtent': [{ type: Input, args: ['sentioYExtent',] },],
-        'xExtent': [{ type: Input, args: ['sentioXExtent',] },],
-        'showGrid': [{ type: Input, args: ['sentioShowGrid',] },],
-        'showXGrid': [{ type: Input, args: ['sentioShowXGrid',] },],
-        'showYGrid': [{ type: Input, args: ['sentioShowYGrid',] },],
-        'delay': [{ type: Input, args: ['sentioDelay',] },],
-        'fps': [{ type: Input, args: ['sentioFps',] },],
-        'interval': [{ type: Input, args: ['sentioInterval',] },],
-        'resizeWidth': [{ type: Input, args: ['sentioResizeWidth',] },],
-        'resizeHeight': [{ type: Input, args: ['sentioResizeHeight',] },],
-        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
-        'markerMouseover': [{ type: Output, args: ['sentioMarkerMouseover',] },],
-        'markerMouseout': [{ type: Output, args: ['sentioMarkerMouseout',] },],
-        'markerClick': [{ type: Output, args: ['sentioMarkerClick',] },],
-        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: Input, args: ['sentioData',] }],
+        series: [{ type: Input, args: ['sentioSeries',] }],
+        markers: [{ type: Input, args: ['sentioMarkers',] }],
+        yExtent: [{ type: Input, args: ['sentioYExtent',] }],
+        xExtent: [{ type: Input, args: ['sentioXExtent',] }],
+        showGrid: [{ type: Input, args: ['sentioShowGrid',] }],
+        showXGrid: [{ type: Input, args: ['sentioShowXGrid',] }],
+        showYGrid: [{ type: Input, args: ['sentioShowYGrid',] }],
+        delay: [{ type: Input, args: ['sentioDelay',] }],
+        fps: [{ type: Input, args: ['sentioFps',] }],
+        interval: [{ type: Input, args: ['sentioInterval',] }],
+        resizeWidth: [{ type: Input, args: ['sentioResizeWidth',] }],
+        resizeHeight: [{ type: Input, args: ['sentioResizeHeight',] }],
+        chartReady: [{ type: Output, args: ['sentioChartReady',] }],
+        markerMouseover: [{ type: Output, args: ['sentioMarkerMouseover',] }],
+        markerMouseout: [{ type: Output, args: ['sentioMarkerMouseout',] }],
+        markerClick: [{ type: Output, args: ['sentioMarkerClick',] }],
+        onResize: [{ type: HostListener, args: ['window:resize', ['$event'],] }]
     };
     return RealtimeTimelineDirective;
 }());

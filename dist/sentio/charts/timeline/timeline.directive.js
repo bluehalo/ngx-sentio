@@ -81,31 +81,31 @@ var TimelineDirective = /** @class */ (function () {
     ];
     /** @nocollapse */
     TimelineDirective.ctorParameters = function () { return [
-        { type: ElementRef, },
+        { type: ElementRef }
     ]; };
     TimelineDirective.propDecorators = {
-        'data': [{ type: Input, args: ['sentioData',] },],
-        'series': [{ type: Input, args: ['sentioSeries',] },],
-        'markers': [{ type: Input, args: ['sentioMarkers',] },],
-        'yExtent': [{ type: Input, args: ['sentioYExtent',] },],
-        'xExtent': [{ type: Input, args: ['sentioXExtent',] },],
-        'showGrid': [{ type: Input, args: ['sentioShowGrid',] },],
-        'showXGrid': [{ type: Input, args: ['sentioShowXGrid',] },],
-        'showYGrid': [{ type: Input, args: ['sentioShowYGrid',] },],
-        'pointEvents': [{ type: Input, args: ['sentioPointEvents',] },],
-        'resizeWidth': [{ type: Input, args: ['sentioResizeWidth',] },],
-        'resizeHeight': [{ type: Input, args: ['sentioResizeHeight',] },],
-        'chartReady': [{ type: Output, args: ['sentioChartReady',] },],
-        'brushEnabled': [{ type: Input, args: ['sentioBrushEnabled',] },],
-        'brushState': [{ type: Input, args: ['sentioBrush',] },],
-        'brush': [{ type: Output, args: ['sentioBrushChange',] },],
-        'pointMouseover': [{ type: Output, args: ['sentioPointMouseover',] },],
-        'pointMouseout': [{ type: Output, args: ['sentioPointMouseout',] },],
-        'pointClick': [{ type: Output, args: ['sentioPointClick',] },],
-        'markerMouseover': [{ type: Output, args: ['sentioMarkerMouseover',] },],
-        'markerMouseout': [{ type: Output, args: ['sentioMarkerMouseout',] },],
-        'markerClick': [{ type: Output, args: ['sentioMarkerClick',] },],
-        'onResize': [{ type: HostListener, args: ['window:resize', ['$event'],] },],
+        data: [{ type: Input, args: ['sentioData',] }],
+        series: [{ type: Input, args: ['sentioSeries',] }],
+        markers: [{ type: Input, args: ['sentioMarkers',] }],
+        yExtent: [{ type: Input, args: ['sentioYExtent',] }],
+        xExtent: [{ type: Input, args: ['sentioXExtent',] }],
+        showGrid: [{ type: Input, args: ['sentioShowGrid',] }],
+        showXGrid: [{ type: Input, args: ['sentioShowXGrid',] }],
+        showYGrid: [{ type: Input, args: ['sentioShowYGrid',] }],
+        pointEvents: [{ type: Input, args: ['sentioPointEvents',] }],
+        resizeWidth: [{ type: Input, args: ['sentioResizeWidth',] }],
+        resizeHeight: [{ type: Input, args: ['sentioResizeHeight',] }],
+        chartReady: [{ type: Output, args: ['sentioChartReady',] }],
+        brushEnabled: [{ type: Input, args: ['sentioBrushEnabled',] }],
+        brushState: [{ type: Input, args: ['sentioBrush',] }],
+        brush: [{ type: Output, args: ['sentioBrushChange',] }],
+        pointMouseover: [{ type: Output, args: ['sentioPointMouseover',] }],
+        pointMouseout: [{ type: Output, args: ['sentioPointMouseout',] }],
+        pointClick: [{ type: Output, args: ['sentioPointClick',] }],
+        markerMouseover: [{ type: Output, args: ['sentioMarkerMouseover',] }],
+        markerMouseout: [{ type: Output, args: ['sentioMarkerMouseout',] }],
+        markerClick: [{ type: Output, args: ['sentioMarkerClick',] }],
+        onResize: [{ type: HostListener, args: ['window:resize', ['$event'],] }]
     };
     return TimelineDirective;
 }());

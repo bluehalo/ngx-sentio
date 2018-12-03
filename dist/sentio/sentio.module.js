@@ -34,8 +34,6 @@ var SentioModule = /** @class */ (function () {
                     ]
                 },] },
     ];
-    /** @nocollapse */
-    SentioModule.ctorParameters = function () { return []; };
     return SentioModule;
 }());
 export { SentioModule };
