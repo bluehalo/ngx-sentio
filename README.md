@@ -2,12 +2,11 @@
 
 [![Build Status][travis-image]][travis-url]
 
-[travis-url]: https://travis-ci.org/Asymmetrik/ngx-template/
-[travis-image]: https://travis-ci.org/Asymmetrik/ngx-template.svg
+[travis-url]: https://travis-ci.org/Asymmetrik/ngx-sentio/
+[travis-image]: https://travis-ci.org/Asymmetrik/ngx-sentio.svg
 
-
-> Angular 2+ Components for Sentio
-> Provides directives for all Sentio visualization components. Supports D3 v4
+> Angular.io components for Sentio.
+> Provides directives for all Sentio visualization components. Supports D3 v5 
 
 ## Table of Contents
 - [Install](#install)
@@ -20,12 +19,10 @@
 ## Install
 Install the package and its peer dependencies via npm:
 ```
-npm install d3
-npm install @asymmetrik/sentio
-npm install @asymmetrik/ngx-sentio
+npm install d3 @asymmetrik/sentio @asymmetrik/ngx-sentio
 ```
 
-If you want to run the demo, clone the repository, perform an ```npm install```, ```gulp dev``` and then go to http://localhost:9000/src/demo/index.html
+If you want to run the demo, clone the repository, perform an ```npm install```, ```npm run demo``` and then go to http://localhost:4200
 
 
 ## Usage

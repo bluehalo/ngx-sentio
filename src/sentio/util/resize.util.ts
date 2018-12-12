@@ -1,5 +1,6 @@
 import { ElementRef } from '@angular/core';
-import { Observable, Observer } from 'rxjs';
+import { interval, Observable, Observer } from 'rxjs';
+import { debounceTime, filter, map, publish, refCount, sample } from 'rxjs/operators';
 
 import { select as d3_select } from 'd3-selection';
 
@@ -23,7 +24,7 @@ export class ResizeUtil {
 	resizeSource: Observable<ResizeInfo>;
 	resizeObserver: Observer<ResizeInfo>;
 
-	constructor(el: ElementRef, enabled: boolean = true, debounce: number = 200, sample: number = 100) {
+	constructor(el: ElementRef, enabled: boolean = true, debounce: number = 200, sampleNum: number = 100) {
 		this.enabled = enabled;
 
 		this.chartElement = d3_select(el.nativeElement);
@@ -34,17 +35,19 @@ export class ResizeUtil {
 			.create((observer: Observer<ResizeInfo>) => {
 				this.resizeObserver = observer;
 			})
-			.publish()
-			.refCount()
-			.filter(() => this.enabled);
+			.pipe(
+				publish(),
+				refCount(),
+				filter(() => this.enabled)
+			);
 
 		if (null != debounce) {
-			this.resizeSource = this.resizeSource.debounceTime(debounce);
+			this.resizeSource = this.resizeSource.pipe(debounceTime(debounce));
 		}
-		if (null != sample) {
-			this.resizeSource = this.resizeSource.sample(Observable.interval(sample));
+		if (null != sampleNum) {
+			this.resizeSource = this.resizeSource.pipe(sample(interval(sampleNum)));
 		}
-		this.resizeSource = this.resizeSource.map(() => this.getSize());
+		this.resizeSource = this.resizeSource.pipe(map(() => this.getSize()));
 	}
 
 	static parseFloat(value: any, defaultValue: number): number {
