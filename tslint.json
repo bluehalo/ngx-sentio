@@ -4,6 +4,7 @@
 
 		"array-type": false,
 		"indent": [ true, "tabs" ],
+		"interface-name": [ true, "never-prefix" ],
 		"max-line-length": false,
 		"member-access": false,
 		"member-ordering": [ true, { "order": "fields-first" } ],

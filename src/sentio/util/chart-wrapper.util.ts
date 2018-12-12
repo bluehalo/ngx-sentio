@@ -1,11 +1,13 @@
 import { ElementRef, EventEmitter } from '@angular/core';
-import * as d3 from 'd3';
-import * as sentio from '@asymmetrik/sentio';
+
+import { select as d3_select } from 'd3-selection';
+
+import { internal } from '@asymmetrik/sentio';
 
 /**
  * Wrapper for chart info
  */
-export class ChartWrapper<T extends sentio.internal.BaseChart> {
+export class ChartWrapper<T extends internal.BaseChart> {
 	chart: T;
 	chartElement: any;
 	chartReady: EventEmitter<T>;
@@ -17,7 +19,7 @@ export class ChartWrapper<T extends sentio.internal.BaseChart> {
 	 * @param chart
 	 */
 	constructor(el: ElementRef, chart: T, chartReady: EventEmitter<T>) {
-		this.chartElement = d3.select(el.nativeElement);
+		this.chartElement = d3_select(el.nativeElement);
 		this.chart = chart;
 		this.chartReady = chartReady;
 	}

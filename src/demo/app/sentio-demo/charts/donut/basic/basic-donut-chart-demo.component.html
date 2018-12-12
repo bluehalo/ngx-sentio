@@ -1,0 +1,14 @@
+<section class="row">
+	<div class="col col-sm-12 col-md-6 col-lg-3">
+
+		<button type="button" class="btn btn-primary" (click)="update()">Update</button>
+		<br/>
+		<sentioDonutChart
+			[sentioData]="data"
+			sentioResize="true"
+			(sentioChartReady)="chartReady($event)">
+		</sentioDonutChart>
+
+	</div>
+</section>
+
