@@ -1,8 +1,10 @@
 <section class="row">
-	<div class="col-md-12">
+	<div class="col">
 
-		<button class="btn btn-default" (click)="play()">Play</button>
-		<button class="btn btn-default" (click)="pause()">Pause</button>
+		<div class="btn-group" role="group" aria-label="Play controls">
+			<button class="btn btn-success" (click)="play()">Play</button>
+			<button class="btn btn-secondary" (click)="pause()">Pause</button>
+		</div>
 		<br/>
 		<sentioRealtimeTimeline
 			style="height:100px;"

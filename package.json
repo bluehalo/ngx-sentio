@@ -2,85 +2,78 @@
 	"name": "@asymmetrik/ngx-sentio",
 	"artifactName": "ngx-sentio",
 	"moduleName": "ngxSentio",
-	"description": "Angular 2+ components for Sentio",
-	"version": "5.0.0-alpha.10",
-
+	"description": "Angular.io components for Sentio",
+	"version": "5.0.0",
 	"author": "Asymmetrik, Ltd.",
-	"copyright": "Copyright Asymmetrik, Ltd. 2007-2017 - All Rights Reserved.",
+	"copyright": "Copyright Asymmetrik, Ltd. 2007-2019 - All Rights Reserved.",
 	"license": "UNLICENSED",
-
 	"main": "dist/bundles/ngx-sentio.js",
 	"module": "dist/index.js",
+	"jsnext:main": "dist/index.js",
 	"typings": "dist/index.d.ts",
-
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/Asymmetrik/ngx-sentio.git"
 	},
-
-	"peerDependencies": {
-		"@angular/core": ">=2",
-		"@angular/common": ">=2",
-
-		"@asymmetrik/sentio": "5.0.0-alpha.18",
-
-		"d3": "4"
+	"scripts": {
+		"build": "npm run compile && npm run bundle",
+		"prebuild": "npm run lint",
+		"demo": "(webpack-dev-server & npm run watch)",
+		"predemo": "npm run lint",
+		"bundle": "npm run rollup && npm run uglify",
+		"compile": "ngc -p tsconfig-aot.json",
+		"lint": "tslint -c tslint.json -t stylish 'src/**/*.ts'",
+		"rollup": "rollup -c rollup.config.js",
+		"uglify": "uglifyjs --comments 'license' -o ./dist/bundles/ngx-sentio.min.js -- ./dist/bundles/ngx-sentio.js",
+		"watch": " watch 'npm run lint' ./src"
 	},
-
+	"files": [
+		"dist",
+		"src"
+	],
+	"peerDependencies": {
+		"@angular/core": ">=7",
+		"@angular/common": ">=7",
+		"@asymmetrik/sentio": "5",
+		"d3": "5"
+	},
 	"devDependencies": {
-		"@angular/common": "6",
-		"@angular/compiler": "6",
-		"@angular/compiler-cli": "6",
-		"@angular/core": "6",
-		"@angular/platform-browser": "6",
-		"@angular/platform-browser-dynamic": "6",
-		"@angular/router": "6",
-
-		"@asymmetrik/sentio": "5.0.0-alpha.18",
-		"bootstrap": "3",
-
-		"d3": "4.10",
-		"@types/d3": "4.10",
-
-		"core-js": "2.5",
-
-		"rxjs": "6.2",
-		"zone.js": "0.8",
-		"@types/node": "6",
-
-		"merge2": "1.1",
-		"rollup": "0.49",
-
-		"typescript": "2",
-		"tslint": "5.7",
-		"tslint-stylish": "2.1",
-
-		"webpack": "3.5",
-		"webpack-dev-server": "2.7",
+		"@angular/common": "7",
+		"@angular/compiler": "7",
+		"@angular/compiler-cli": "7",
+		"@angular/core": "7",
+		"@angular/platform-browser": "7",
+		"@angular/platform-browser-dynamic": "7",
+		"@angular/router": "7",
+		"@asymmetrik/sentio": "5",
+		"@types/d3": "5",
+		"@types/node": "10",
 		"angular2-template-loader": "0.6",
-		"css-loader": "0.28",
-		"file-loader": "0.11",
+		"awesome-typescript-loader": "5",
+		"bootstrap": "4",
+		"core-js": "2.5",
+		"css-loader": "1",
+		"d3": "5",
+		"file-loader": "2",
 		"html-loader": "0.5",
-		"raw-loader": "0.5",
-		"resolve-url-loader": "2.1",
-		"sass-loader": "6.0",
-		"style-loader": "0.18",
-		"awesome-typescript-loader": "3.2",
-		"url-loader": "0.5",
+		"html-webpack-plugin": "3",
+		"node-sass": "4",
+		"resolve-url-loader": "3",
+		"rollup": "0.67",
+		"rxjs": "6",
+		"sass-loader": "7",
 		"source-map-loader": "0.2",
-
-		"gulp": "3.9",
-		"gulp-filter": "5.0",
-		"gulp-insert": "0.5",
-		"gulp-load-plugins": "1.5",
-		"gulp-rename": "1.2",
-		"gulp-sourcemaps": "2.6",
-		"gulp-typescript": "3.2",
-		"gulp-tslint": "8.1",
-		"gulp-uglify": "3.0",
-		"gulp-util": "3.0",
-		"run-sequence": "2.1",
-		"through2": "2.0",
-		"node-sass": "4.5"
+		"style-loader": "0.23",
+		"to-string-loader": "^1.1.5",
+		"tslint": "5",
+		"typescript": "3.1",
+		"uglify-js": "3",
+		"url-loader": "1",
+		"watch": "1",
+		"webpack": "4",
+		"webpack-cli": "3",
+		"webpack-dev-server": "3",
+		"webpack-stats-plugin": "0.2",
+		"zone.js": "0.8"
 	}
 }
