@@ -117,7 +117,7 @@ module.exports = () => {
 			{ test: /\.(gif|jpg|jpeg)$/, use: 'file-loader' },
 
 			// Font file loader (mostly for bootstrap/font-awesome)
-			{ test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: 'url-loader?limit=10000&mimetype=application/font-woff' },
+			{ test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/, use: 'file-loader' },
 
 			// Font file loader (mostly for bootstrap/font-awesome)
 			{ test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/, use: 'file-loader' },

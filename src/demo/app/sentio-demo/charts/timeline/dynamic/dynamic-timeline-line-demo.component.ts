@@ -32,7 +32,7 @@ export class DynamicTimelineLineDemoComponent {
 	valueString: string;
 
 	// Dynamic timeline ref
-	@ViewChild(DynamicTimelineDirective) dynamicTimelineRef: DynamicTimelineDirective;
+	@ViewChild(DynamicTimelineDirective, { static: false }) dynamicTimelineRef: DynamicTimelineDirective;
 
 	// Timeline
 	timelineData: any[] = [];
