@@ -1,3 +1,6 @@
+# 6.0 
+- Upgrade to Angular v8
+
 # 5.0 (December 2018)
 - Upgrade to Sentio 5.0 - See Sentio's change log for details, includes update to d3 v5
 - Upgrade to Angular.io v7 - Includes updates to Rxjs and Angular

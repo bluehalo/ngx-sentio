@@ -1,4 +1,4 @@
-import { ContentChild, Directive, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ContentChild, Directive, EventEmitter, Output } from '@angular/core';
 
 import { AutoBrushTimelineDirective } from '../auto-brush/auto-brush-timeline.directive';
 import { TimelineDirective } from '../timeline.directive';
@@ -10,10 +10,10 @@ import { AutoBrushTimelineChart, TimelineChart } from '@asymmetrik/sentio';
 	selector: '[sentioDynamicTimeline]'
 })
 export class DynamicTimelineDirective
-implements OnInit {
+implements AfterViewInit {
 
-	@ContentChild(TimelineDirective) timelineDirective: TimelineDirective;
-	@ContentChild(AutoBrushTimelineDirective) autoBrushDirective: AutoBrushTimelineDirective;
+	@ContentChild(TimelineDirective, { static: false }) timelineDirective: TimelineDirective;
+	@ContentChild(AutoBrushTimelineDirective, { static: false }) autoBrushDirective: AutoBrushTimelineDirective;
 
 	// Chart Ready event
 	@Output('sentioChartReady') chartReady = new EventEmitter<DynamicTimelineReadyEvent>();
@@ -27,7 +27,7 @@ implements OnInit {
 		this.autoBrush.redraw();
 	}
 
-	ngOnInit() {
+	ngAfterViewInit() {
 
 		this.timeline = this.timelineDirective.chartWrapper.chart;
 		this.autoBrush = this.autoBrushDirective.chartWrapper.chart;
