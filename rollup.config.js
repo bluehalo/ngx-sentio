@@ -13,7 +13,7 @@ export default {
 		'@asymmetrik/sentio'
 	],
 	output: {
-		banner: `/*! ${pkg.name} - ${pkg.version} - ${pkg.copyright} + */`,
+		banner: `/* @license ${pkg.name} - ${pkg.version} - ${pkg.copyright} + */`,
 		file: `./dist/bundles/${pkg.artifactName}.js`,
 		format: 'umd',
 		globals: {
