@@ -1,0 +1,20 @@
+<section class="row">
+	<div class="col">
+
+		<div class="btn-group" role="group" aria-label="Play controls">
+			<button class="btn btn-success" (click)="play()">Play</button>
+			<button class="btn btn-secondary" (click)="pause()">Pause</button>
+		</div>
+		<br/>
+		<sentioRealtimeTimeline
+			style="height:100px;"
+			[sentioData]="data"
+			[sentioSeries]="series"
+			[sentioMarkers]="markers"
+			(sentioChartReady)="chartReady($event)"
+			[sentioResizeWidth]="true">
+		</sentioRealtimeTimeline>
+
+	</div>
+</section>
+

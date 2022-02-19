@@ -6,7 +6,7 @@
 [travis-image]: https://travis-ci.org/Asymmetrik/ngx-sentio.svg
 
 > Angular.io components for Sentio.
-> Provides directives for all Sentio visualization components. Supports D3 v5 
+> Provides directives for all Sentio visualization components. Supports Angular.io v13, Sentio v6, and D3 v7 
 
 ## Table of Contents
 - [Install](#install)
@@ -23,6 +23,8 @@ npm install d3 @asymmetrik/sentio @asymmetrik/ngx-sentio
 ```
 
 If you want to run the demo, clone the repository, perform an ```npm install```, ```npm run demo``` and then go to http://localhost:4200
+
+To build and deploy the library, follow the demo instructions and then use ```npm run build``` and then go into the ```./dist/ngx-sentio/``` directory and run ```npm publish```
 
 
 ## Usage

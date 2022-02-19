@@ -1,0 +1,22 @@
+<section class="row">
+	<div class="col">
+
+		<div class="btn-group" role="group" aria-label="Chart controls">
+			<button type="button" class="btn btn-primary" (click)="update()">Update</button>
+			<button type="button"class="btn btn-secondary" (click)="clearBrush()">Clear Brush</button>
+			<button type="button"class="btn btn-secondary" (click)="randomBrush()">Random Brush</button>
+		</div>
+		<br/>
+
+		<sentioTimeline
+			style="height:100px;"
+			[sentioData]="data"
+			[sentioSeries]="series"
+			[sentioResizeWidth]="true"
+			[sentioBrushEnabled]="true"
+			[(sentioBrush)]="brush"
+			(sentioBrushChange)="eventHandler('brushChanged', $event)">
+		</sentioTimeline>
+
+	</div>
+</section>

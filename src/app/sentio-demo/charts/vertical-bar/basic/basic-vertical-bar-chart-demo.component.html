@@ -1,0 +1,13 @@
+<section class="row">
+	<div class="col">
+
+		<button class="btn btn-primary" (click)="update()">Update</button>
+		<br/>
+		<sentioVerticalBarChart
+			[sentioData]="data"
+			[sentioResize]="true"
+			(sentioChartReady)="chartReady($event)">
+		</sentioVerticalBarChart>
+
+	</div>
+</section>
