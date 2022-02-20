@@ -16,6 +16,6 @@ import { SentioDemoModule } from './sentio-demo/sentio-demo.module';
     SentioDemoModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [ AppComponent ]
 })
 export class AppModule { }

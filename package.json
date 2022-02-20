@@ -1,6 +1,8 @@
 {
-  "name": "ngx-sentio-demo",
+  "name": "@asymmetrik/ngx-sentio",
   "version": "0.0.0",
+  "copyright": "Copyright Asymmetrik, A BlueHalo Company 2007-2022 - All Rights Reserved.",
+  "license": "UNLICENSED",
   "scripts": {
     "ng": "ng",
     "demo": "ng serve ngx-sentio-demo",

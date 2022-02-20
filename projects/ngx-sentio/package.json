@@ -6,8 +6,8 @@
   "copyright": "Copyright Asymmetrik, Ltd. 2007-2022 - All Rights Reserved.",
   "license": "UNLICENSED",
   "repository": {
-	"type": "git",
-	"url": "https://github.com/Asymmetrik/ngx-sentio.git"
+    "type": "git",
+    "url": "https://github.com/Asymmetrik/ngx-sentio.git"
   },
 
   "peerDependencies": {
