@@ -13,7 +13,6 @@
     "sourceMap": true,
     "paths": {
       "ngx-sentio": [
-        "dist/ngx-sentio/ngx-sentio",
         "dist/ngx-sentio"
       ]
     },
