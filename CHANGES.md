@@ -1,3 +1,7 @@
+# 13.0 (February 2022)
+- Upgrade to Angular v13, involved migration to the Angular CLI for the library build/bundle
+- Upgrade to Sentio v6, which includes an upgrade to d3 v7
+
 # 6.0 
 - Upgrade to Angular v8
 

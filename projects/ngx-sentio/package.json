@@ -1,0 +1,22 @@
+{
+  "name": "@asymmetrik/ngx-sentio",
+  "description": "Angular.io components for Sentio",
+  "version": "13.0.0",
+  "author": "Asymmetrik, Ltd.",
+  "copyright": "Copyright Asymmetrik, Ltd. 2007-2022 - All Rights Reserved.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Asymmetrik/ngx-sentio.git"
+  },
+
+  "peerDependencies": {
+    "@angular/common": "13",
+    "@angular/core": "13",
+    "@asymmetrik/sentio": "6",
+    "d3": "7"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  }
+}
